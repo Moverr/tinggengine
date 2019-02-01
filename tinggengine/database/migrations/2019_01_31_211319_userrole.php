@@ -19,9 +19,16 @@ class Userrole extends Migration
     {
         Schema::create($this->tablename, function (Blueprint $table) {
             $table->bigIncrements('id'); 
-            $table->string('user_id');
-            $table->string('role_id');  
+            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('role_id')->unsigned();
         });
+
+        Schema::table($this->tablename, function (Blueprint $table) {  
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('role_id')->references('id')->on('roles');             
+             
+        });
+
 
     }
 
