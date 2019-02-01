@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('username')->unique();
             $table->string('password'); 
-            $table->enum('status',array('ACTIVE','PENDING','ARCHIVED'))->default(DB::raw('PENDING'));
+            $table->enum('status',array('ACTIVE','PENDING','ARCHIVED'));
             $table->bigInteger('profile_id')->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->timestamp('date_created')->default(DB::raw('CURRENT_TIMESTAMP'));
