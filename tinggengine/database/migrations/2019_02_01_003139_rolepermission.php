@@ -19,10 +19,18 @@ class Rolepermission extends Migration
     {
         Schema::create($this->tablename, function (Blueprint $table) {
             $table->bigIncrements('id'); 
-            $table->bigInteger('role_id');
-            $table->bigInteger('permission_id');                     
+            $table->bigInteger('role_id')->unsigned();
+            $table->bigInteger('permission_id')->unsigned();                     
              
         });
+
+         Schema::table($this->tablename, function (Blueprint $table) {  
+            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('permission_id')->references('id')->on('permissions');             
+             
+        });
+
+
 
     }
 
