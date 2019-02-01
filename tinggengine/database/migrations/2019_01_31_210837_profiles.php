@@ -29,8 +29,7 @@ class Profiles extends Migration
             $table->datetime('date_updated')->nullable(); 
         });
 
-        Schema::table($this->tablename, function (Blueprint $table) {        
-
+        Schema::table($this->tablename, function (Blueprint $table) {  
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');             
              
