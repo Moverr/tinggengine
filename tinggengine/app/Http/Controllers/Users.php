@@ -3,19 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 
 class Users extends Controller
 {
-   public function index()
-    {
-        // return Article::all();
-        return "All Users";
+   public function index($offset = 0, $limit = 10)
+    { 
+        $users = User::offset($offset)->limit($limit)->get();
+        return json_encode($users);
     }
- 
+
     public function show($id)
     {
-        // return Article::find($id);
-        return "Reached";
+
+       $user =  User:: where('id', '=', $id)->get();
+        return json_encode($user);
     }
 
     public function store(Request $request)
@@ -42,5 +44,5 @@ class Users extends Controller
 
 
     }
-    
+
 }

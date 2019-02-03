@@ -17,9 +17,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('users/', 'Users@index');
 
-Route::get('users', 'Users@index');
 Route::get('users/{id}', 'Users@show');
 Route::post('users', 'Users@store');
 Route::put('users/{id}', 'Users@update');
 Route::delete('users/{id}', 'Users@delete');
+Route::get('users/{offset}/{limit?}', 'Users@index');
