@@ -33,7 +33,7 @@ class Users extends Controller {
         $password = $request['password'];
         $repassword = $request['repassword'];
         $role_id = $request['role_id'];
-
+        
         $userRequest = new UserRequest($username, $password, $repassword, $role_id);
 
 
