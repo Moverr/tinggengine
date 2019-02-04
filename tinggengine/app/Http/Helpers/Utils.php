@@ -21,9 +21,19 @@ class Utils {
         if (strlen($parts) != 2) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("invalid security credentials");
         }
-
-
-        $string_array = split("BASIC", $authentication_string);
+        
+        //todo: handle login
+        $existing_user = \App\User::where('username', $parts[0])
+                ->where('password', sha1($parts[1]))
+                ->first();
+        if ($existing_user == null) {
+            throw new \Illuminate\Validation\UnauthorizedException("Invalid  user credentials");
+        }
+        
+        return $existing_user;
+        
+        
+                
     }
 
     public static function HashPassword($password) {
