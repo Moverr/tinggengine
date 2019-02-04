@@ -35,9 +35,23 @@ class UsersController extends Controller {
         $role_id = $request['role_id'];
         
         $userRequest = new UserRequest($username, $password, $repassword, $role_id);
-
-
         $userRequest->validate();
+        
+        //todo: check if user exists wit the same username 
+        $user = User::where('username',$username)->first();
+        if($user !=  null){
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("User Exists with the same username in the database ");
+        }
+        
+        
+        $user = new User();
+        $user->username = $username;
+        $user->password = $password;         
+        $user->status = 'ACTIVE'; 
+        
+        
+        $user->save();
+        
        
         return "Reached";
     }

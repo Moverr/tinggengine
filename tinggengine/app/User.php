@@ -28,7 +28,7 @@ class User extends Model
 
     protected $table = 'users';
 
-     const CREATED_AT = 'creation_date';
-     const UPDATED_AT = 'last_update';
+     const CREATED_AT = 'date_created';
+     const UPDATED_AT = 'date_updated';
 
 }
