@@ -2,8 +2,6 @@
 
 namespace App\Http\Helpers;
 
-use App\Http\Helpers\AuthenticationResponse;
-
 class Utils {
 
     function __construct() {
@@ -31,9 +29,9 @@ class Utils {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("invalid security credentials");
         }
 
-        $authenticationResponse = $this->validateUser($parts[0], $parts[1]);
+        $auth = $this->validateUser($parts[0], $parts[1]);
 
-        return $authenticationResponse;
+        return $auth;
     }
 
     function validateUser($username, $password) {
@@ -45,17 +43,17 @@ class Utils {
             throw new \Illuminate\Validation\UnauthorizedException("Invalid  user credentials");
         }
 
-        $authenticationResponse = new \AuthenticationResponse();
-        $authenticationResponse->setAuthentication($this->convertToBasicAuth($username, $password));
-        $authenticationResponse->setId($existing_user->getId());
+        $auth = new \App\Http\Controllers\ResponseEntities\AuthResponse();
+        $auth->setAuthentication($this->convertToBasicAuth($username, $password));
+        $auth->setId($existing_user->id);
 
-        return $authenticationResponse;
+        return $auth;
     }
 
     public function convertToBasicAuth($username, $password) {
         $authString = $username . ":" . $password;
         $authStringEnc = base64_encode($authString);
-        return ("Basic:" + $authStringEnc);
+        return ("Basic:" . $authStringEnc);
     }
 
     public static function HashPassword($password) {

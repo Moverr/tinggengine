@@ -1,6 +1,7 @@
 <?php
-namespace App\Http\Helpers;
 
+namespace App\Http\Controllers\ResponseEntities;
+ 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,7 +13,7 @@ namespace App\Http\Helpers;
  *
  * @author mover  
  */
-class AuthenticationResponse {
+class AuthResponse {
 
     //put your code here
     private $id;

@@ -7,6 +7,8 @@ use App\User;
 use App\Http\Controllers\RequestEntities\UserRequest;
 use App\Http\Helpers\Utils;
 
+use App\Http\Controllers\ResponseEntities\UserResponse;
+
 class UsersController extends Controller {
 
     private $util;
@@ -36,12 +38,12 @@ class UsersController extends Controller {
         if ($user == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
-
-        $userResponse = new \UserResponse();
-        $userResponse->setId($user->id);
-        $userResponse->setAuthor("N/A");
-        $userResponse->setUsername($user->username);
-        return json_encode($userResponse);
+  
+        $userResponse =  new UserResponse();
+        $userResponse->setId($user[0]->id);
+        $userResponse->setAuthor(null);
+        $userResponse->setUsername($user[0]->username);        
+        return  $userResponse->toJson();
     }
 
     public function login(Request $request) {
