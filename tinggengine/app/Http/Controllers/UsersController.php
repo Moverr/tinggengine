@@ -49,18 +49,47 @@ class UsersController extends Controller {
         $user->password = $password;
         $user->status = 'ACTIVE';
         $user->save();
-
-
-
+ 
         return json_encode($user);
     }
 
-    public function update(Request $request, $id) {
+    public function update(Request $request) {
 
-        // $article = Article::findOrFail($id);
-        // $article->update($request->all());
-        // return $article;
-        return "Reached";
+        $username = $request['username'];
+        $password = $request['password'];
+        $repassword = $request['repassword'];
+        $role_id = $request['role_id'];
+        $userRequest = new UserRequest($username, $password, $repassword, $role_id);
+         
+        if($request['id'] == null){
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Mandatory field ID is missing");
+        }
+        
+        $userRequest->setId($request['id']);       
+        $userRequest->validate();
+         
+        
+         $user = User::where('id', $userRequest->getId())->first();
+        if ($user == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+        }
+        
+        
+        
+        //todo: check if user exists wit the same username 
+        $user = User::where('username', $username)
+                ->where('id',"<>", $userRequest->getId())
+                ->first();
+        if ($user != null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("User Exists with the same username in the database ");
+        }
+         
+        
+        $user->username = $username;
+        $user->password = $password; 
+        $user->update();
+         
+         return json_encode($user);
     }
 
     public function archive($id) {

@@ -8,7 +8,9 @@ class UserRequest {
     private $password;
     private $repassword;
     private $role_id;
-
+    
+    private $id;
+    
     function __construct($username = null, $password = null, $repassword = null, $role_id = null) {
 
         $this->username = $username;
@@ -16,7 +18,16 @@ class UserRequest {
         $this->repassword = $repassword;
         $this->role_id = $role_id;
     }
+    
+    function getId() {
+        return $this->id;
+    }
 
+    function setId($id) {
+        $this->id = $id;
+    }
+
+    
     /**
      * @return mixed
      */

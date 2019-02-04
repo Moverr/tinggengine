@@ -21,6 +21,6 @@ Route::get('users/', 'UsersController@index');
 
 Route::get('users/{id}', 'UsersController@get');
 Route::post('users', 'UsersController@save');
-Route::put('users/{id}', 'UsersController@update');
+Route::put('users/', 'UsersController@update');
 Route::delete('users/{id}', 'UsersController@delete');
 Route::get('users/{offset}/{limit?}', 'Users@index');
