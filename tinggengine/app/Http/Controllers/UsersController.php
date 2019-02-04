@@ -54,7 +54,6 @@ class UsersController extends Controller {
     }
 
     public function update(Request $request) {
-
         $username = $request['username'];
         $password = $request['password'];
         $repassword = $request['repassword'];
