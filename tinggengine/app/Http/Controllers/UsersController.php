@@ -54,6 +54,8 @@ class UsersController extends Controller {
         $loginRequest->setPassword($password);
         $loginRequest->setUsername($username);
         $loginRequest->validate();
+        
+        
 
         return $this->util->validateUser($username, $password);
     }
