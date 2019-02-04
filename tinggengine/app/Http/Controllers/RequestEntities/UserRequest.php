@@ -103,22 +103,19 @@ class UserRequest {
               
         }
 
-        if ($this->repassword == null || strlen($this->repassword == 0)) {
-             
+        if ($this->repassword == null || strlen($this->repassword == 0)) {             
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Password is Mandatory");
         }
 
 
 
         if ($this->role_id == null || strlen($this->role_id == 0)) {
-            
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Role  is Mandatory");
         }
 
         
         if($this->password != $this->repassword){
-        throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Passwords do not match");
-       
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Passwords do not match");       
         }
 
 
