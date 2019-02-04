@@ -101,7 +101,27 @@ class UserRequest{
 
 
     function validate(){
-     return false;
+        if($this->username == null || strlen($this->username == 0 )){
+           return false;
+        }
+
+
+        if($this->password == null || strlen($this->password == 0 )){
+           return false;
+        }
+
+        if($this->repassword == null || strlen($this->repassword == 0 )){
+           return false;
+        }
+        
+
+
+        if($this->role_id == null || strlen($this->role_id == 0 )){
+           return false;
+        }
+
+         return true;
+
         
     }
 

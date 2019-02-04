@@ -40,11 +40,11 @@ class Users extends Controller
          $role_id = $request['role_id'];
 
         $userRequest = new UserRequest($username,$password,$repassword,$role_id);
-        $response_type =  $userRequest->validate();
+        // $response_type =  $userRequest->validate();
         
-        if($response_type == false){
-                return json_encode($this->util->getHttpResponseHeader(400));            
-        }
+        // if($response_type == false){
+        //         return json_encode($this->util->getHttpResponseHeader(400));            
+        // }
 
              // $firstname = $request['firstname'];
          // $lastname = $request['lastname'];
