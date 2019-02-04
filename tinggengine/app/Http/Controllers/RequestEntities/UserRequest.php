@@ -91,30 +91,31 @@ class UserRequest {
 
     function validate() {
 
+
         
-        if ($this->username == null || strlen($this->username == 0)) {
+        if ($this->getUsername() == null || strlen($this->getUsername()) == 0  ) {
              throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Username is Mandatory");
              
         }
 
 
-        if ($this->password == null || strlen($this->password == 0)) {
+        if ($this->getPassword() == null ) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Password is Mandatory");
               
         }
 
-        if ($this->repassword == null || strlen($this->repassword == 0)) {             
+        if ($this->getRepassword() == null  ) {             
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Password is Mandatory");
         }
 
 
 
-        if ($this->role_id == null || strlen($this->role_id == 0)) {
+        if ($this->getRoleId() == null ) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Role  is Mandatory");
         }
 
         
-        if($this->password != $this->repassword){
+        if($this->getPassword() != $this->getRepassword()){
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Passwords do not match");       
         }
 
@@ -126,5 +127,20 @@ class UserRequest {
     }
 
 }
+/*
+ENDPOINT PARAMS 
+ 
+{
+    "username": "sderty",
+    "password":"sdferrr",
+    "repassword":"sdddddd",
+    "emailaddress": "ghytrfgh@gmail.com",
+    "role_id": 1
+    
+    
+     
+}
 
+
+*/
 ?>
