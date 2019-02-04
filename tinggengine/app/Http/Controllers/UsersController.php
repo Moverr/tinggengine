@@ -44,7 +44,7 @@ class UsersController extends Controller {
         return json_encode($userResponse);
     }
 
-    public function archive(Request $request) {
+    public function login(Request $request) {
         $username = $request['username'];
         $password = $request['password'];
 
@@ -52,10 +52,8 @@ class UsersController extends Controller {
         $loginRequest->setPassword($password);
         $loginRequest->setUsername($username);
         $loginRequest->validate();
-        
-        $this->util->validateUser($username, $password);
-        
-        
+
+        return $this->util->validateUser($username, $password);
     }
 
     public function save(Request $request) {
