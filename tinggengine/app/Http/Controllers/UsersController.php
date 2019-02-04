@@ -100,7 +100,7 @@ class UsersController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
         
-        
+        $user->get
 
         return 204;
     }
