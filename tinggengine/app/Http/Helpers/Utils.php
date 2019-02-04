@@ -24,14 +24,12 @@ class Utils {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("invalid security credentials");
         }
 
-        //todo: handle login
         $existing_user = \App\User::where('username', $parts[0])
                 ->where('password', sha1($parts[1]))
                 ->first();
         if ($existing_user == null) {
             throw new \Illuminate\Validation\UnauthorizedException("Invalid  user credentials");
         }
-
 
 
         $this->authentication = new \AuthenticationResponse();
