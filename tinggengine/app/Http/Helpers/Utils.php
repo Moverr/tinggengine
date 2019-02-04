@@ -30,11 +30,26 @@ class Utils {
             throw new \Illuminate\Validation\UnauthorizedException("Invalid  user credentials");
         }
         
-        return $existing_user;
+        $authentication = new \AuthenticationResponse();
+        $authentication->setAuthentication($this->convertToBasicAuth($parts[0], $parts[1]));
+        $authentication->setId($existing_user->getId());
+        $authentication->setId($existing_user->getId());
+        
+        
+        
+        return $authentication;
         
         
                 
     }
+    
+     public  function  convertToBasicAuth($username, $password) {
+        $authString = $username . ":" . $password;
+        $authStringEnc = base64_encode($authString); 
+        return ("Basic:" + $authStringEnc);
+    }
+    
+    
 
     public static function HashPassword($password) {
         if ($password != null) {
