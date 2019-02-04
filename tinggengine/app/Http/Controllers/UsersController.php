@@ -7,7 +7,7 @@ use App\User;
 use App\Http\Controllers\RequestEntities\UserRequest;
 use App\Http\Helpers\Utils;
 
-class Users extends Controller {
+class UsersController extends Controller {
 
     private $util;
 
