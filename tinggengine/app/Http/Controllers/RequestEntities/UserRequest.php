@@ -1,30 +1,26 @@
-<?php 
+<?php
 
-namespace  App\Http\Controllers\RequestEntities;
- 
+namespace App\Http\Controllers\RequestEntities;
 
-class UserRequest{
-	private  $username;
-    private  $password;
-    private  $repassword;
-    private  $role_id;
+class UserRequest {
 
- 
-	 function __construct($username=null,$password=null,$repassword=null,$role_id = null){
+    private $username;
+    private $password;
+    private $repassword;
+    private $role_id;
 
-	 	 $this->username = $username;
-	 	 $this->password = $password;
-	 	 $this->repassword = $repassword;
-	 	  $this->role_id = $role_id;
-	 }
+    function __construct($username = null, $password = null, $repassword = null, $role_id = null) {
 
-  
+        $this->username = $username;
+        $this->password = $password;
+        $this->repassword = $repassword;
+        $this->role_id = $role_id;
+    }
 
     /**
      * @return mixed
      */
-    public function getUsername()
-    {
+    public function getUsername() {
         return $this->username;
     }
 
@@ -33,8 +29,7 @@ class UserRequest{
      *
      * @return self
      */
-    public function setUsername($username)
-    {
+    public function setUsername($username) {
         $this->username = $username;
 
         return $this;
@@ -43,8 +38,7 @@ class UserRequest{
     /**
      * @return mixed
      */
-    public function getPassword()
-    {
+    public function getPassword() {
         return $this->password;
     }
 
@@ -53,8 +47,7 @@ class UserRequest{
      *
      * @return self
      */
-    public function setPassword($password)
-    {
+    public function setPassword($password) {
         $this->password = $password;
 
         return $this;
@@ -63,8 +56,7 @@ class UserRequest{
     /**
      * @return mixed
      */
-    public function getRepassword()
-    {
+    public function getRepassword() {
         return $this->repassword;
     }
 
@@ -73,8 +65,7 @@ class UserRequest{
      *
      * @return self
      */
-    public function setRepassword($repassword)
-    {
+    public function setRepassword($repassword) {
         $this->repassword = $repassword;
 
         return $this;
@@ -83,8 +74,7 @@ class UserRequest{
     /**
      * @return mixed
      */
-    public function getRoleId()
-    {
+    public function getRoleId() {
         return $this->role_id;
     }
 
@@ -93,64 +83,49 @@ class UserRequest{
      *
      * @return self
      */
-    public function setRoleId($role_id)
-    {
+    public function setRoleId($role_id) {
         $this->role_id = $role_id;
 
         return $this;
     }
 
-
-public static function json($data = array(), $status = 401, $headers = array(), $options = 0){
-
-    return \Illuminate\Routing\ResponseFactory::json($data, $status, $headers, $options);
-}
+    function validate() {
 
 
-    function responseMessage($message){
+        $error = \Illuminate\Validation\ValidationException::withMessages([
+                    'field_name_1' => ['Validation Message #1'],
+                    'field_name_2' => ['Validation Message #2'],
+        ]);
+        throw $error;
 
 
- throw new Exception("Invalidat eae a");
+        if ($this->username == null || strlen($this->username == 0)) {
+            return abort('401', 'Username is Mandatory');
+        }
 
+
+        if ($this->password == null || strlen($this->password == 0)) {
+            return abort('401', 'Username is Mandatory');
+        }
+
+        if ($this->repassword == null || strlen($this->repassword == 0)) {
+            return abort('401', 'Username is Mandatory');
+        }
+
+
+
+        if ($this->role_id == null || strlen($this->role_id == 0)) {
+            return abort('401', 'Username is Mandatory');
+        }
+
+
+
+
+
+
+        return true;
     }
 
-
-    function validate(){
-        if($this->username == null || strlen($this->username == 0 )){
-            return $this->responseMessage('Username is Mandatory');
-
-        }
-
-
-         if($this->password == null || strlen($this->password == 0 )){
-          return $this->responseMessage('Username is Mandatory');
-            
-        }
-
-         if($this->repassword == null || strlen($this->repassword == 0 )){
-           return $this->responseMessage('Username is Mandatory');
-            
-        }
-        
-
-
-         if($this->role_id == null || strlen($this->role_id == 0 )){
-         return  $this->responseMessage('Username is Mandatory');
-            
-        }
-         
-
-
-
-
-
-         return true;
-
-        
-    }
-
-
-
-
 }
+
 ?>
