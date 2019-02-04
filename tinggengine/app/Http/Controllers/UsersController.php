@@ -84,7 +84,6 @@ class UsersController extends Controller {
 
         $user->username = $username;
         $user->password = $password;
-//        $user->date_updated = date("Y-m-d h:i:sa");
         $user->update();
 
         return json_encode($user);
@@ -96,10 +95,7 @@ class UsersController extends Controller {
         if ($user == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
-
-        $user->get
-
-        return 204;
+        $user->status = 'ARCHIVED';
     }
 
 }
