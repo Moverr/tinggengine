@@ -16,8 +16,8 @@ class UsersController extends Controller {
     }
 
     public function index(Request $request, $offset = 0, $limit = 10) {
-        $authenticationString = $request->header('authentication');
-
+        $authenticationString = $request->header('authentication');        
+        
 
         $users = User::offset($offset)->limit($limit)->get();
         return json_encode($authenticationString);
@@ -49,7 +49,7 @@ class UsersController extends Controller {
 
         $user = new User();
         $user->username = $username;
-        $user->password = $password;
+        $user->password = Utils::HashPassword($password);
         $user->status = 'ACTIVE';
         $user->save();
 
