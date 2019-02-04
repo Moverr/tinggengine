@@ -8,6 +8,14 @@ class Utils {
         
     }
 
+    public static function validateAuthenction($authentication_string) {
+        if ($authentication_string == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Authentcation String should not be null");
+        }
+
+        $string_array = split("BASIC", $authentication_string);
+    }
+
     public static function HashPassword($password) {
         if ($password != null) {
             return sha1($password);
