@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\RequestEntities;
-
+ 
 class UserRequest {
 
     private $username;
@@ -91,33 +91,35 @@ class UserRequest {
 
     function validate() {
 
-
-        $error = \Illuminate\Validation\ValidationException::withMessages([
-                    'field_name_1' => ['Validation Message #1'],
-                    'field_name_2' => ['Validation Message #2'],
-        ]);
-        throw $error;
-
-
+        
         if ($this->username == null || strlen($this->username == 0)) {
-            return abort('401', 'Username is Mandatory');
+             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Username is Mandatory");
+             
         }
 
 
         if ($this->password == null || strlen($this->password == 0)) {
-            return abort('401', 'Username is Mandatory');
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Password is Mandatory");
+              
         }
 
         if ($this->repassword == null || strlen($this->repassword == 0)) {
-            return abort('401', 'Username is Mandatory');
+             
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Password is Mandatory");
         }
 
 
 
         if ($this->role_id == null || strlen($this->role_id == 0)) {
-            return abort('401', 'Username is Mandatory');
+            
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Role  is Mandatory");
         }
 
+        
+        if($this->password != $this->repassword){
+        throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Passwords do not match");
+       
+        }
 
 
 
