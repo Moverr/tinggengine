@@ -12,16 +12,16 @@
  * @author mover  
  */
 class AuthenticationResponse {
+
     //put your code here
-    private  $id;
+    private $id;
     private $authentication;
     private $role_id;
-    
+
     function __construct() {
         
     }
 
-    
     function getId() {
         return $this->id;
     }
@@ -45,6 +45,5 @@ class AuthenticationResponse {
     function setRole_id($role_id) {
         $this->role_id = $role_id;
     }
-
 
 }
