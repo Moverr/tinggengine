@@ -94,8 +94,13 @@ class UsersController extends Controller {
     }
 
     public function archive($id) {
-        // $article = Article::findOrFail($id);
-        // $article->delete();
+        
+         $user = User::where('id',$id)->first();
+        if ($user == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+        }
+        
+        
 
         return 204;
     }
