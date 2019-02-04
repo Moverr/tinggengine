@@ -77,16 +77,17 @@ class UsersController extends Controller {
         
         
         //todo: check if user exists wit the same username 
-        $user = User::where('username', $username)
+        $existing_user = User::where('username', $username)
                 ->where('id',"<>", $userRequest->getId())
                 ->first();
-        if ($user != null) {
+        if ($existing_user != null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("User Exists with the same username in the database ");
         }
          
         
         $user->username = $username;
         $user->password = $password; 
+//        $user->date_updated = date("Y-m-d h:i:sa");
         $user->update();
          
          return json_encode($user);
