@@ -4,13 +4,14 @@ namespace App\Http\Helpers;
 
 class Utils {
 
-    private $authentication = null;
-
     function __construct() {
         
     }
 
-    public static function validateAuthenction($authentication_string) {
+    public function validateAuthenction($authentication_string) {
+
+        return var_dump($authentication_string);
+
         if ($authentication_string == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Authentcation String should not be null");
         }

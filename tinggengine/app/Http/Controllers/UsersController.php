@@ -15,15 +15,23 @@ class UsersController extends Controller {
         $this->util = new Utils();
     }
 
-    
-    
     public function index(Request $request, $offset = 0, $limit = 10) {
-        $authenticationString = $request->header('authentication');    
+
+        $authenticationString = $request->header('authentication');
+
+
+        $this->util->validateAuthenction($authentication_string);
+        return var_dump($authenticationString);
+
         $users = User::offset($offset)->limit($limit)->get();
         return json_encode($users);
+//        
     }
 
-    public function get($id) {
+    public function get(Request $request, $id) {
+        $authenticationString = $request->header('authentication');
+        Utils::validateAuthenction($authentication_string);
+
         $user = User::where('id', $id)->first();
         if ($user == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
@@ -32,6 +40,9 @@ class UsersController extends Controller {
     }
 
     public function save(Request $request) {
+        $authenticationString = $request->header('authentication');
+        Utils::validateAuthenction($authentication_string);
+
         $username = $request['username'];
         $password = $request['password'];
         $repassword = $request['repassword'];
@@ -47,14 +58,14 @@ class UsersController extends Controller {
         }
 
 
-        
+
         $user = new User();
         $user->username = $username;
         $user->password = Utils::HashPassword($password);
         $user->status = 'ACTIVE';
         $user->save();
-        
-        
+
+
         //todo: assign roles to the user
         //todo 
 
@@ -62,6 +73,9 @@ class UsersController extends Controller {
     }
 
     public function update(Request $request) {
+        $authenticationString = $request->header('authentication');
+        Utils::validateAuthenction($authentication_string);
+
         $username = $request['username'];
         $password = $request['password'];
         $repassword = $request['repassword'];
@@ -96,7 +110,12 @@ class UsersController extends Controller {
         return json_encode($user);
     }
 
-    public function archive($id) {
+    public function archive(Request $request, $id) {
+
+        $authenticationString = $request->header('authentication');
+        Utils::validateAuthenction($authentication_string);
+
+
 
         $user = User::where('id', $id)->first();
         if ($user == null) {
