@@ -27,20 +27,30 @@ class UsersController extends Controller {
 
     public function get(Request $request, $id) {
         
+        
+        
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic); 
         
-        $user = User::where('id', $id)->first();
+        $user = User::where('id', $id)->get();
         if ($user == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
         
         $userResponse = new \UserResponse();
-        
-        
-        return json_encode($user);
+        $userResponse->setId($user->id);
+        $userResponse->setAuthor("N/A");
+        $userResponse->setUsername($user->username);
+        return json_encode($userResponse);
     }
 
+      public function archive(Request $request) {
+          $username = $request['username'];
+         $password = $request['password'];
+        
+     }
+     
+     
     public function save(Request $request) {
         
         $authentic = $request->header('authentication');
@@ -124,4 +134,5 @@ class UsersController extends Controller {
          $user->update();
     }
 
+   
 }

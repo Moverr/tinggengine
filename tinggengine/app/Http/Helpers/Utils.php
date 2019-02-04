@@ -2,6 +2,9 @@
 
 namespace App\Http\Helpers;
 
+use App\Http\Helpers\AuthenticationResponse;
+
+
 class Utils {
 
     function __construct() {
