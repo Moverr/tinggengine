@@ -47,11 +47,16 @@ class UsersController extends Controller {
         }
 
 
+        
         $user = new User();
         $user->username = $username;
         $user->password = Utils::HashPassword($password);
         $user->status = 'ACTIVE';
         $user->save();
+        
+        
+        //todo: assign roles to the user
+        //todo 
 
         return json_encode($user);
     }
