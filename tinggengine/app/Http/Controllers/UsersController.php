@@ -21,8 +21,8 @@ class UsersController extends Controller {
     }
 
     public function get($id) {
-        $user = User::where('id',$id)->first();
-        if($user == null){
+        $user = User::where('id', $id)->first();
+        if ($user == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
         return json_encode($user);
@@ -33,27 +33,26 @@ class UsersController extends Controller {
         $password = $request['password'];
         $repassword = $request['repassword'];
         $role_id = $request['role_id'];
-        
+
         $userRequest = new UserRequest($username, $password, $repassword, $role_id);
         $userRequest->validate();
-        
+
         //todo: check if user exists wit the same username 
-        $user = User::where('username',$username)->first();
-        if($user !=  null){
+        $user = User::where('username', $username)->first();
+        if ($user != null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("User Exists with the same username in the database ");
         }
-        
-        
+
+
         $user = new User();
         $user->username = $username;
-        $user->password = $password;         
-        $user->status = 'ACTIVE'; 
-        
-        
+        $user->password = $password;
+        $user->status = 'ACTIVE';
         $user->save();
-        
-       
-        return "Reached";
+
+
+
+        return json_encode($user);
     }
 
     public function update(Request $request, $id) {
