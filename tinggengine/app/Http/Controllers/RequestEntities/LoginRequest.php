@@ -39,4 +39,17 @@ class LoginRequest {
         $this->password = $password;
     }
 
+     function validate() {
+         if($this->getUsername() == null){
+                throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Username is mandatory");
+         }
+         
+         if($this->getPassword() == null){
+                throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Password is mandatory");
+         }
+         
+         
+         
+     }
+     
 }
