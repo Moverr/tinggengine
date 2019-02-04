@@ -15,9 +15,12 @@ class UsersController extends Controller {
         $this->util = new Utils();
     }
 
-    public function index($offset = 0, $limit = 10) {
+    public function index(Request $request, $offset = 0, $limit = 10) {
+        $authenticationString = $request->header('authentication');
+
+
         $users = User::offset($offset)->limit($limit)->get();
-        return json_encode($users);
+        return json_encode($authenticationString);
     }
 
     public function get($id) {
