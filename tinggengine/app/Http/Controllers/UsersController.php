@@ -17,12 +17,10 @@ class UsersController extends Controller {
 
     public function index(Request $request, $offset = 0, $limit = 10) {
 
-        $authenticationString = $request->header('authentication');
+        $authentic = $request->header('authentication');
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-
-        $this->util->validateAuthenction($authentication_string);
-        return var_dump($authenticationString);
-
+        exit("test");
         $users = User::offset($offset)->limit($limit)->get();
         return json_encode($users);
 //        

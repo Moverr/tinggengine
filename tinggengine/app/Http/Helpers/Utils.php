@@ -10,18 +10,22 @@ class Utils {
 
     public function validateAuthenction($authentication_string) {
 
-        return var_dump($authentication_string);
+
 
         if ($authentication_string == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Authentcation String should not be null");
         }
 
         $authentication = str_replace("Basic:", "", $authentication_string);
+
+
         $usernamePassword = base64_decode($authentication);
-        $parts = $usernamePassword . str_split(":");
+        $usernamePassword = trim($usernamePassword);
+
+        $parts = explode(":", $usernamePassword);
 
 
-        if (strlen($parts) != 2) {
+        if (sizeof($parts) != 2) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("invalid security credentials");
         }
 
@@ -32,6 +36,8 @@ class Utils {
             throw new \Illuminate\Validation\UnauthorizedException("Invalid  user credentials");
         }
 
+
+        var_dump($existing_user);
 
         $this->authentication = new \AuthenticationResponse();
         $this->authentication->setAuthentication($this->convertToBasicAuth($parts[0], $parts[1]));
