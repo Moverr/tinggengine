@@ -18,7 +18,7 @@ class UserResponse {
     private $username;
     private $role;
     private $dateCreated;
-    private $author_id;
+    private $author;
     private $datUpdated;
 
     function __construct() {
@@ -41,8 +41,8 @@ class UserResponse {
         return $this->dateCreated;
     }
 
-    function getAuthor_id() {
-        return $this->author_id;
+    function getAuthor() {
+        return $this->author;
     }
 
     function getDatUpdated() {
@@ -65,8 +65,8 @@ class UserResponse {
         $this->dateCreated = $dateCreated;
     }
 
-    function setAuthor_id($author_id) {
-        $this->author_id = $author_id;
+    function setAuthor($author) {
+        $this->author = $author;
     }
 
     function setDatUpdated($datUpdated) {

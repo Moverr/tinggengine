@@ -34,6 +34,10 @@ class UsersController extends Controller {
         if ($user == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
+        
+        $userResponse = new \UserResponse();
+        
+        
         return json_encode($user);
     }
 
