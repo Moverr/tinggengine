@@ -13,6 +13,16 @@ class Utils {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Authentcation String should not be null");
         }
 
+        $authentication = str_replace("Basic:", "", $authentication_string);
+        $usernamePassword = base64_decode($authentication);
+        $parts = $usernamePassword . str_split(":");
+
+
+        if (strlen($parts) != 2) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("invalid security credentials");
+        }
+
+
         $string_array = split("BASIC", $authentication_string);
     }
 
