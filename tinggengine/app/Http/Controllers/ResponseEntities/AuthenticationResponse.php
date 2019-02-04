@@ -30,7 +30,7 @@ class AuthenticationResponse {
         return $this->authentication;
     }
 
-    function getRole_id() {
+    function getRoleId() {
         return $this->role_id;
     }
 
@@ -42,7 +42,7 @@ class AuthenticationResponse {
         $this->authentication = $authentication;
     }
 
-    function setRole_id($role_id) {
+    function setRoleId($role_id) {
         $this->role_id = $role_id;
     }
 
