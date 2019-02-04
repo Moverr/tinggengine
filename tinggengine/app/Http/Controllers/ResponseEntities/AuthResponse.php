@@ -48,4 +48,13 @@ class AuthResponse {
         $this->role_id = $role_id;
     }
 
+     public function toJson() {
+        return \GuzzleHttp\json_encode([
+            'id' => $this->id,
+            '$authentication' => $this->authentication, 
+            'role_id' =>   $this->role_id
+                
+        ]);
+    }
+    
 }

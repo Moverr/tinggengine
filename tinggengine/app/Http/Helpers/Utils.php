@@ -47,7 +47,7 @@ class Utils {
         $auth->setAuthentication($this->convertToBasicAuth($username, $password));
         $auth->setId($existing_user->id);
 
-        return $auth;
+        return $auth->toJson();
     }
 
     public function convertToBasicAuth($username, $password) {
