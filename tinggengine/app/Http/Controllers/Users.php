@@ -40,6 +40,9 @@ class Users extends Controller
          $role_id = $request['role_id'];
 
         $userRequest = new UserRequest($username,$password,$repassword,$role_id);
+
+
+        $userRequest->validate();
         if($userRequest != true){
             return $userRequest;
         }

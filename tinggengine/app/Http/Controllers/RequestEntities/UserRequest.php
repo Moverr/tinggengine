@@ -1,6 +1,7 @@
 <?php 
 
 namespace  App\Http\Controllers\RequestEntities;
+ 
 
 class UserRequest{
 	private  $username;
@@ -100,38 +101,50 @@ class UserRequest{
     }
 
 
+public static function json($data = array(), $status = 401, $headers = array(), $options = 0){
+
+    return \Illuminate\Routing\ResponseFactory::json($data, $status, $headers, $options);
+}
+
+
+    function responseMessage($message){
+
+
+ throw new Exception("Invalidat eae a");
+
+    }
+
+
     function validate(){
-        $message = "Testing";
-        
         if($this->username == null || strlen($this->username == 0 )){
-           return false;
+            return $this->responseMessage('Username is Mandatory');
+
         }
 
 
-        else if($this->password == null || strlen($this->password == 0 )){
-           return false;
+         if($this->password == null || strlen($this->password == 0 )){
+          return $this->responseMessage('Username is Mandatory');
+            
         }
 
-        else if($this->repassword == null || strlen($this->repassword == 0 )){
-           return false;
+         if($this->repassword == null || strlen($this->repassword == 0 )){
+           return $this->responseMessage('Username is Mandatory');
+            
         }
         
 
 
-        else if($this->role_id == null || strlen($this->role_id == 0 )){
-           return false;
+         if($this->role_id == null || strlen($this->role_id == 0 )){
+         return  $this->responseMessage('Username is Mandatory');
+            
         }
-        else{
-                     return true;
-
-        }
-
-         return Response::json(array(
-                    'code'      =>  401,
-                    'message'   =>  $message
-                ), 401);
+         
 
 
+
+
+
+         return true;
 
         
     }
