@@ -18,6 +18,7 @@ class UsersController extends Controller {
     }
 
     public function index(Request $request, $offset = 0, $limit = 10) {
+        
 
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);

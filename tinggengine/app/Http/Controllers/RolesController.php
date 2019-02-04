@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ProductController extends Controller {
-
+class RolesController extends Controller
+{
     function __construct() {
         
     }
@@ -29,5 +29,4 @@ class ProductController extends Controller {
     public function archive(Request $request, $id) {
         
     }
-
 }

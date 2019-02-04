@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ProductController extends Controller {
-
-    function __construct() {
+class StockistController extends Controller
+{
+     function __construct() {
         
     }
 
@@ -29,5 +29,4 @@ class ProductController extends Controller {
     public function archive(Request $request, $id) {
         
     }
-
 }
