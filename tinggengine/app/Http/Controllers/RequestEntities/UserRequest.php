@@ -101,26 +101,37 @@ class UserRequest{
 
 
     function validate(){
+        $message = "Testing";
+        
         if($this->username == null || strlen($this->username == 0 )){
            return false;
         }
 
 
-        if($this->password == null || strlen($this->password == 0 )){
+        else if($this->password == null || strlen($this->password == 0 )){
            return false;
         }
 
-        if($this->repassword == null || strlen($this->repassword == 0 )){
+        else if($this->repassword == null || strlen($this->repassword == 0 )){
            return false;
         }
         
 
 
-        if($this->role_id == null || strlen($this->role_id == 0 )){
+        else if($this->role_id == null || strlen($this->role_id == 0 )){
            return false;
         }
+        else{
+                     return true;
 
-         return true;
+        }
+
+         return Response::json(array(
+                    'code'      =>  401,
+                    'message'   =>  $message
+                ), 401);
+
+
 
         
     }
