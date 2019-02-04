@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Helpers\Utils;
 
 class ProductCategoryController extends Controller {
 
+    private $util;
+
     function __construct() {
-        
+        $this->util = new Utils();
     }
 
     public function index(Request $request, $offset = 0, $limit = 10) {
