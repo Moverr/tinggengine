@@ -32,21 +32,36 @@ class Utils {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("invalid security credentials");
         }
 
-        $existing_user = \App\User::where('username', $parts[0])
-                ->where('password', sha1($parts[1]))
-                ->first();
-        if ($existing_user == null) {
-            throw new \Illuminate\Validation\UnauthorizedException("Invalid  user credentials");
-        }
+        $existing_user =  $this->validateUser($parts[0], $parts[1]);
+                
+//                \App\User::where('username', $parts[0])
+//                ->where('password', sha1($parts[1]))
+//                ->first();
+//        if ($existing_user == null) {
+//            throw new \Illuminate\Validation\UnauthorizedException("Invalid  user credentials");
+//        }
 
 
-        var_dump($existing_user);
-
+                
         $this->authentication = new \AuthenticationResponse();
         $this->authentication->setAuthentication($this->convertToBasicAuth($parts[0], $parts[1]));
         $this->authentication->setId($existing_user->getId());
         return $this->authentication;
     }
+    
+    
+    function validateUser($username,$password){
+        
+         $existing_user = \App\User::where('username', $username)
+                ->where('password', sha1($password))
+                ->first();
+        if ($existing_user == null) {
+            throw new \Illuminate\Validation\UnauthorizedException("Invalid  user credentials");
+        }
+        
+        return $existing_user;
+    }
+    
 
     public function convertToBasicAuth($username, $password) {
         $authString = $username . ":" . $password;

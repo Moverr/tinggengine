@@ -51,6 +51,11 @@ class UsersController extends Controller {
         $loginRequest = new RequestEntities\LoginRequest();
         $loginRequest->setPassword($password);
         $loginRequest->setUsername($username);
+        $loginRequest->validate();
+        
+        $this->util->validateAuthenction($authentication_string);
+        
+        
     }
 
     public function save(Request $request) {
