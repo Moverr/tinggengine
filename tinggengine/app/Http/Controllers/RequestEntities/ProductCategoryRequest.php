@@ -20,11 +20,12 @@ class ProductCategoryRequest {
     private $status;
     private $createdBy;
 
-    function __construct() {
-        
+    function __construct($name, $code) {
+        $this->name = $name;
+        $this->code = $code;
     }
 
-    function getName() {
+        function getName() {
         return $this->name;
     }
 

@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Helpers\Utils;
-use App\ProductCategories; 
+use App\ProductCategories;
 use App\Http\Controllers\RequestEntities\ProductCategoryRequest;
 use App\Http\Controllers\ResponseEntities\ProductCategoryResponse;
+use App\ProductCategories;
 
 class ProductCategoryController extends Controller {
 
@@ -45,14 +46,14 @@ class ProductCategoryController extends Controller {
         $name = $request['name'];
         $code = $request['code'];
 
-
-
-        $productCategoryRequest = new UserRequest($username, $password, $repassword, $role_id);
+        $productCategoryRequest = new ProductCategoryRequest($name, $code);
         $productCategoryRequest->validate();
 
-        $user = User::where('username', $username)->first();
-        if ($user != null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("User Exists with the same username in the database ");
+        $productCategory = ProductCategories::where('name', $name)
+                ->where('code', $code)
+                ->first();
+        if ($productCategory != null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product Category Exists with the same name or code in the database ");
         }
     }
 
