@@ -21,7 +21,7 @@ class PurchaseOrderItems extends Model {
      * @var array
      */
     protected $hidden = [];
-    protected $table = 'profiles';
+    protected $table = 'purchaseorderitems';
 
     const CREATED_AT = 'date_created';
     const UPDATED_AT = 'date_updated';
