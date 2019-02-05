@@ -114,6 +114,11 @@ class StockRequest {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product  is Mandatory");
         }
 
+        if ($this->getReference_id() == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Reference ID   is Mandatory");
+        }
+
+
 
         if ($this->getQuantity() == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Quantity is Mandatory");
@@ -124,6 +129,13 @@ class StockRequest {
         if ($this->getUnit_selling_price() == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException(" Unit Selling Price  is Mandatory");
         }
+
+
+        if ($this->getUnit_purchase_price() == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException(" Unit Purchase Price  is Mandatory");
+        }
+
+
 
 
         if ($this->getUnit_measure() != $this->getRepassword()) {
