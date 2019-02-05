@@ -82,7 +82,7 @@ class ProductCategoryController extends Controller {
         $productCategoryRequest->setId($request['id']);
         $productCategoryRequest->validate();
 
-        $user = User::where('id', $productCategoryRequest->getId())->first();
+        $user = ProductCategories::where('id', $productCategoryRequest->getId())->first();
         if ($user == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
@@ -107,7 +107,17 @@ class ProductCategoryController extends Controller {
     }
 
     public function archive(Request $request, $id) {
-        
+
+        $authentic = $request->header('authentication');
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
+
+
+        $user = ProductCategories::where('id', $id)->first();
+        if ($user == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+        }
+        $user->status = 'ARCHIVED';
+        $user->update();
     }
 
     public function populate($productCategories) {
