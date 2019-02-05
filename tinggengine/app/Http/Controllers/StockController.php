@@ -46,6 +46,7 @@ class StockController extends Controller {
         $quantity = $request['quantity'];
         $unit_selling_price = $request['unit_selling_price'];
         $unit_purchase_price = $request['unit_purchase_price'];
+        $unit_measure = $request['unit_measure'];
 
 
         $stockRequest = new StockRequest($product_id, $quantity, $unit_selling_price, $unit_measure);

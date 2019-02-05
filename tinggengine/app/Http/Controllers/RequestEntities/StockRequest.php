@@ -22,12 +22,15 @@ class StockRequest {
     private $unit_selling_price;
     private $unit_purchase_price;
     private $unit_measure;
+    private $date_created;
+    private $date_updated;
 
-   
-    function __construct($product_id, $quantity, $unit_selling_price, $unit_measure) {
+    function __construct($product_id, $reference_id, $quantity, $unit_selling_price, $unit_purchase_price, $unit_measure) {
         $this->product_id = $product_id;
+        $this->reference_id = $reference_id;
         $this->quantity = $quantity;
         $this->unit_selling_price = $unit_selling_price;
+        $this->unit_purchase_price = $unit_purchase_price;
         $this->unit_measure = $unit_measure;
     }
 
@@ -85,6 +88,22 @@ class StockRequest {
 
     function setUnit_measure($unit_measure) {
         $this->unit_measure = $unit_measure;
+    }
+
+    function getDate_created() {
+        return $this->date_created;
+    }
+
+    function getDate_updated() {
+        return $this->date_updated;
+    }
+
+    function setDate_created($date_created) {
+        $this->date_created = $date_created;
+    }
+
+    function setDate_updated($date_updated) {
+        $this->date_updated = $date_updated;
     }
 
     function validate() {
