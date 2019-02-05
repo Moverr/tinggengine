@@ -1,16 +1,15 @@
 <?php
 
 namespace App\Http\Controllers\RequestEntities;
- 
+
 class UserRequest {
 
     private $username;
     private $password;
     private $repassword;
     private $role_id;
-    
     private $id;
-    
+
     function __construct($username = null, $password = null, $repassword = null, $role_id = null) {
 
         $this->username = $username;
@@ -18,7 +17,7 @@ class UserRequest {
         $this->repassword = $repassword;
         $this->role_id = $role_id;
     }
-    
+
     function getId() {
         return $this->id;
     }
@@ -27,7 +26,6 @@ class UserRequest {
         $this->id = $id;
     }
 
-    
     /**
      * @return mixed
      */
@@ -103,31 +101,29 @@ class UserRequest {
     function validate() {
 
 
-        
-        if ($this->getUsername() == null || strlen($this->getUsername()) == 0  ) {
-             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Username is Mandatory");
-             
+
+        if ($this->getUsername() == null || strlen($this->getUsername()) == 0) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Username is Mandatory");
         }
 
 
-        if ($this->getPassword() == null ) {
+        if ($this->getPassword() == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Password is Mandatory");
-              
         }
 
-        if ($this->getRepassword() == null  ) {             
+        if ($this->getRepassword() == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Password is Mandatory");
         }
 
 
 
-        if ($this->getRoleId() == null ) {
+        if ($this->getRoleId() == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Role  is Mandatory");
         }
 
-        
-        if($this->getPassword() != $this->getRepassword()){
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Passwords do not match");       
+
+        if ($this->getPassword() != $this->getRepassword()) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Passwords do not match");
         }
 
 
@@ -138,20 +134,21 @@ class UserRequest {
     }
 
 }
+
 /*
-ENDPOINT PARAMS 
- 
-{
-    "username": "sderty",
-    "password":"sdferrr",
-    "repassword":"sdddddd",
-    "emailaddress": "ghytrfgh@gmail.com",
-    "role_id": 1
-    
-    
-     
-}
+  ENDPOINT PARAMS
+
+  {
+  "username": "sderty",
+  "password":"sdferrr",
+  "repassword":"sdddddd",
+  "emailaddress": "ghytrfgh@gmail.com",
+  "role_id": 1
 
 
-*/
+
+  }
+
+
+ */
 ?>

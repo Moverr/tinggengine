@@ -67,11 +67,57 @@ class ProductCategoryController extends Controller {
     }
 
     public function update(Request $request) {
-        
+        $authentic = $request->header('authentication');
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
+
+        $name = $request['name'];
+        $code = $request['code'];
+
+        $productCategoryRequest = new ProductCategoryRequest($name, $code);
+
+        if ($request['id'] == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Mandatory field ID is missing");
+        }
+
+        $productCategoryRequest->setId($request['id']);
+        $productCategoryRequest->validate();
+
+        $user = ProductCategories::where('id', $productCategoryRequest->getId())->first();
+        if ($user == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+        }
+
+
+        $productCategory = ProductCategories::where('name', $name)
+                ->where('code', $code)
+                ->where('id', "<>", $productCategoryRequest->getId())
+                ->first();
+        if ($productCategory != null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product Category Exists with the same name or code in the database ");
+        }
+
+
+
+        $productCategory->name = $name;
+        $productCategory->code = $code;
+        $productCategory->update();
+
+        $productResponse = $this->populate($productCategory);
+        return $productResponse->toJson();
     }
 
     public function archive(Request $request, $id) {
-        
+
+        $authentic = $request->header('authentication');
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
+
+
+        $user = ProductCategories::where('id', $id)->first();
+        if ($user == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+        }
+        $user->status = 'ARCHIVED';
+        $user->update();
     }
 
     public function populate($productCategories) {
