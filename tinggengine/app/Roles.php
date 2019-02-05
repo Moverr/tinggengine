@@ -4,9 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Roles extends Model
-{
-   
+class Roles extends Model {
+
     /**
      * The attributes that are mass assignable.
      *
@@ -26,4 +25,5 @@ class Roles extends Model
 
     const CREATED_AT = 'date_created';
     const UPDATED_AT = 'date_updated';
+
 }
