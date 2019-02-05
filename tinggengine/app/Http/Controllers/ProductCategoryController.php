@@ -55,6 +55,15 @@ class ProductCategoryController extends Controller {
         if ($productCategory != null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product Category Exists with the same name or code in the database ");
         }
+
+        $productCategory = new ProductCategories();
+        $productCategory->name = $name;
+        $productCategory->code = $code;
+        $productCategory->status = 'ACTIVE';
+        $productCategory->save();
+
+        $productResponse = $this->populate($productCategory);
+        return $productResponse->toJson();
     }
 
     public function update(Request $request) {
