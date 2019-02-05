@@ -56,15 +56,17 @@ class StockController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product   Exists with the same name or code in the database ");
         }
 
-        $stock = new Products();
-        $stock->name = $name;
-        $stock->code = $code;
-        $stock->category_id = $categoryId;
+        $stock = new Stock();
+        $stock->product_id = $product_id;
+        $stock->reference_id = "ReferenceID";
+        $stock->quantity = $quantity;
+        $stock->unit_selling_price = $unit_selling_price;
+        $stock->unit_purchase_price = null;
         $stock->status = 'ACTIVE';
         $stock->save();
 
-        $productResponse = $this->populate($stock);
-        return $productResponse->toJson();
+        $stockResponse = $this->populate($stock);
+        return $stockResponse->toJson();
     }
 
     public function update(Request $request) {
