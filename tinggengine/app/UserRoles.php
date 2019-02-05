@@ -23,4 +23,12 @@ class UserRoles extends Model {
     protected $hidden = [];
     protected $table = 'userrole';
 
+    public function Users() {
+        return $this->belongsTo('App\User', 'foreign_key', 'user_id');
+    }
+
+    public function Roles() {
+        return $this->belongsTo('App\Roles', 'foreign_key', 'role_id');
+    }
+
 }
