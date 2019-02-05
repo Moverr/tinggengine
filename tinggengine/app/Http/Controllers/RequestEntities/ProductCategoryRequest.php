@@ -15,6 +15,7 @@ namespace App\Http\Controllers\RequestEntities;
  */
 class ProductCategoryRequest {
 
+    private $id;
     private $name;
     private $code;
     private $status;
@@ -25,7 +26,16 @@ class ProductCategoryRequest {
         $this->code = $code;
     }
 
-        function getName() {
+    function getId() {
+        return $this->id;
+    }
+
+    function setId($id) {
+        $this->id = $id;
+    }
+
+        
+    function getName() {
         return $this->name;
     }
 

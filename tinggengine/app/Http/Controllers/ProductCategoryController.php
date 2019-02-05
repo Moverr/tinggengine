@@ -67,7 +67,40 @@ class ProductCategoryController extends Controller {
     }
 
     public function update(Request $request) {
-        
+        $authentic = $request->header('authentication');
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
+
+        $name = $request['name'];
+        $code = $request['code'];
+
+        $productCategoryRequest = new ProductCategoryRequest($name, $code);
+
+        if ($request['id'] == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Mandatory field ID is missing");
+        }
+
+        $productCategoryRequest->setId($request['id']);
+        $productCategoryRequest->validate();
+
+        $user = User::where('id', $userRequest->getId())->first();
+        if ($user == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+        }
+
+        //todo: check if user exists wit the same username 
+        $existing_user = User::where('username', $username)
+                ->where('id', "<>", $userRequest->getId())
+                ->first();
+        if ($existing_user != null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("User Exists with the same username in the database ");
+        }
+
+
+        $user->username = $username;
+        $user->password = $password;
+        $user->update();
+
+        return json_encode($user);
     }
 
     public function archive(Request $request, $id) {
