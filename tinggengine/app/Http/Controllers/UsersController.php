@@ -7,6 +7,8 @@ use App\User;
 use App\Http\Controllers\RequestEntities\UserRequest;
 use App\Http\Helpers\Utils;
 
+use App\Http\Controllers\ResponseEntities\UserResponse;
+
 class UsersController extends Controller {
 
     private $util;
@@ -16,36 +18,54 @@ class UsersController extends Controller {
     }
 
     public function index(Request $request, $offset = 0, $limit = 10) {
+        
 
         $authentic = $request->header('authentication');
-        $autneticaton_response = $this->util->validateAuthenction($authentic); 
-        
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
+
         $users = User::offset($offset)->limit($limit)->get();
-         
-        return json_encode($users);        
+
+        return json_encode($users);
     }
 
     public function get(Request $request, $id) {
-        
+
+
+
         $authentic = $request->header('authentication');
-        $autneticaton_response = $this->util->validateAuthenction($authentic); 
-        
-        $user = User::where('id', $id)->first();
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
+
+        $user = User::where('id', $id)->get();
         if ($user == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
+  
+        $userResponse =  new UserResponse();
+        $userResponse->setId($user[0]->id);
+        $userResponse->setAuthor(null);
+        $userResponse->setUsername($user[0]->username);        
+        return  $userResponse->toJson();
+    }
+
+    public function login(Request $request) {
+        $username = $request['username'];
+        $password = $request['password'];
+
+        $loginRequest = new RequestEntities\LoginRequest();
+        $loginRequest->setPassword($password);
+        $loginRequest->setUsername($username);
+        $loginRequest->validate();
         
-        $userResponse = new \UserResponse();
         
-        
-        return json_encode($user);
+
+        return $this->util->validateUser($username, $password);
     }
 
     public function save(Request $request) {
-        
+
         $authentic = $request->header('authentication');
-        $autneticaton_response = $this->util->validateAuthenction($authentic); 
-        
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
+
         $username = $request['username'];
         $password = $request['password'];
         $repassword = $request['repassword'];
@@ -53,27 +73,27 @@ class UsersController extends Controller {
 
         $userRequest = new UserRequest($username, $password, $repassword, $role_id);
         $userRequest->validate();
- 
+
         $user = User::where('username', $username)->first();
         if ($user != null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("User Exists with the same username in the database ");
         }
- 
+
         $user = new User();
         $user->username = $username;
         $user->password = Utils::HashPassword($password);
         $user->status = 'ACTIVE';
         $user->save();
 
- 
+
         return json_encode($user);
     }
 
     public function update(Request $request) {
-        
+
         $authentic = $request->header('authentication');
-        $autneticaton_response = $this->util->validateAuthenction($authentic); 
-        
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
+
         $username = $request['username'];
         $password = $request['password'];
         $repassword = $request['repassword'];
@@ -110,10 +130,10 @@ class UsersController extends Controller {
 
     public function archive(Request $request, $id) {
 
-        
+
         $authentic = $request->header('authentication');
-        $autneticaton_response = $this->util->validateAuthenction($authentic); 
-        
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
+
 
 
         $user = User::where('id', $id)->first();
@@ -121,7 +141,7 @@ class UsersController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
         $user->status = 'ARCHIVED';
-         $user->update();
+        $user->update();
     }
 
 }

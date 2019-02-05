@@ -1,4 +1,6 @@
 <?php
+namespace App\Http\Controllers\ResponseEntities;
+ 
 
 /*
  * To change this license header, choose License Headers in Project Properties.

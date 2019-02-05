@@ -29,26 +29,31 @@ class Utils {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("invalid security credentials");
         }
 
-        $existing_user = \App\User::where('username', $parts[0])
-                ->where('password', sha1($parts[1]))
+        $auth = $this->validateUser($parts[0], $parts[1]);
+
+        return $auth;
+    }
+
+    function validateUser($username, $password) {
+
+        $existing_user = \App\User::where('username', $username)
+                ->where('password', sha1($password))
                 ->first();
         if ($existing_user == null) {
             throw new \Illuminate\Validation\UnauthorizedException("Invalid  user credentials");
         }
 
+        $auth = new \App\Http\Controllers\ResponseEntities\AuthResponse();
+        $auth->setAuthentication($this->convertToBasicAuth($username, $password));
+        $auth->setId($existing_user->id);
 
-        var_dump($existing_user);
-
-        $this->authentication = new \AuthenticationResponse();
-        $this->authentication->setAuthentication($this->convertToBasicAuth($parts[0], $parts[1]));
-        $this->authentication->setId($existing_user->getId());
-        return $this->authentication;
+        return $auth->toJson();
     }
 
     public function convertToBasicAuth($username, $password) {
         $authString = $username . ":" . $password;
         $authStringEnc = base64_encode($authString);
-        return ("Basic:" + $authStringEnc);
+        return ("Basic:" . $authStringEnc);
     }
 
     public static function HashPassword($password) {

@@ -1,5 +1,8 @@
 <?php
 
+namespace App\Http\Controllers\ResponseEntities;
+ 
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -24,7 +27,6 @@ class UserResponse {
     function __construct() {
         
     }
-
     function getId() {
         return $this->id;
     }
@@ -72,5 +74,19 @@ class UserResponse {
     function setDatUpdated($datUpdated) {
         $this->datUpdated = $datUpdated;
     }
+
+
+    
+     public function toJson() {
+        return \GuzzleHttp\json_encode([
+            'id' => $this->id,
+            'username' => $this->username,
+            'dateCreated' => $this->dateCreated,
+            'author' =>   $this->author
+                
+        ]);
+    }
+    
+     
 
 }
