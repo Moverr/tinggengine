@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class permissions extends Seeder
+class DefaultSysPermissions extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,5 +16,6 @@ class permissions extends Seeder
             'name' => 'ALL_FUNCTIONS',
             'code' => 'ALL_FUNCTIONS'
         ]);
+    
     }
 }
