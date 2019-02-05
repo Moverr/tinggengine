@@ -82,45 +82,34 @@ class StockRequest {
     function setUnit_measure($unit_measure) {
         $this->unit_measure = $unit_measure;
     }
-    
-      function validate() {
+
+    function validate() {
 
 
-        
-        if ($this->getUsername() == null || strlen($this->getUsername()) == 0  ) {
-             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Username is Mandatory");
-             
+
+        if ($this->getProduct_id() == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product  is Mandatory");
         }
 
 
-        if ($this->getPassword() == null ) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Password is Mandatory");
-              
-        }
-
-        if ($this->getRepassword() == null  ) {             
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Password is Mandatory");
+        if ($this->getQuantity() == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Quantity is Mandatory");
         }
 
 
 
-        if ($this->getRoleId() == null ) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Role  is Mandatory");
+        if ($this->getUnit_selling_price() == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException(" Unit Selling Price  is Mandatory");
         }
+ 
 
-        
-        if($this->getPassword() != $this->getRepassword()){
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Passwords do not match");       
+        if ($this->getUnit_measure() != $this->getRepassword()) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException(" Unit measure is Mandatory");
         }
-
-
 
 
 
         return true;
     }
-
-    
-    
 
 }
