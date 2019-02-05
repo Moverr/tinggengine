@@ -27,6 +27,7 @@ TODO: MEASUREMENT SCENARIOS IS AN IMPORTANT ASPECT OF THIS APPLICATION
             $table->bigInteger('quantity');     
             $table->decimal('unit_selling_price', 5, 2);     
             $table->decimal('unit_purchase_price', 5, 2);  
+            $table->string('unit_measure');  
             $table->enum('status',array('ACTIVE','ARCHIVED'));            
             $table->bigInteger('created_by')->unsigned();
             $table->timestamp('date_created')->default(DB::raw('CURRENT_TIMESTAMP'));
