@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Helpers\Utils;
 use App\Products;
 use App\Http\Controllers\ResponseEntities\ProductResponse;
+use App\Http\Controllers\RequestEntities\ProductRequest;
 
 class ProductController extends Controller {
 
@@ -37,7 +38,32 @@ class ProductController extends Controller {
     }
 
     public function save(Request $request) {
-        
+        $authentic = $request->header('authentication');
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
+
+        $name = $request['name'];
+        $code = $request['code'];
+        $categoryId = $request['categoryId'];
+
+        $productCategoryRequest = new ProductRequest($name, $code, $categoryId);
+        $productCategoryRequest->validate();
+
+        $products = Products::where('name', $name)
+                ->where('code', $code)
+                ->first();
+        if ($products != null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product   Exists with the same name or code in the database ");
+        }
+
+        $products = new Products();
+        $products->name = $name;
+        $products->code = $code;
+        $products->category_id = $categoryId;
+        $products->status = 'ACTIVE';
+        $products->save();
+
+        $productResponse = $this->populate($products);
+        return $productResponse->toJson();
     }
 
     public function update(Request $request) {
@@ -48,17 +74,14 @@ class ProductController extends Controller {
         
     }
 
-    
-     public function populate($products) {
+    public function populate($products) {
         $productCategoryResponse = new ProductResponse();
         $productCategoryResponse->setId($products[0]->id);
-        $productCategoryResponse->setCreatedBy(null);
-        $productCategoryResponse->setCategory("N/A");
-        $productCategoryResponse->setName($products[0]->name);
         $productCategoryResponse->setCode($products[0]->code);
+        $productCategoryResponse->setName($products[0]->name);
+        $productCategoryResponse->setCategory($products[0]->category_id);
         $productCategoryResponse->setDateCreated("N/A");
         return $productCategoryResponse;
     }
-    
-    
+
 }

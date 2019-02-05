@@ -22,11 +22,13 @@ class ProductRequest {
     private $createdBy;
     private $dateCreated;
 
-    function __construct() {
-        
+    function __construct($name, $code, $categoryId) {
+        $this->name = $name;
+        $this->code = $code;
+        $this->categoryId = $categoryId;
     }
 
-    function getId() {
+        function getId() {
         return $this->id;
     }
 
