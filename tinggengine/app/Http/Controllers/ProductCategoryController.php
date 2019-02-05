@@ -82,25 +82,28 @@ class ProductCategoryController extends Controller {
         $productCategoryRequest->setId($request['id']);
         $productCategoryRequest->validate();
 
-        $user = User::where('id', $userRequest->getId())->first();
+        $user = User::where('id', $productCategoryRequest->getId())->first();
         if ($user == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
-        //todo: check if user exists wit the same username 
-        $existing_user = User::where('username', $username)
-                ->where('id', "<>", $userRequest->getId())
+
+        $productCategory = ProductCategories::where('name', $name)
+                ->where('code', $code)
+                ->where('id', "<>", $productCategoryRequest->getId())
                 ->first();
-        if ($existing_user != null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("User Exists with the same username in the database ");
+        if ($productCategory != null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product Category Exists with the same name or code in the database ");
         }
 
 
-        $user->username = $username;
-        $user->password = $password;
-        $user->update();
 
-        return json_encode($user);
+        $productCategory->name = $name;
+        $productCategory->code = $code;
+        $productCategory->update();
+
+        $productResponse = $this->populate($productCategory);
+        return $productResponse->toJson();
     }
 
     public function archive(Request $request, $id) {
