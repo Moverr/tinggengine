@@ -67,7 +67,46 @@ class ProductController extends Controller {
     }
 
     public function update(Request $request) {
-        
+        $authentic = $request->header('authentication');
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
+
+        $name = $request['name'];
+        $code = $request['code'];
+        $categoryId = $request['categoryId'];
+
+        $productsRequest = new ProductRequest($name, $code, $categoryId);
+
+        if ($request['id'] == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Mandatory field ID is missing");
+        }
+
+        $productsRequest->setId($request['id']);
+        $productsRequest->validate();
+
+        $user = Products::where('id', $productsRequest->getId())->first();
+        if ($user == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+        }
+
+
+        $product = Products::where('name', $name)
+                ->where('code', $code)
+                ->where('category_id', $categoryId)
+                ->where('id', "<>", $productsRequest->getId())
+                ->first();
+        if ($product != null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product  Exists with the same name or code in the database ");
+        }
+
+
+
+        $product->name = $name;
+        $product->code = $code;
+        $product->category_id = $categoryId;
+        $product->update();
+
+        $productResponse = $this->populate($product);
+        return $productResponse->toJson();
     }
 
     public function archive(Request $request, $id) {
