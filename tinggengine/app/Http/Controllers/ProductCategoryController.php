@@ -32,15 +32,7 @@ class ProductCategoryController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
-
-        
-        $productResponse = new ProductResponse();
-        $productResponse->setId($productCategories[0]->id);
-        $productResponse->setCreatedBy(null);
-        $productResponse->setCategory("N/A");
-        $productResponse->setName($productCategories[0]->name);
-        $productResponse->setCode($productCategories[0]->code);
-        $productResponse->setDateCreated("N/A");
+        $productResponse = $this->populate($productCategories);
         return $productResponse->toJson();
     }
 
@@ -54,6 +46,17 @@ class ProductCategoryController extends Controller {
 
     public function archive(Request $request, $id) {
         
+    }
+
+    public function populate($productCategories) {
+        $productResponse = new ProductResponse();
+        $productResponse->setId($productCategories[0]->id);
+        $productResponse->setCreatedBy(null);
+        $productResponse->setCategory("N/A");
+        $productResponse->setName($productCategories[0]->name);
+        $productResponse->setCode($productCategories[0]->code);
+        $productResponse->setDateCreated("N/A");
+        return $productResponse;
     }
 
 }
