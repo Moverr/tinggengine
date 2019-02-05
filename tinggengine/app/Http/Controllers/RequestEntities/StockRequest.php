@@ -23,8 +23,12 @@ class StockRequest {
     private $unit_purchase_price;
     private $unit_measure;
 
-    function __construct() {
-        
+   
+    function __construct($product_id, $quantity, $unit_selling_price, $unit_measure) {
+        $this->product_id = $product_id;
+        $this->quantity = $quantity;
+        $this->unit_selling_price = $unit_selling_price;
+        $this->unit_measure = $unit_measure;
     }
 
     function getId() {
@@ -101,7 +105,7 @@ class StockRequest {
         if ($this->getUnit_selling_price() == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException(" Unit Selling Price  is Mandatory");
         }
- 
+
 
         if ($this->getUnit_measure() != $this->getRepassword()) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException(" Unit measure is Mandatory");

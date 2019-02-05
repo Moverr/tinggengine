@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Helpers\Utils;
 use App\Stock;
+use App\Http\Controllers\RequestEntities\StockRequest;
+use App\Stock;
 
 class StockController extends Controller {
 
@@ -39,28 +41,29 @@ class StockController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $name = $request['name'];
-        $code = $request['code'];
-        $categoryId = $request['categoryId'];
+        $product_id = $request['name'];
+        $quantity = $request['code'];
+        $unit_selling_price = $request['categoryId'];
+        $unit_measure = $request['categoryId'];
 
-        $productCategoryRequest = new ProductRequest($name, $code, $categoryId);
+        $productCategoryRequest = new StockRequest($product_id, $quantity, $unit_selling_price, $unit_measure);
         $productCategoryRequest->validate();
 
-        $products = Products::where('name', $name)
+        $stock = Stock::where('name', $name)
                 ->where('code', $code)
                 ->first();
-        if ($products != null) {
+        if ($stock != null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product   Exists with the same name or code in the database ");
         }
 
-        $products = new Products();
-        $products->name = $name;
-        $products->code = $code;
-        $products->category_id = $categoryId;
-        $products->status = 'ACTIVE';
-        $products->save();
+        $stock = new Products();
+        $stock->name = $name;
+        $stock->code = $code;
+        $stock->category_id = $categoryId;
+        $stock->status = 'ACTIVE';
+        $stock->save();
 
-        $productResponse = $this->populate($products);
+        $productResponse = $this->populate($stock);
         return $productResponse->toJson();
     }
 
@@ -72,7 +75,7 @@ class StockController extends Controller {
         $code = $request['code'];
         $categoryId = $request['categoryId'];
 
-        $productsRequest = new ProductRequest($name, $code, $categoryId);
+        $productsRequest = new StockRequest($name, $code, $categoryId);
 
         if ($request['id'] == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Mandatory field ID is missing");
