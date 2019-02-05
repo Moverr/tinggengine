@@ -12,7 +12,7 @@ class PurchaseOrders extends Model {
      * @var array
      */
     protected $fillable = [
-        'purchase_order_id', 'product_id', 'quantity', 'unit_selling_price', 'total_selling_price', 'status'
+        'stockist_id', 'order_date', 'reference_id', 'total_amount', 'status'
     ];
 
     /**
@@ -21,7 +21,7 @@ class PurchaseOrders extends Model {
      * @var array
      */
     protected $hidden = [];
-    protected $table = 'purchaseorderitems';
+    protected $table = 'purchaseorders';
 
     const CREATED_AT = 'date_created';
     const UPDATED_AT = 'date_updated';
