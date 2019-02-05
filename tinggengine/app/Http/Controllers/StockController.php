@@ -41,20 +41,15 @@ class StockController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $product_id = $request['name'];
-        $quantity = $request['code'];
-        $unit_selling_price = $request['categoryId'];
-        $unit_measure = $request['categoryId'];
+        $product_id = $request['product_id'];
+        $reference_id = "refrence_id";
+        $quantity = $request['quantity'];
+        $unit_selling_price = $request['unit_selling_price'];
+        $unit_purchase_price = $request['unit_purchase_price'];
 
-        $productCategoryRequest = new StockRequest($product_id, $quantity, $unit_selling_price, $unit_measure);
-        $productCategoryRequest->validate();
 
-        $stock = Stock::where('name', $name)
-                ->where('code', $code)
-                ->first();
-        if ($stock != null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product   Exists with the same name or code in the database ");
-        }
+        $stockRequest = new StockRequest($product_id, $quantity, $unit_selling_price, $unit_measure);
+        $stockRequest->validate();
 
         $stock = new Stock();
         $stock->product_id = $product_id;
@@ -73,20 +68,24 @@ class StockController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $name = $request['name'];
-        $code = $request['code'];
-        $categoryId = $request['categoryId'];
+        $product_id = $request['name'];
+        $quantity = $request['code'];
+        $unit_selling_price = $request['categoryId'];
+        $unit_measure = $request['categoryId'];
 
-        $productsRequest = new StockRequest($name, $code, $categoryId);
+
+        $stockRequest = new StockRequest($product_id, $quantity, $unit_selling_price, $unit_measure);
+
+
 
         if ($request['id'] == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Mandatory field ID is missing");
         }
 
-        $productsRequest->setId($request['id']);
-        $productsRequest->validate();
+        $stockRequest->setId($request['id']);
+        $stockRequest->validate();
 
-        $product = Products::where('id', $productsRequest->getId())->first();
+        $stockRequest = Stock::where('id', $stockRequest->getId())->first();
         if ($product == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
