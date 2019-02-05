@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Helpers\Utils;
-use App\ProductCategories;
-use App\Http\Controllers\ResponseEntities\ProductResponse;
+use App\ProductCategories; 
+use App\Http\Controllers\RequestEntities\ProductCategoryRequest;
+use App\Http\Controllers\ResponseEntities\ProductCategoryResponse;
 
 class ProductCategoryController extends Controller {
 
@@ -37,7 +38,22 @@ class ProductCategoryController extends Controller {
     }
 
     public function save(Request $request) {
-        
+
+        $authentic = $request->header('authentication');
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
+
+        $name = $request['name'];
+        $code = $request['code'];
+
+
+
+        $productCategoryRequest = new UserRequest($username, $password, $repassword, $role_id);
+        $productCategoryRequest->validate();
+
+        $user = User::where('username', $username)->first();
+        if ($user != null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("User Exists with the same username in the database ");
+        }
     }
 
     public function update(Request $request) {
@@ -49,14 +65,14 @@ class ProductCategoryController extends Controller {
     }
 
     public function populate($productCategories) {
-        $productResponse = new ProductResponse();
-        $productResponse->setId($productCategories[0]->id);
-        $productResponse->setCreatedBy(null);
-        $productResponse->setCategory("N/A");
-        $productResponse->setName($productCategories[0]->name);
-        $productResponse->setCode($productCategories[0]->code);
-        $productResponse->setDateCreated("N/A");
-        return $productResponse;
+        $productCategoryResponse = new ProductCategoryResponse();
+        $productCategoryResponse->setId($productCategories[0]->id);
+        $productCategoryResponse->setCreatedBy(null);
+        $productCategoryResponse->setCategory("N/A");
+        $productCategoryResponse->setName($productCategories[0]->name);
+        $productCategoryResponse->setCode($productCategories[0]->code);
+        $productCategoryResponse->setDateCreated("N/A");
+        return $productCategoryResponse;
     }
 
 }
