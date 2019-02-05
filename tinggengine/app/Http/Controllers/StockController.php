@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Helpers\Utils;
 use App\Stock;
+use App\Http\Controllers\RequestEntities\StockRequest;
+use App\Stock;
 
 class StockController extends Controller {
 
@@ -39,72 +41,69 @@ class StockController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $name = $request['name'];
-        $code = $request['code'];
-        $categoryId = $request['categoryId'];
+        $product_id = $request['product_id'];
+        $reference_id = "refrence_id";
+        $quantity = $request['quantity'];
+        $unit_selling_price = $request['unit_selling_price'];
+        $unit_purchase_price = $request['unit_purchase_price'];
+        $unit_measure = $request['unit_measure'];
 
-        $productCategoryRequest = new ProductRequest($name, $code, $categoryId);
-        $productCategoryRequest->validate();
 
-        $products = Products::where('name', $name)
-                ->where('code', $code)
-                ->first();
-        if ($products != null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product   Exists with the same name or code in the database ");
-        }
+        $stockRequest = new StockRequest($product_id, $reference_id, $quantity, $unit_selling_price, $unit_purchase_price, $unit_measure);
+        $stockRequest->validate();
 
-        $products = new Products();
-        $products->name = $name;
-        $products->code = $code;
-        $products->category_id = $categoryId;
-        $products->status = 'ACTIVE';
-        $products->save();
+        $stock = new Stock();
+        $stock->product_id = $product_id;
+        $stock->reference_id = "ReferenceID";
+        $stock->quantity = $quantity;
+        $stock->unit_selling_price = $unit_selling_price;
+        $stock->unit_purchase_price = null;
+        $stock->status = 'ACTIVE';
+        $stock->save();
 
-        $productResponse = $this->populate($products);
-        return $productResponse->toJson();
+        $stockResponse = $this->populate($stock);
+        return $stockResponse->toJson();
     }
 
     public function update(Request $request) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $name = $request['name'];
-        $code = $request['code'];
-        $categoryId = $request['categoryId'];
 
-        $productsRequest = new ProductRequest($name, $code, $categoryId);
+        $product_id = $request['product_id'];
+        $reference_id = "refrence_id";
+        $quantity = $request['quantity'];
+        $unit_selling_price = $request['unit_selling_price'];
+        $unit_purchase_price = $request['unit_purchase_price'];
+        $unit_measure = $request['unit_measure'];
+
+        $stockRequest = new StockRequest($product_id, $reference_id, $quantity, $unit_selling_price, $unit_purchase_price, $unit_measure);
 
         if ($request['id'] == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Mandatory field ID is missing");
         }
 
-        $productsRequest->setId($request['id']);
-        $productsRequest->validate();
+        $stockRequest->setId($request['id']);
+        $stockRequest->validate();
 
-        $product = Products::where('id', $productsRequest->getId())->first();
+        $stockRequest = Stock::where('id', $stockRequest->getId())->first();
         if ($product == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
 
-        $product = Products::where('name', $name)
-                ->where('code', $code)
-                ->where('category_id', $categoryId)
-                ->where('id', "<>", $productsRequest->getId())
-                ->first();
-        if ($product != null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product  Exists with the same name or code in the database ");
-        }
 
 
+        $stock->product_id = $product_id;
+        $stock->reference_id = "ReferenceID";
+        $stock->quantity = $quantity;
+        $stock->unit_selling_price = $unit_selling_price;
+        $stock->unit_purchase_price = null;
+        $stock->status = 'ACTIVE';
+        $stock->update();
 
-        $product->name = $name;
-        $product->code = $code;
-        $product->category_id = $categoryId;
-        $product->update();
-
-        $productResponse = $this->populate($product);
-        return $productResponse->toJson();
+        $stockResponse = $this->populate($stock);
+        return $stockResponse->toJson();
     }
 
     public function archive(Request $request, $id) {
