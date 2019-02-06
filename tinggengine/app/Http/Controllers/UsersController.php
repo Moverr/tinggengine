@@ -26,15 +26,13 @@ class UsersController extends Controller {
         //todo: loop through and create different  important aspects ::
         $userResponses = [];
         foreach ($users as $user) {
-            $userResponse =  $this->populate($user);            
+            $userResponse = $this->populate($user);
             $userResponses[] = $userResponse->toJson();
         }
 
         return ($userResponses);
     }
 
-    
-   
     public function get(Request $request, $id) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
@@ -44,10 +42,7 @@ class UsersController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
-        $userResponse = new UserResponse();
-        $userResponse->setId($user[0]->id);
-        $userResponse->setAuthor(null);
-        $userResponse->setUsername($user[0]->username);
+        $userResponse = $userResponse = $this->populate($user);
         return $userResponse->toJson();
     }
 
@@ -89,8 +84,8 @@ class UsersController extends Controller {
         $user->status = 'ACTIVE';
         $user->save();
 
-
-        return json_encode($user);
+        $userResponse = $this->populate($user);
+        return $userResponse->toJson();
     }
 
     public function update(Request $request) {
@@ -125,11 +120,9 @@ class UsersController extends Controller {
         }
 
 
-        $user->username = $username;
-        $user->password = $password;
-        $user->update();
 
-        return json_encode($user);
+        $userResponse = $this->populate($user);
+        return $userResponse->toJson();
     }
 
     public function archive(Request $request, $id) {
@@ -148,15 +141,13 @@ class UsersController extends Controller {
         $user->update();
     }
 
-    
-     public function populate($user){
-          $userResponse = new UserResponse();
-            $userResponse->setUsername($user->username);
-            $userResponse->setId($user->id);
-            $userResponse->setRole($user->role->role_id);
-            $userResponse->setDateCreated($user->date_created);
-            $userResponse->setProfile($user->profile);
+    public function populate($user) {
+        $userResponse = new UserResponse();
+        $userResponse->setUsername($user->username);
+        $userResponse->setId($user->id);
+        $userResponse->setRole($user->role->role_id);
+        $userResponse->setDateCreated($user->date_created);
+        $userResponse->setProfile($user->profile);
     }
-    
-    
+
 }
