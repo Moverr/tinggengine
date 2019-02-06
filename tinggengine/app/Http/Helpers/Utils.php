@@ -38,6 +38,7 @@ class Utils {
 
         $existing_user = \App\User::where('username', $username)
                 ->where('password', sha1($password))
+                 ->where('status', "ACTIVE")
                 ->first();
         if ($existing_user == null) {
             throw new \Illuminate\Validation\UnauthorizedException("Invalid  user credentials");
