@@ -40,7 +40,7 @@ class ProductController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
-        $productResponse = $this->populate($products);
+        $productResponse = $this->populate($products[0]);
         return $productResponse->toJson();
     }
 
@@ -51,9 +51,15 @@ class ProductController extends Controller {
         $name = $request['name'];
         $code = $request['code'];
         $categoryId = $request['categoryId'];
+        $createdBy = $autneticaton_response->getId();
+
 
         $productCategoryRequest = new ProductRequest($name, $code, $categoryId);
         $productCategoryRequest->validate();
+
+        //set the author of the system :: 
+        $productCategoryRequest->setCreatedBy($createdBy);
+
 
         $products = Products::where('name', $name)
                 ->where('code', $code)
