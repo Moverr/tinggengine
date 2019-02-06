@@ -23,6 +23,7 @@ class UserResponse {
     private $dateCreated;
     private $author;
     private $datUpdated;
+    private $profile;
 
     function __construct() {
         
@@ -77,14 +78,23 @@ class UserResponse {
 
 
     
+    function getProfile() {
+        return $this->profile;
+    }
+
+    function setProfile($profile) {
+        $this->profile = $profile;
+    }
+
+        
      public function toJson() {
         return \GuzzleHttp\json_encode([
             'id' => $this->id,
             'username' => $this->username,
-            'role' => $this->role,
+            'role_id' => $this->role,
+             'profile' => $this->profile,
             'dateCreated' => $this->dateCreated,
-            'author' =>   $this->author
-                
+            'author' =>   $this->author 
         ]);
     }
     

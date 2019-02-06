@@ -26,18 +26,15 @@ class UsersController extends Controller {
         //todo: loop through and create different  important aspects ::
         $userResponses = [];
         foreach ($users as $user) {
-            $userResponse = new UserResponse();
-            $userResponse->setUsername($user->username);
-            $userResponse->setId($user->id);
-            $userResponse->setRole($user->role->role_id);
-            $userResponse->setDateCreated($user->date_created);
-
+            $userResponse =  $this->populate($user);            
             $userResponses[] = $userResponse->toJson();
         }
 
         return ($userResponses);
     }
 
+    
+   
     public function get(Request $request, $id) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
@@ -151,4 +148,15 @@ class UsersController extends Controller {
         $user->update();
     }
 
+    
+     public function populate($user){
+          $userResponse = new UserResponse();
+            $userResponse->setUsername($user->username);
+            $userResponse->setId($user->id);
+            $userResponse->setRole($user->role->role_id);
+            $userResponse->setDateCreated($user->date_created);
+            $userResponse->setProfile($user->profile);
+    }
+    
+    
 }
