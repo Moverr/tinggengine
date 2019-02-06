@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Helpers\Utils;
 use App\Stock;
 use App\Http\Controllers\RequestEntities\StockRequest;
+use App\Http\Controllers\ResponseEntities\StockResponse;
 
 class StockController extends Controller {
 
@@ -37,12 +38,12 @@ class StockController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $stock = Products::where('id', $id)->get();
+        $stock = Stock::where('id', $id)->get();
         if ($stock == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
-        $productResponse = $this->populate($stock);
+        $productResponse = $this->populate($stock[0]);
         return $productResponse->toJson();
     }
 
@@ -129,14 +130,19 @@ class StockController extends Controller {
         $product->update();
     }
 
-    public function populate($products) {
-        $productCategoryResponse = new ProductResponse();
-        $productCategoryResponse->setId($products[0]->id);
-        $productCategoryResponse->setCode($products[0]->code);
-        $productCategoryResponse->setName($products[0]->name);
-        $productCategoryResponse->setCategory($products[0]->category_id);
-        $productCategoryResponse->setDateCreated("N/A");
-        return $productCategoryResponse;
+    public function populate($stock) {
+        $stockResponse = new StockResponse();
+        $stockResponse->setId($stock->id);
+        $stockResponse->setReference($stock->reference_id);
+        $stockResponse->setProduct($stock->product_id);
+        $stockResponse->setQuantity($stock->quantity);
+        $stockResponse->setUnitsellingprice($stock->unit_selling_price);
+        $stockResponse->setUnitpurchaseprice($stock->unit_purchase_price);
+        $stockResponse->setUnitmeasure($stock->unit_measure);
+        $stockResponse->setStatus($stock->status);
+        $stockResponse->setCreatedBy($stock->created_by);
+        $stockResponse->setDateCreated($stock->date_created);
+        return $stockResponse;
     }
 
 }
