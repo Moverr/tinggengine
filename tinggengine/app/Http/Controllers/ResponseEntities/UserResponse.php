@@ -81,6 +81,7 @@ class UserResponse {
         return \GuzzleHttp\json_encode([
             'id' => $this->id,
             'username' => $this->username,
+            'role' => $this->role,
             'dateCreated' => $this->dateCreated,
             'author' =>   $this->author
                 

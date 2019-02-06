@@ -22,10 +22,20 @@ class UsersController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $users = User::find(1);
-                //offset($offset)->limit($limit)->get();
+        $users = User::offset($offset)->limit($limit)->get();
+        //todo: loop through and create different  important aspects ::
+        $userResponses = [];
+        foreach ($users as $user) {
+            $userResponse = new UserResponse();
+            $userResponse->setUsername($user->username);
+            $userResponse->setId($user->id);
+            $userResponse->setRole($user->role->role_id);
+            $userResponse->setDateCreated($user->date_created);
 
-        return json_encode($users->role);
+            $userResponses[] = $userResponse->toJson();
+        }
+
+        return ($userResponses);
     }
 
     public function get(Request $request, $id) {
