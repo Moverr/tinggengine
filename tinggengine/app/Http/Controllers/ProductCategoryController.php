@@ -7,7 +7,7 @@ use App\Http\Helpers\Utils;
 use App\ProductCategories;
 use App\Http\Controllers\RequestEntities\ProductCategoryRequest;
 use App\Http\Controllers\ResponseEntities\ProductCategoryResponse;
-use App\ProductCategories;
+ 
 
 class ProductCategoryController extends Controller {
 
