@@ -19,17 +19,11 @@ class StockController extends Controller {
     public function index(Request $request, $offset = 0, $limit = 10) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-
         $stock = Stock::offset($offset)->limit($limit)->get();
-
-
         $productResponses = [];
         foreach ($stock as $record) {
             $productResponses [] = $this->populate($record)->toJson();
         }
-
-
-
 
         return $productResponses;
     }
@@ -57,6 +51,17 @@ class StockController extends Controller {
         $unit_selling_price = $request['unit_selling_price'];
         $unit_purchase_price = $request['unit_purchase_price'];
         $unit_measure = $request['unit_measure'];
+        $createdBy = $autneticaton_response->getId();
+
+
+        //todo: you can create the same stock for the same product 
+//        you should not have the same product for the same in multipes        
+        $existing_stock = Products::where('product_id', $product_id)
+                ->first();
+        if ($existing_stock != null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException(" Stock exists under the same product , kindly update instead of creating new stock ");
+        }
+
 
 
         $stockRequest = new StockRequest($product_id, $reference_id, $quantity, $unit_selling_price, $unit_purchase_price, $unit_measure);
@@ -64,10 +69,12 @@ class StockController extends Controller {
 
         $stock = new Stock();
         $stock->product_id = $product_id;
-        $stock->reference_id = "ReferenceID";
+        $stock->reference_id = $this->util->incrementalHash();
         $stock->quantity = $quantity;
         $stock->unit_selling_price = $unit_selling_price;
-        $stock->unit_purchase_price = null;
+        $stock->unit_purchase_price = $unit_purchase_price;
+        $stock->unit_measure = $unit_measure;
+        $stock->created_by = $createdBy;
         $stock->status = 'ACTIVE';
         $stock->save();
 
