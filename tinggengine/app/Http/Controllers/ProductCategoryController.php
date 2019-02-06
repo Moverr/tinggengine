@@ -33,7 +33,7 @@ class ProductCategoryController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
-        $productResponse = $this->populate($productCategories);
+        $productResponse = $this->populate($productCategories[0]);
         return $productResponse->toJson();
     }
 
@@ -68,8 +68,8 @@ class ProductCategoryController extends Controller {
         $productCategory->created_by = $createdBy;
         $productCategory->save();
 
-//        $productResponse = $this->populate($productCategory);
-        return null;
+        $productResponse = $this->populate($productCategory);
+        return $productResponse;
     }
 
     public function update(Request $request) {
@@ -128,12 +128,12 @@ class ProductCategoryController extends Controller {
 
     public function populate($productCategories) {
         $productCategoryResponse = new ProductCategoryResponse();
-        $productCategoryResponse->setId($productCategories[0]->id);
-        $productCategoryResponse->setCreatedBy(null);
-        $productCategoryResponse->setCategory("N/A");
-        $productCategoryResponse->setName($productCategories[0]->name);
-        $productCategoryResponse->setCode($productCategories[0]->code);
-        $productCategoryResponse->setDateCreated("N/A");
+        $productCategoryResponse->setId($productCategories->id);
+        $productCategoryResponse->setCreatedBy($productCategories->created_by);
+        $productCategoryResponse->setName($productCategories->name);
+        $productCategoryResponse->setCode($productCategories->code);
+        $productCategoryResponse->setDateCreated($productCategories->date_created);
+        $productCategoryResponse->setStatus($productCategories->status);
         return $productCategoryResponse;
     }
 

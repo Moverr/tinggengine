@@ -24,12 +24,11 @@ class ProductCategoryResponse {
     private $updatedBy;
     private $dateUpdated;
 
-    function __construct($name, $code) {
-        $this->name = $name;
-        $this->code = $code;
+    function __construct() {
+        
     }
 
-    function getId() {
+        function getId() {
         return $this->id;
     }
 
