@@ -7,6 +7,7 @@ use App\Http\Helpers\Utils;
 use App\Products;
 use App\Http\Controllers\ResponseEntities\ProductResponse;
 use App\Http\Controllers\RequestEntities\ProductRequest;
+use App\Http\Controllers\ResponseEntities\StockResponse;
 
 class ProductController extends Controller {
 
@@ -140,16 +141,19 @@ class ProductController extends Controller {
         $product->update();
     }
 
-    public function populate($products) {
-        $productCategoryResponse = new ProductResponse();
-        $productCategoryResponse->setId($products->id);
-        $productCategoryResponse->setCode($products->code);
-        $productCategoryResponse->setName($products->name);
-        $productCategoryResponse->setCategory($products->category_id);
-        $productCategoryResponse->setDateCreated($products->date_created);
-        $productCategoryResponse->setCreatedBy($products->created_by);
-        $productCategoryResponse->setStatus($products->status);
-        return $productCategoryResponse;
+    public function populate($stock) {
+        $stockResponse = new StockResponse();
+        $stockResponse->setId($stock->id);
+        $stockResponse->setReference($stock->reference_id);
+        $stockResponse->setProduct($stock->product_id);
+        $stockResponse->setQuantity($stock->quantity);
+        $stockResponse->setUnitsellingprice($stock->unit_selling_price);
+        $stockResponse->setUnitpurchaseprice($stock->unit_purchase_price);
+        $stockResponse->setUnitmeasure($stock->unit_measure);
+        $stockResponse->setStatus($stock->status);
+        $stockResponse->setCreatedBy($stock->created_by);
+        $stockResponse->setDateCreated($stock->date_created);
+        return $stockResponse;
     }
 
 }
