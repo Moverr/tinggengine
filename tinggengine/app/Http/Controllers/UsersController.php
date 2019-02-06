@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Http\Controllers\RequestEntities\UserRequest;
 use App\Http\Helpers\Utils;
-
 use App\Http\Controllers\ResponseEntities\UserResponse;
 
 class UsersController extends Controller {
@@ -18,20 +17,23 @@ class UsersController extends Controller {
     }
 
     public function index(Request $request, $offset = 0, $limit = 10) {
-        
+
 
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
         $users = User::offset($offset)->limit($limit)->get();
+        //todo: loop through and create different  important aspects ::
+        $userResponses = [];
+        foreach ($users as $user) {
+            $userResponse = $this->populate($user);
+            $userResponses[] = $userResponse->toJson();
+        }
 
-        return json_encode($users);
+        return \GuzzleHttp\json_encode($userResponses);
     }
 
     public function get(Request $request, $id) {
-
-
-
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
@@ -39,12 +41,9 @@ class UsersController extends Controller {
         if ($user == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
-  
-        $userResponse =  new UserResponse();
-        $userResponse->setId($user[0]->id);
-        $userResponse->setAuthor(null);
-        $userResponse->setUsername($user[0]->username);        
-        return  $userResponse->toJson();
+
+        $userResponse = $this->populate($user[0]);
+        return $userResponse->toJson();
     }
 
     public function login(Request $request) {
@@ -55,10 +54,9 @@ class UsersController extends Controller {
         $loginRequest->setPassword($password);
         $loginRequest->setUsername($username);
         $loginRequest->validate();
-        
-        
 
-        return $this->util->validateUser($username, $password);
+        $response = $this->util->validateUser($username, $password);
+        return $response->toJson();
     }
 
     public function save(Request $request) {
@@ -85,8 +83,8 @@ class UsersController extends Controller {
         $user->status = 'ACTIVE';
         $user->save();
 
-
-        return json_encode($user);
+        $userResponse = $this->populate($user);
+        return $userResponse->toJson();
     }
 
     public function update(Request $request) {
@@ -121,11 +119,9 @@ class UsersController extends Controller {
         }
 
 
-        $user->username = $username;
-        $user->password = $password;
-        $user->update();
 
-        return json_encode($user);
+        $userResponse = $this->populate($user);
+        return $userResponse->toJson();
     }
 
     public function archive(Request $request, $id) {
@@ -142,6 +138,18 @@ class UsersController extends Controller {
         }
         $user->status = 'ARCHIVED';
         $user->update();
+    }
+
+    public function populate($user) {
+        $userResponse = new UserResponse();
+        if ($user->username != null)
+            $userResponse->setUsername($user->username);
+        $userResponse->setId($user->id);
+        $userResponse->setRole($user->role->role_id);
+        $userResponse->setDateCreated($user->date_created);
+        $userResponse->setProfile($user->profile);
+
+        return $userResponse;
     }
 
 }

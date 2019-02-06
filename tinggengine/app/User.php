@@ -4,16 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
-{
-   
+class User extends Model {
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'password','status',
+        'name', 'password', 'status',
     ];
 
     /**
@@ -24,11 +23,19 @@ class User extends Model
     protected $hidden = [
         'password',
     ];
-
-
     protected $table = 'users';
 
-     const CREATED_AT = 'date_created';
-     const UPDATED_AT = 'date_updated';
+    const CREATED_AT = 'date_created';
+    const UPDATED_AT = 'date_updated';
+
+    public function profile() {
+        return $this->belongsTo('App\Profiles');
+    }
+
+    public function role() {
+        return $this->hasOne(
+                        'App\UserRoles'
+        );
+    }
 
 }

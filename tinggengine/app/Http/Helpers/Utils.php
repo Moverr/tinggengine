@@ -38,6 +38,7 @@ class Utils {
 
         $existing_user = \App\User::where('username', $username)
                 ->where('password', sha1($password))
+                ->where('status', "ACTIVE")
                 ->first();
         if ($existing_user == null) {
             throw new \Illuminate\Validation\UnauthorizedException("Invalid  user credentials");
@@ -47,7 +48,7 @@ class Utils {
         $auth->setAuthentication($this->convertToBasicAuth($username, $password));
         $auth->setId($existing_user->id);
 
-        return $auth->toJson();
+        return $auth;
     }
 
     public function convertToBasicAuth($username, $password) {

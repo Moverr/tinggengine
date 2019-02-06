@@ -7,7 +7,6 @@ use App\Http\Helpers\Utils;
 use App\ProductCategories;
 use App\Http\Controllers\RequestEntities\ProductCategoryRequest;
 use App\Http\Controllers\ResponseEntities\ProductCategoryResponse;
-use App\ProductCategories;
 
 class ProductCategoryController extends Controller {
 
@@ -22,7 +21,13 @@ class ProductCategoryController extends Controller {
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
         $productCategories = ProductCategories::offset($offset)->limit($limit)->get();
-        return json_encode($productCategories);
+
+        $productcategoryResponses = [];
+        foreach ($productCategories as $record) {
+            $productcategoryResponses [] = $this->populate($record)->toJson();
+        }
+
+        return ($productcategoryResponses);
     }
 
     public function get(Request $request, $id) {
@@ -34,7 +39,7 @@ class ProductCategoryController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
-        $productResponse = $this->populate($productCategories);
+        $productResponse = $this->populate($productCategories[0]);
         return $productResponse->toJson();
     }
 
@@ -45,9 +50,15 @@ class ProductCategoryController extends Controller {
 
         $name = $request['name'];
         $code = $request['code'];
+        $createdBy = $autneticaton_response->getId();
 
         $productCategoryRequest = new ProductCategoryRequest($name, $code);
         $productCategoryRequest->validate();
+
+        //set the author of the system :: 
+        $productCategoryRequest->setCreatedBy($createdBy);
+
+
 
         $productCategory = ProductCategories::where('name', $name)
                 ->where('code', $code)
@@ -60,10 +71,11 @@ class ProductCategoryController extends Controller {
         $productCategory->name = $name;
         $productCategory->code = $code;
         $productCategory->status = 'ACTIVE';
+        $productCategory->created_by = $createdBy;
         $productCategory->save();
 
         $productResponse = $this->populate($productCategory);
-        return $productResponse->toJson();
+        return $productResponse;
     }
 
     public function update(Request $request) {
@@ -122,12 +134,12 @@ class ProductCategoryController extends Controller {
 
     public function populate($productCategories) {
         $productCategoryResponse = new ProductCategoryResponse();
-        $productCategoryResponse->setId($productCategories[0]->id);
-        $productCategoryResponse->setCreatedBy(null);
-        $productCategoryResponse->setCategory("N/A");
-        $productCategoryResponse->setName($productCategories[0]->name);
-        $productCategoryResponse->setCode($productCategories[0]->code);
-        $productCategoryResponse->setDateCreated("N/A");
+        $productCategoryResponse->setId($productCategories->id);
+        $productCategoryResponse->setCreatedBy($productCategories->created_by);
+        $productCategoryResponse->setName($productCategories->name);
+        $productCategoryResponse->setCode($productCategories->code);
+        $productCategoryResponse->setDateCreated($productCategories->date_created);
+        $productCategoryResponse->setStatus($productCategories->status);
         return $productCategoryResponse;
     }
 

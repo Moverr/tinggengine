@@ -19,9 +19,16 @@ class ProductController extends Controller {
     public function index(Request $request, $offset = 0, $limit = 10) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-
         $products = Products::offset($offset)->limit($limit)->get();
-        return json_encode($products);
+
+        $productResponses = [];
+        foreach ($products as $record) {
+            $productResponses [] = $this->populate($record)->toJson();
+        }
+
+
+
+        return ($productResponses);
     }
 
     public function get(Request $request, $id) {
@@ -125,11 +132,12 @@ class ProductController extends Controller {
 
     public function populate($products) {
         $productCategoryResponse = new ProductResponse();
-        $productCategoryResponse->setId($products[0]->id);
-        $productCategoryResponse->setCode($products[0]->code);
-        $productCategoryResponse->setName($products[0]->name);
-        $productCategoryResponse->setCategory($products[0]->category_id);
-        $productCategoryResponse->setDateCreated("N/A");
+        $productCategoryResponse->setId($products->id);
+        $productCategoryResponse->setCode($products->code);
+        $productCategoryResponse->setName($products->name);
+        $productCategoryResponse->setCategory($products->category_id);
+        $productCategoryResponse->setDateCreated($products->date_created);
+        $productCategoryResponse->setCreatedBy($products->created_by);
         return $productCategoryResponse;
     }
 
