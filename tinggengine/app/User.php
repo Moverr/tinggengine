@@ -32,4 +32,10 @@ class User extends Model {
         return $this->belongsTo('App\Profiles');
     }
 
+    public function role() {
+        return $this->hasOne(
+                        'App\UserRoles'
+        );
+    }
+
 }

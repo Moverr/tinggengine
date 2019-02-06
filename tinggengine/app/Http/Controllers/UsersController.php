@@ -25,7 +25,7 @@ class UsersController extends Controller {
         $users = User::find(1);
                 //offset($offset)->limit($limit)->get();
 
-        return json_encode($users->profile);
+        return json_encode($users->role);
     }
 
     public function get(Request $request, $id) {
