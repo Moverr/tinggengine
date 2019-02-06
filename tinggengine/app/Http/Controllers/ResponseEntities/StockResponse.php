@@ -14,12 +14,16 @@ namespace App\Http\Controllers\ResponseEntities;
  * @author mover  
  */
 class StockResponse {
-      private $id;
-       private $reference;
-    private $product;   
+
+    private $id;
+    private $reference;
+    private $product;
     private $quantity;
     private $unitsellingprice;
     private $unitpurchaseprice;
+    private $unitmeasure;
+    private $status;
+    private $createdBy;
     private $dateCreated;
 
     function __construct() {
@@ -30,16 +34,32 @@ class StockResponse {
         return $this->id;
     }
 
-    function getName() {
-        return $this->name;
+    function getReference() {
+        return $this->reference;
     }
 
-    function getCode() {
-        return $this->code;
+    function getProduct() {
+        return $this->product;
     }
 
-    function getCategory() {
-        return $this->category;
+    function getQuantity() {
+        return $this->quantity;
+    }
+
+    function getUnitsellingprice() {
+        return $this->unitsellingprice;
+    }
+
+    function getUnitpurchaseprice() {
+        return $this->unitpurchaseprice;
+    }
+
+    function getUnitmeasure() {
+        return $this->unitmeasure;
+    }
+
+    function getStatus() {
+        return $this->status;
     }
 
     function getCreatedBy() {
@@ -54,16 +74,32 @@ class StockResponse {
         $this->id = $id;
     }
 
-    function setName($name) {
-        $this->name = $name;
+    function setReference($reference) {
+        $this->reference = $reference;
     }
 
-    function setCode($code) {
-        $this->code = $code;
+    function setProduct($product) {
+        $this->product = $product;
     }
 
-    function setCategory($categoryId) {
-        $this->category = $categoryId;
+    function setQuantity($quantity) {
+        $this->quantity = $quantity;
+    }
+
+    function setUnitsellingprice($unitsellingprice) {
+        $this->unitsellingprice = $unitsellingprice;
+    }
+
+    function setUnitpurchaseprice($unitpurchaseprice) {
+        $this->unitpurchaseprice = $unitpurchaseprice;
+    }
+
+    function setUnitmeasure($unitmeasure) {
+        $this->unitmeasure = $unitmeasure;
+    }
+
+    function setStatus($status) {
+        $this->status = $status;
     }
 
     function setCreatedBy($createdBy) {
@@ -74,23 +110,19 @@ class StockResponse {
         $this->dateCreated = $dateCreated;
     }
 
-    function getStatus() {
-        return $this->status;
-    }
-
-    function setStatus($status) {
-        $this->status = $status;
-    }
-
     public function toJson() {
         return \GuzzleHttp\json_encode([
             'id' => $this->id,
-            'name' => $this->name,
-            'code' => $this->code,
+            'reference' => $this->reference,
+            'product' => $this->product,
+            'quantity' => $this->quantity,
+            'unitsellingprice' => $this->unitsellingprice,
+            'unitpurchaseprice' => $this->unitpurchaseprice,
+            'unitmeasure' => $this->unitmeasure,
             'status' => $this->status,
-            'category' => $this->category,
             'createdBy' => $this->createdBy,
-            'dateCreated' => $this->dateCreated,
+            'dateCreated' => $this->dateCreated
         ]);
     }
+
 }
