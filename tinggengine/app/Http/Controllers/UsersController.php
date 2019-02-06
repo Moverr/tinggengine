@@ -8,7 +8,6 @@ use App\Http\Controllers\RequestEntities\UserRequest;
 use App\Http\Helpers\Utils;
 use App\Http\Controllers\ResponseEntities\UserResponse;
 
-
 class UsersController extends Controller {
 
     private $util;
@@ -55,7 +54,7 @@ class UsersController extends Controller {
         $loginRequest->setPassword($password);
         $loginRequest->setUsername($username);
         $loginRequest->validate();
- 
+
         return $this->util->validateUser($username, $password);
     }
 
