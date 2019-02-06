@@ -23,4 +23,13 @@ class RolePermissions extends Model {
     protected $hidden = [];
     protected $table = 'rolepermission';
 
+    public function Role() {
+        return $this->belongsTo('App\Roles', 'foreign_key', 'role_id');
+    }
+    
+
+    public function Permission() {
+        return $this->belongsTo('App\Permissions', 'foreign_key', 'permission_id');
+    }
+
 }
