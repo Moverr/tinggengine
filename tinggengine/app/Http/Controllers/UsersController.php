@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Http\Controllers\RequestEntities\UserRequest;
 use App\Http\Helpers\Utils;
-
 use App\Http\Controllers\ResponseEntities\UserResponse;
 
 class UsersController extends Controller {
@@ -18,7 +17,7 @@ class UsersController extends Controller {
     }
 
     public function index(Request $request, $offset = 0, $limit = 10) {
-        
+
 
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
@@ -29,9 +28,6 @@ class UsersController extends Controller {
     }
 
     public function get(Request $request, $id) {
-
-
-
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
@@ -39,12 +35,12 @@ class UsersController extends Controller {
         if ($user == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
-  
-        $userResponse =  new UserResponse();
+
+        $userResponse = new UserResponse();
         $userResponse->setId($user[0]->id);
         $userResponse->setAuthor(null);
-        $userResponse->setUsername($user[0]->username);        
-        return  $userResponse->toJson();
+        $userResponse->setUsername($user[0]->username);
+        return $userResponse->toJson();
     }
 
     public function login(Request $request) {
@@ -55,8 +51,8 @@ class UsersController extends Controller {
         $loginRequest->setPassword($password);
         $loginRequest->setUsername($username);
         $loginRequest->validate();
-        
-        
+
+
 
         return $this->util->validateUser($username, $password);
     }
