@@ -73,6 +73,8 @@ class ProductController extends Controller {
         $products->code = $code;
         $products->category_id = $categoryId;
         $products->status = 'ACTIVE';
+        $products->created_by = $createdBy;
+
         $products->save();
 
         $productResponse = $this->populate($products);
