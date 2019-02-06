@@ -20,10 +20,14 @@ class Stockists extends Model {
      *
      * @var array
      */
-    protected $hidden = [user_id];
+    protected $hidden = ['user_id'];
     protected $table = 'stockists';
 
     const CREATED_AT = 'date_created';
     const UPDATED_AT = 'date_updated';
+
+    public function Users() {
+        return $this->belongsTo('App\User', 'foreign_key', 'user_id');
+    }
 
 }

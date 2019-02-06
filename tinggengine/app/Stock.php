@@ -12,7 +12,7 @@ class Stock extends Model {
      * @var array
      */
     protected $fillable = [
-        'product_id', 'reference_id', 'quantity', 'unit_selling_price','unit_purchase_price', 'unit_measure','status'
+        'product_id', 'reference_id', 'quantity', 'unit_selling_price', 'unit_purchase_price', 'unit_measure', 'status'
     ];
 
     /**
@@ -25,5 +25,9 @@ class Stock extends Model {
 
     const CREATED_AT = 'date_created';
     const UPDATED_AT = 'date_updated';
+
+    public function Stock() {
+        return $this->belongsTo('App\Products', 'foreign_key', 'product_id');
+    }
 
 }

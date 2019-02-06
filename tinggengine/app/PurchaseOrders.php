@@ -26,4 +26,8 @@ class PurchaseOrders extends Model {
     const CREATED_AT = 'date_created';
     const UPDATED_AT = 'date_updated';
 
+    public function Stockist() {
+        return $this->belongsTo('App\Stockists', 'foreign_key', 'stockist_id');
+    }
+
 }

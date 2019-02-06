@@ -27,4 +27,8 @@ class Contacts extends Model {
     const CREATED_AT = 'date_created';
     const UPDATED_AT = 'date_updated';
 
+    public function contacts() {
+        return $this->belongsTo('App\Profiles', 'foreign_key', 'profile_id');
+    }
+
 }
