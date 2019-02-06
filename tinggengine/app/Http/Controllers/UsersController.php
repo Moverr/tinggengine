@@ -22,9 +22,10 @@ class UsersController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $users = User::offset($offset)->limit($limit)->get();
+        $users = User::find(1);
+                //offset($offset)->limit($limit)->get();
 
-        return json_encode($users);
+        return json_encode($users->profile);
     }
 
     public function get(Request $request, $id) {
