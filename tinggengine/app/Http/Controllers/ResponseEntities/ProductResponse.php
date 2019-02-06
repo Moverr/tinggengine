@@ -83,12 +83,12 @@ class ProductResponse {
         $this->status = $status;
     }
 
-        public function toJson() {
+    public function toJson() {
         return \GuzzleHttp\json_encode([
             'id' => $this->id,
             'name' => $this->name,
             'code' => $this->code,
-             'status' => $this->status,
+            'status' => $this->status,
             'category' => $this->category,
             'createdBy' => $this->createdBy,
             'dateCreated' => $this->dateCreated,
