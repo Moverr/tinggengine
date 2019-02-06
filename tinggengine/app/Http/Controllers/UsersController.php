@@ -42,7 +42,7 @@ class UsersController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
-        $userResponse = $userResponse = $this->populate($user);
+        $userResponse = $this->populate($user[0]);
         return $userResponse->toJson();
     }
 
@@ -143,11 +143,14 @@ class UsersController extends Controller {
 
     public function populate($user) {
         $userResponse = new UserResponse();
-        $userResponse->setUsername($user->username);
+        if ($user->username != null)
+            $userResponse->setUsername($user->username);
         $userResponse->setId($user->id);
         $userResponse->setRole($user->role->role_id);
         $userResponse->setDateCreated($user->date_created);
         $userResponse->setProfile($user->profile);
+
+        return $userResponse;
     }
 
 }
