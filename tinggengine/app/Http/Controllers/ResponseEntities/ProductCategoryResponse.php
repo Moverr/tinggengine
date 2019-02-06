@@ -28,7 +28,7 @@ class ProductCategoryResponse {
         
     }
 
-        function getId() {
+    function getId() {
         return $this->id;
     }
 

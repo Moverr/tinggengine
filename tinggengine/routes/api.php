@@ -33,3 +33,14 @@ Route::post('products/categories/', 'ProductCategoryController@save');
 Route::put('products/categories/', 'ProductCategoryController@update');
 Route::delete('products/categories/{id}', 'ProductCategoryController@archive');
 Route::get('products/categories/{offset}/{limit?}', 'ProductCategoryController@index');
+
+
+//Products 
+Route::get('products/', 'ProductController@index');
+Route::get('products/{id}', 'ProductController@get');
+Route::post('products/', 'ProductController@save');
+Route::put('products/', 'ProductController@update');
+Route::delete('products/{id}', 'ProductController@archive');
+Route::get('products/{offset}/{limit?}', 'ProductController@index');
+
+
