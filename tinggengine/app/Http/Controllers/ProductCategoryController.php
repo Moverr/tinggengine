@@ -21,7 +21,13 @@ class ProductCategoryController extends Controller {
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
         $productCategories = ProductCategories::offset($offset)->limit($limit)->get();
-        return json_encode($productCategories);
+        
+        $productcategoryResponses = [];
+        foreach ($productCategories as $record) {
+            $productcategoryResponses [] = $this->populate($record);
+        }
+        
+        return json_encode($productcategoryResponses);
     }
 
     public function get(Request $request, $id) {
