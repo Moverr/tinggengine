@@ -132,7 +132,7 @@ class ProductController extends Controller {
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
 
-        $product = ProductCategories::where('id', $id)->first();
+        $product = Products::where('id', $id)->first();
         if ($product == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
@@ -148,6 +148,7 @@ class ProductController extends Controller {
         $productCategoryResponse->setCategory($products->category_id);
         $productCategoryResponse->setDateCreated($products->date_created);
         $productCategoryResponse->setCreatedBy($products->created_by);
+        $productCategoryResponse->setStatus($products->status);
         return $productCategoryResponse;
     }
 

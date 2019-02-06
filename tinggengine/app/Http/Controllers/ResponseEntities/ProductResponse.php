@@ -18,6 +18,7 @@ class ProductResponse {
     private $id;
     private $name;
     private $code;
+    private $status;
     private $category;
     private $createdBy;
     private $dateCreated;
@@ -74,11 +75,20 @@ class ProductResponse {
         $this->dateCreated = $dateCreated;
     }
 
-    public function toJson() {
+    function getStatus() {
+        return $this->status;
+    }
+
+    function setStatus($status) {
+        $this->status = $status;
+    }
+
+        public function toJson() {
         return \GuzzleHttp\json_encode([
             'id' => $this->id,
             'name' => $this->name,
             'code' => $this->code,
+             'status' => $this->status,
             'category' => $this->category,
             'createdBy' => $this->createdBy,
             'dateCreated' => $this->dateCreated,
