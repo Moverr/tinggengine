@@ -7,7 +7,6 @@ use App\Http\Helpers\Utils;
 use App\ProductCategories;
 use App\Http\Controllers\RequestEntities\ProductCategoryRequest;
 use App\Http\Controllers\ResponseEntities\ProductCategoryResponse;
- 
 
 class ProductCategoryController extends Controller {
 
@@ -45,9 +44,15 @@ class ProductCategoryController extends Controller {
 
         $name = $request['name'];
         $code = $request['code'];
+        $createdBy = $autneticaton_response->getId();
 
         $productCategoryRequest = new ProductCategoryRequest($name, $code);
         $productCategoryRequest->validate();
+
+        //set the author of the system :: 
+        $productCategoryRequest->setCreatedBy($createdBy);
+
+
 
         $productCategory = ProductCategories::where('name', $name)
                 ->where('code', $code)
@@ -60,10 +65,11 @@ class ProductCategoryController extends Controller {
         $productCategory->name = $name;
         $productCategory->code = $code;
         $productCategory->status = 'ACTIVE';
+        $productCategory->created_by = $createdBy;
         $productCategory->save();
 
-        $productResponse = $this->populate($productCategory);
-        return $productResponse->toJson();
+//        $productResponse = $this->populate($productCategory);
+        return null;
     }
 
     public function update(Request $request) {

@@ -55,7 +55,8 @@ class UsersController extends Controller {
         $loginRequest->setUsername($username);
         $loginRequest->validate();
 
-        return $this->util->validateUser($username, $password);
+        $response = $this->util->validateUser($username, $password);
+        return $response->toJson();
     }
 
     public function save(Request $request) {
