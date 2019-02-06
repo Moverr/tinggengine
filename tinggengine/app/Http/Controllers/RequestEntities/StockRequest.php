@@ -138,7 +138,7 @@ class StockRequest {
 
 
 
-        if ($this->getUnit_measure() != $this->getRepassword()) {
+        if ($this->getUnit_measure() == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException(" Unit measure is Mandatory");
         }
 

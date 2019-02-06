@@ -44,3 +44,14 @@ Route::delete('products/{id}', 'ProductController@archive');
 Route::get('products/{offset}/{limit?}', 'ProductController@index');
 
 
+
+
+//Stock 
+Route::get('stock/', 'StockController@index');
+Route::get('stock/{id}', 'StockController@get');
+Route::post('stock/', 'StockController@save');
+Route::put('stock/', 'StockController@update');
+Route::delete('stock/{id}', 'StockController@archive');
+Route::get('stock/{offset}/{limit?}', 'StockController@index');
+
+

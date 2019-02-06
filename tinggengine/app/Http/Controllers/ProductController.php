@@ -40,7 +40,7 @@ class ProductController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
-        $productResponse = $this->populate($products);
+        $productResponse = $this->populate($products[0]);
         return $productResponse->toJson();
     }
 
@@ -51,9 +51,17 @@ class ProductController extends Controller {
         $name = $request['name'];
         $code = $request['code'];
         $categoryId = $request['categoryId'];
+        $createdBy = $autneticaton_response->getId();
+
 
         $productCategoryRequest = new ProductRequest($name, $code, $categoryId);
         $productCategoryRequest->validate();
+
+        //set the author of the system :: 
+        $productCategoryRequest->setCreatedBy($createdBy);
+
+//        add a composite key to avoid multiple inserts of the same
+//                ->where('category_id', $categoryId)
 
         $products = Products::where('name', $name)
                 ->where('code', $code)
@@ -67,6 +75,8 @@ class ProductController extends Controller {
         $products->code = $code;
         $products->category_id = $categoryId;
         $products->status = 'ACTIVE';
+        $products->created_by = $createdBy;
+
         $products->save();
 
         $productResponse = $this->populate($products);
@@ -122,7 +132,7 @@ class ProductController extends Controller {
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
 
-        $product = ProductCategories::where('id', $id)->first();
+        $product = Products::where('id', $id)->first();
         if ($product == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
@@ -138,6 +148,7 @@ class ProductController extends Controller {
         $productCategoryResponse->setCategory($products->category_id);
         $productCategoryResponse->setDateCreated($products->date_created);
         $productCategoryResponse->setCreatedBy($products->created_by);
+        $productCategoryResponse->setStatus($products->status);
         return $productCategoryResponse;
     }
 
