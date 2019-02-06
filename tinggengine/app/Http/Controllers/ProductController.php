@@ -60,6 +60,8 @@ class ProductController extends Controller {
         //set the author of the system :: 
         $productCategoryRequest->setCreatedBy($createdBy);
 
+//        add a composite key to avoid multiple inserts of the same
+//                ->where('category_id', $categoryId)
 
         $products = Products::where('name', $name)
                 ->where('code', $code)
