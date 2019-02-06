@@ -27,9 +27,9 @@ Route::get('users/{offset}/{limit?}', 'Users@index');
 
 
 //Product Categories
-Route::get('products/categories/', 'UsersController@index');
-Route::get('products/categories//{id}', 'UsersController@get');
-Route::post('products/categories//', 'UsersController@save');
-Route::put('products/categories//', 'UsersController@update');
-Route::delete('products/categories//{id}', 'UsersController@archive');
-Route::get('products/categories//{offset}/{limit?}', 'Users@index');
+Route::get('products/categories/', 'ProductCategoryController@index');
+Route::get('products/categories/{id}', 'ProductCategoryController@get');
+Route::post('products/categories/', 'ProductCategoryController@save');
+Route::put('products/categories/', 'ProductCategoryController@update');
+Route::delete('products/categories/{id}', 'ProductCategoryController@archive');
+Route::get('products/categories/{offset}/{limit?}', 'ProductCategoryController@index');
