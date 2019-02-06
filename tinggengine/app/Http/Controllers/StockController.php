@@ -7,6 +7,7 @@ use App\Http\Helpers\Utils;
 use App\Stock;
 use App\Http\Controllers\RequestEntities\StockRequest;
 use App\Http\Controllers\ResponseEntities\StockResponse;
+use App\StockTransactions;
 
 class StockController extends Controller {
 
@@ -54,14 +55,12 @@ class StockController extends Controller {
         $createdBy = $autneticaton_response->getId();
 
 
-        //todo: you can create the same stock for the same product 
-//        you should not have the same product for the same in multipes        
-        $existing_stock = Products::where('product_id', $product_id)
+
+        $existing_stock = Stock::where('product_id', $product_id)
                 ->first();
         if ($existing_stock != null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException(" Stock exists under the same product , kindly update instead of creating new stock ");
         }
-
 
 
         $stockRequest = new StockRequest($product_id, $reference_id, $quantity, $unit_selling_price, $unit_purchase_price, $unit_measure);
@@ -77,6 +76,23 @@ class StockController extends Controller {
         $stock->created_by = $createdBy;
         $stock->status = 'ACTIVE';
         $stock->save();
+
+        //todo create stock transaction history
+
+        $stockTransaction = new StockTransactions();
+        $stockTransaction->stock_id = $stock->id;        
+        $stockTransaction->quantity = $quantity;
+        $stockTransaction->unit_selling_price = $unit_selling_price;
+        $stockTransaction->unit_purchase_price = $unit_purchase_price;
+        $stockTransaction->unit_measure = $unit_measure;
+        $stockTransaction->created_by = $createdBy;
+        $stockTransaction->status = 'ACTIVE';
+        $stockTransaction->transaction_type = 'IN';
+        $stockTransaction->save();
+
+
+
+
 
         $stockResponse = $this->populate($stock);
         return $stockResponse->toJson();
