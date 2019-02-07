@@ -63,6 +63,7 @@ class StockController extends Controller {
         }
 
 
+
         $stockRequest = new StockRequest($product_id, $reference_id, $quantity, $unit_selling_price, $unit_purchase_price, $unit_measure);
         $stockRequest->validate();
 
@@ -80,7 +81,7 @@ class StockController extends Controller {
         //todo create stock transaction history
 
         $stockTransaction = new StockTransactions();
-        $stockTransaction->stock_id = $stock->id;        
+        $stockTransaction->stock_id = $stock->id;
         $stockTransaction->quantity = $quantity;
         $stockTransaction->unit_selling_price = $unit_selling_price;
         $stockTransaction->unit_purchase_price = $unit_purchase_price;
@@ -89,7 +90,7 @@ class StockController extends Controller {
         $stockTransaction->status = 'ACTIVE';
         $stockTransaction->transaction_type = 'IN';
         $stockTransaction->save();
- 
+
 
         $stockResponse = $this->populate($stock);
         return $stockResponse->toJson();
@@ -106,6 +107,7 @@ class StockController extends Controller {
         $unit_selling_price = $request['unit_selling_price'];
         $unit_purchase_price = $request['unit_purchase_price'];
         $unit_measure = $request['unit_measure'];
+        $createdBy = $autneticaton_response->getId();
 
         $stockRequest = new StockRequest($product_id, $reference_id, $quantity, $unit_selling_price, $unit_purchase_price, $unit_measure);
 
@@ -124,13 +126,41 @@ class StockController extends Controller {
 
 
 
+        $stock = new Stock();
         $stock->product_id = $product_id;
-        $stock->reference_id = "ReferenceID";
+        $stock->reference_id = $stockRequest->getReference_id();
         $stock->quantity = $quantity;
         $stock->unit_selling_price = $unit_selling_price;
-        $stock->unit_purchase_price = null;
+        $stock->unit_purchase_price = $unit_purchase_price;
+        $stock->unit_measure = $unit_measure;
+        $stock->created_by = $createdBy;
         $stock->status = 'ACTIVE';
         $stock->update();
+
+
+
+        $stockTransactions = StockTransactions::where('reference_id', $stockRequest->getReference_id())->get();
+        if ($stockTransactions == null) {
+
+            foreach ($stockTransactions as $record) {
+                $stockTransaction = new StockTransactions();
+                $stockTransaction->status = 'ARCHIVED';
+                $stockTransaction->id = $record->id;
+                $stockTransaction->update();
+            }
+        }
+
+        $stockTransaction = new StockTransactions();
+        $stockTransaction->stock_id = $stock->id;
+        $stockTransaction->quantity = $quantity;
+        $stockTransaction->unit_selling_price = $unit_selling_price;
+        $stockTransaction->unit_purchase_price = $unit_purchase_price;
+        $stockTransaction->unit_measure = $unit_measure;
+        $stockTransaction->created_by = $createdBy;
+        $stockTransaction->status = 'ACTIVE';
+        $stockTransaction->transaction_type = 'IN';
+        $stockTransaction->save();
+
 
         $stockResponse = $this->populate($stock);
         return $stockResponse->toJson();
