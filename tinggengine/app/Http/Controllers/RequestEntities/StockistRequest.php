@@ -22,12 +22,11 @@ class StockistRequest {
     private $phonenumber;
     private $username;
     private $password;
-    
-    
+
     function __construct() {
         
     }
-    
+
     function getFirstname() {
         return $this->firstname;
     }
@@ -76,51 +75,29 @@ class StockistRequest {
         $this->password = $password;
     }
 
-
-    
-     function validate() {
+    function validate() {
 
 
 
-        if ($this->getProduct_id() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product  is Mandatory");
+        if ($this->getFirstname() == null && $this->getLastname()) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Names are  Mandatory");
         }
 
-        if ($this->getReference_id() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Reference ID   is Mandatory");
-        }
-
-
-
-        if ($this->getQuantity() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Quantity is Mandatory");
+        if ($this->getCompanyname() == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Company/Shop Name  is Mandatory");
         }
 
 
 
-        if ($this->getUnit_selling_price() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException(" Unit Selling Price  is Mandatory");
+        if ($this->getPhonenumber() == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Default Phone Number  is Mandatory");
         }
 
 
-        if ($this->getUnit_purchase_price() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException(" Unit Purchase Price  is Mandatory");
-        }
-
-
-
-
-        if ($this->getUnit_measure() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException(" Unit measure is Mandatory");
-        }
 
 
 
         return true;
     }
-
-    
-    
-
 
 }
