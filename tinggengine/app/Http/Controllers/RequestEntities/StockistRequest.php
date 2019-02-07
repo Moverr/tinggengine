@@ -16,15 +16,23 @@ namespace App\Http\Controllers\RequestEntities;
 class StockistRequest {
 
     //put your code here
+    private $id;
     private $firstname;
     private $lastname;
     private $companyname;
+    private $countrycode;
     private $phonenumber;
     private $username;
     private $password;
+    private $status;
+    private $datecreated;
 
     function __construct() {
         
+    }
+
+    function getId() {
+        return $this->id;
     }
 
     function getFirstname() {
@@ -39,6 +47,10 @@ class StockistRequest {
         return $this->companyname;
     }
 
+    function getCountrycode() {
+        return $this->countrycode;
+    }
+
     function getPhonenumber() {
         return $this->phonenumber;
     }
@@ -49,6 +61,18 @@ class StockistRequest {
 
     function getPassword() {
         return $this->password;
+    }
+
+    function getStatus() {
+        return $this->status;
+    }
+
+    function getDatecreated() {
+        return $this->datecreated;
+    }
+
+    function setId($id) {
+        $this->id = $id;
     }
 
     function setFirstname($firstname) {
@@ -63,6 +87,10 @@ class StockistRequest {
         $this->companyname = $companyname;
     }
 
+    function setCountrycode($countrycode) {
+        $this->countrycode = $countrycode;
+    }
+
     function setPhonenumber($phonenumber) {
         $this->phonenumber = $phonenumber;
     }
@@ -75,10 +103,15 @@ class StockistRequest {
         $this->password = $password;
     }
 
+    function setStatus($status) {
+        $this->status = $status;
+    }
+
+    function setDatecreated($datecreated) {
+        $this->datecreated = $datecreated;
+    }
+
     function validate() {
-
-
-
         if ($this->getFirstname() == null && $this->getLastname()) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Names are  Mandatory");
         }
