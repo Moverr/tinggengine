@@ -118,8 +118,8 @@ class StockController extends Controller {
         $stockRequest->setId($request['id']);
         $stockRequest->validate();
 
-        $stockRequest = Stock::where('id', $stockRequest->getId())->first();
-        if ($stockRequest == null) {
+        $stockResult = Stock::where('id', $stockRequest->getId())->first();
+        if ($stockResult == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
@@ -128,19 +128,20 @@ class StockController extends Controller {
 
         $stock = new Stock();
         $stock->product_id = $product_id;
-        $stock->reference_id = $stockRequest->getReference_id();
+        $stock->reference_id = $stockResult->reference_id;
         $stock->quantity = $quantity;
         $stock->unit_selling_price = $unit_selling_price;
         $stock->unit_purchase_price = $unit_purchase_price;
         $stock->unit_measure = $unit_measure;
         $stock->created_by = $createdBy;
         $stock->status = 'ACTIVE';
+
         $stock->update();
 
 
 
         $stockTransaction = new StockTransactions();
-        $stockTransaction->stock_id = $stock->id;
+        $stockTransaction->stock_id = $stockRequest->getId();
         $stockTransaction->quantity = $quantity;
         $stockTransaction->unit_selling_price = $unit_selling_price;
         $stockTransaction->unit_purchase_price = $unit_purchase_price;
