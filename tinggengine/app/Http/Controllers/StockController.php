@@ -139,17 +139,6 @@ class StockController extends Controller {
 
 
 
-        $stockTransactions = StockTransactions::where('reference_id', $stockRequest->getReference_id())->get();
-        if ($stockTransactions == null) {
-
-            foreach ($stockTransactions as $record) {
-                $stockTransaction = new StockTransactions();
-                $stockTransaction->status = 'ARCHIVED';
-                $stockTransaction->id = $record->id;
-                $stockTransaction->update();
-            }
-        }
-
         $stockTransaction = new StockTransactions();
         $stockTransaction->stock_id = $stock->id;
         $stockTransaction->quantity = $quantity;
@@ -158,7 +147,7 @@ class StockController extends Controller {
         $stockTransaction->unit_measure = $unit_measure;
         $stockTransaction->created_by = $createdBy;
         $stockTransaction->status = 'ACTIVE';
-        $stockTransaction->transaction_type = 'IN';
+        $stockTransaction->transaction_type = 'UPDATE';
         $stockTransaction->save();
 
 
