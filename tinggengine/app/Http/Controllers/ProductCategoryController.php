@@ -109,7 +109,8 @@ class ProductCategoryController extends Controller {
         }
 
 
-
+        $productCategory = new ProductCategories();
+        $productCategory->id = $productCategoryRequest->getId();
         $productCategory->name = $name;
         $productCategory->code = $code;
         $productCategory->update();
