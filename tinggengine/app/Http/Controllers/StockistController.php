@@ -37,7 +37,7 @@ class StockistController extends Controller {
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
         $stockists = Stockists::where('id', $id)->get();
-        if ($stockists == null) {
+        if ($stockists == null  || count($stockists) == 0 ) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
@@ -45,13 +45,14 @@ class StockistController extends Controller {
         return $stockistReference->toJson();
     }
 
-    public function validate(Request $request, $reference_id) {
+    public function checkrefence(Request $request, $reference_id) {
 
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
         $stockists = Stockists::where('reference_id', $reference_id)->get();
-        if ($stockists == null) {
+       
+        if ($stockists == null || count($stockists) == 0  ) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
