@@ -22,11 +22,10 @@ class StockistResponse {
     private $reference_id;
     private $countrycode;
     private $phonenumber;
-    private $username;
+    private $joindate;
     private $status;
     private $datecreated;
     private $createdBy;
-    private $joindate;
 
     function __construct() {
         
@@ -48,6 +47,10 @@ class StockistResponse {
         return $this->companyname;
     }
 
+    function getReference_id() {
+        return $this->reference_id;
+    }
+
     function getCountrycode() {
         return $this->countrycode;
     }
@@ -56,8 +59,8 @@ class StockistResponse {
         return $this->phonenumber;
     }
 
-    function getUsername() {
-        return $this->username;
+    function getJoindate() {
+        return $this->joindate;
     }
 
     function getStatus() {
@@ -66,6 +69,10 @@ class StockistResponse {
 
     function getDatecreated() {
         return $this->datecreated;
+    }
+
+    function getCreatedBy() {
+        return $this->createdBy;
     }
 
     function setId($id) {
@@ -84,6 +91,10 @@ class StockistResponse {
         $this->companyname = $companyname;
     }
 
+    function setReference_id($reference_id) {
+        $this->reference_id = $reference_id;
+    }
+
     function setCountrycode($countrycode) {
         $this->countrycode = $countrycode;
     }
@@ -92,8 +103,8 @@ class StockistResponse {
         $this->phonenumber = $phonenumber;
     }
 
-    function setUsername($username) {
-        $this->username = $username;
+    function setJoindate($joindate) {
+        $this->joindate = $joindate;
     }
 
     function setStatus($status) {
@@ -104,31 +115,11 @@ class StockistResponse {
         $this->datecreated = $datecreated;
     }
 
-    function getReference_id() {
-        return $this->reference_id;
-    }
-
-    function setReference_id($reference_id) {
-        $this->reference_id = $reference_id;
-    }
-
-    function getCreatedBy() {
-        return $this->createdBy;
-    }
-
     function setCreatedBy($createdBy) {
         $this->createdBy = $createdBy;
     }
 
-    function getJoindate() {
-        return $this->joindate;
-    }
-
-    function setJoindate($joindate) {
-        $this->joindate = $joindate;
-    }
-
-    public function toJson() {
+        public function toJson() {
         return \GuzzleHttp\json_encode([
             'id' => $this->id,
             'name' => $this->firstname . '' . $this->lastname,

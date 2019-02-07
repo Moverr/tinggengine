@@ -59,6 +59,7 @@ Route::get('stock/{offset}/{limit?}', 'StockController@index');
 
 //Stock 
 Route::get('stockist/', 'StockistController@index');
+Route::get('stockist/validatereference/{reference_id}', 'StockistController@checkrefence');
 Route::get('stockist/{id}', 'StockistController@get');
 Route::post('stockist/', 'StockistController@save');
 Route::put('stockist/', 'StockistController@update');

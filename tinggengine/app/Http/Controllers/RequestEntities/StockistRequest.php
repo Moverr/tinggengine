@@ -26,7 +26,8 @@ class StockistRequest {
     private $password;
     private $status;
     private $datecreated;
-
+    private $joindate;
+    
     function __construct() {
         
     }
@@ -111,7 +112,16 @@ class StockistRequest {
         $this->datecreated = $datecreated;
     }
 
-    function validate() {
+    
+    function getJoindate() {
+        return $this->joindate;
+    }
+
+    function setJoindate($joindate) {
+        $this->joindate = $joindate;
+    }
+
+        function validate() {
         if ($this->getFirstname() == null && $this->getLastname()) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Names are  Mandatory");
         }
