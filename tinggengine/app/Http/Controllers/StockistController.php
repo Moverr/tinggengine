@@ -78,6 +78,7 @@ class StockistController extends Controller {
             $stockistRequest->setLastname($namearray[1]);
             $stockistRequest->setCountrycode($countrycode);
             $stockistRequest->setPhonenumber($phonenumber);
+            $stockistRequest->setCompanyname($companyname);
         }
 
 
