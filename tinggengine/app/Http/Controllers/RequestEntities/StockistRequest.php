@@ -88,13 +88,9 @@ class StockistRequest {
         }
 
 
-
         if ($this->getPhonenumber() == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Default Phone Number  is Mandatory");
         }
-
-
-
 
 
         return true;
