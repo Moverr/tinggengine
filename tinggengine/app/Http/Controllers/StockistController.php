@@ -164,20 +164,28 @@ class StockistController extends Controller {
         $stockist->user_id = 1;
         $stockist->country_code = $stockistRequest->getCountrycode();
         $stockist->phone_number = $stockistRequest->getPhonenumber();
-         
+
         $stockist->join_date = $joindate;
         $stockist->id = $request['id'];
         $stockist->updated_by = $updatedBy;
 
         $stockist->update();
-        
+
         $stockistResponse = $this->populate($stockist);
         return $stockistResponse->toJson();
-        
     }
 
     public function archive(Request $request, $id) {
-        
+        $authentic = $request->header('authentication');
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
+
+
+        $stockist = Stockists::where('id', $id)->first();
+        if ($stockist == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+        }
+        $stockist->status = 'ARCHIVED';
+        $stockist->update();
     }
 
     public function populate($stockist) {
