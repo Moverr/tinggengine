@@ -70,19 +70,30 @@ class StockistController extends Controller {
         $phonenumber = $request['phonenumber'];
         $countrycode = $request['countrcode'];
 
-        //---- 
         $stockistRequest = new StockistRequest();
         if ($names != null) {
             $namearray = split(" ", $names);
             $stockistRequest->setFirstname($namearray[0]);
             $stockistRequest->setLastname($namearray[1]);
-            $stockistRequest->setCountrycode($countrycode);
-            $stockistRequest->setPhonenumber($phonenumber);
-            $stockistRequest->setCompanyname($companyname);
         }
 
+        $stockistRequest->setCountrycode($countrycode);
+        $stockistRequest->setPhonenumber($phonenumber);
+        $stockistRequest->setCompanyname($companyname);
+        
+        //todo: validate 
+        $stockistRequest->validate();
+        
+        //todo: check if there is a stockist with the same phone number
+        
+        $stockists = Stockists::where('phone_number', $phonenumber)->get();
 
+        if ($stockists != null || count($stockists) >  0) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Stockists exists in the database with same phone number ");
+        }
+         
 
+        //todo validate
         //todo:  validate the request
         //todo: create user  
         //todo: create stocist:. if username exist with the same name, and there is non :: stockist with the same phone number
