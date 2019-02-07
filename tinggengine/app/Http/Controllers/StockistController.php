@@ -7,6 +7,7 @@ use App\Http\Helpers\Utils;
 use App\Http\Controllers\ResponseEntities\StockistResponse;
 use App\Http\Controllers\RequestEntities\StockistRequest;
 use App\Stockists;
+use App\User;
 
 class StockistController extends Controller {
 
@@ -80,20 +81,26 @@ class StockistController extends Controller {
         $stockistRequest->setCountrycode($countrycode);
         $stockistRequest->setPhonenumber($phonenumber);
         $stockistRequest->setCompanyname($companyname);
-        
+
         //todo: validate 
         $stockistRequest->validate();
-        
+
         //todo: check if there is a stockist with the same phone number
-        
+
         $stockists = Stockists::where('phone_number', $phonenumber)->get();
 
-        if ($stockists != null || count($stockists) >  0) {
+        if ($stockists != null || count($stockists) > 0) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Stockists exists in the database with same phone number ");
         }
-         
 
-        //todo validate
+        //todo: create user :: 
+        $user = new User();
+        $user->username = $phonenumber;
+        $user->password = Utils::HashPassword("client123");
+        $user->status = 'ACTIVE';
+        $user->save();
+
+
         //todo:  validate the request
         //todo: create user  
         //todo: create stocist:. if username exist with the same name, and there is non :: stockist with the same phone number
