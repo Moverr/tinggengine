@@ -19,11 +19,13 @@ class StockistResponse {
     private $firstname;
     private $lastname;
     private $companyname;
+    private $reference_id;
     private $countrycode;
     private $phonenumber;
     private $username;
     private $status;
     private $datecreated;
+    private $createdBy;
 
     function __construct() {
         
@@ -99,6 +101,33 @@ class StockistResponse {
 
     function setDatecreated($datecreated) {
         $this->datecreated = $datecreated;
+    }
+
+    function getReference_id() {
+        return $this->reference_id;
+    }
+
+    function setReference_id($reference_id) {
+        $this->reference_id = $reference_id;
+    }
+
+    function getCreatedBy() {
+        return $this->createdBy;
+    }
+
+    function setCreatedBy($createdBy) {
+        $this->createdBy = $createdBy;
+    }
+
+    public function toJson() {
+        return \GuzzleHttp\json_encode([
+            'id' => $this->id,
+            'name' => $this->firstname . '' . $this->lastname,
+            'bussiness' => $this->companyname,
+            'reference_id' => $this->reference_id,
+            'createdBy' => $this->createdBy,
+            'dateUpdated' => $this->dateUpdated
+        ]);
     }
 
 }
