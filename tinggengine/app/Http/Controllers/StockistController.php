@@ -115,6 +115,13 @@ class StockistController extends Controller {
 
         //todo: response: the missing link is the profile ::
         $stockitResponse = new StockistResponse();
+        $stockitResponse->setCompanyname($companyname);
+        $stockitResponse->setCountrycode($countrycode);
+        $stockitResponse->setPhonenumber($phonenumber);
+        $stockitResponse->$stockist->reference_id;
+
+
+        return $stockitResponse->toJson();
     }
 
     public function update(Request $request) {
