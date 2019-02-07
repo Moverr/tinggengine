@@ -123,6 +123,7 @@ class StockistResponse {
         return \GuzzleHttp\json_encode([
             'id' => $this->id,
             'name' => $this->firstname . '' . $this->lastname,
+            'phonenuber' => $this->phonenumber,
             'bussiness' => $this->companyname,
             'reference_id' => $this->reference_id,
             'joindate' => $this->joindate,
