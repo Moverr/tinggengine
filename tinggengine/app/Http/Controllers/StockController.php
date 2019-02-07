@@ -63,6 +63,7 @@ class StockController extends Controller {
         }
 
 
+
         $stockRequest = new StockRequest($product_id, $reference_id, $quantity, $unit_selling_price, $unit_purchase_price, $unit_measure);
         $stockRequest->validate();
 
@@ -80,7 +81,7 @@ class StockController extends Controller {
         //todo create stock transaction history
 
         $stockTransaction = new StockTransactions();
-        $stockTransaction->stock_id = $stock->id;        
+        $stockTransaction->stock_id = $stock->id;
         $stockTransaction->quantity = $quantity;
         $stockTransaction->unit_selling_price = $unit_selling_price;
         $stockTransaction->unit_purchase_price = $unit_purchase_price;
@@ -89,9 +90,6 @@ class StockController extends Controller {
         $stockTransaction->status = 'ACTIVE';
         $stockTransaction->transaction_type = 'IN';
         $stockTransaction->save();
-
-
-
 
 
         $stockResponse = $this->populate($stock);
@@ -109,6 +107,7 @@ class StockController extends Controller {
         $unit_selling_price = $request['unit_selling_price'];
         $unit_purchase_price = $request['unit_purchase_price'];
         $unit_measure = $request['unit_measure'];
+        $createdBy = $autneticaton_response->getId();
 
         $stockRequest = new StockRequest($product_id, $reference_id, $quantity, $unit_selling_price, $unit_purchase_price, $unit_measure);
 
@@ -119,21 +118,39 @@ class StockController extends Controller {
         $stockRequest->setId($request['id']);
         $stockRequest->validate();
 
-        $stockRequest = Stock::where('id', $stockRequest->getId())->first();
-        if ($product == null) {
+        $stockResult = Stock::where('id', $stockRequest->getId())->first();
+        if ($stockResult == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
 
 
 
+        $stock = new Stock();
         $stock->product_id = $product_id;
-        $stock->reference_id = "ReferenceID";
+        $stock->reference_id = $stockResult->reference_id;
         $stock->quantity = $quantity;
         $stock->unit_selling_price = $unit_selling_price;
-        $stock->unit_purchase_price = null;
+        $stock->unit_purchase_price = $unit_purchase_price;
+        $stock->unit_measure = $unit_measure;
+        $stock->created_by = $createdBy;
         $stock->status = 'ACTIVE';
+
         $stock->update();
+
+
+
+        $stockTransaction = new StockTransactions();
+        $stockTransaction->stock_id = $stockRequest->getId();
+        $stockTransaction->quantity = $quantity;
+        $stockTransaction->unit_selling_price = $unit_selling_price;
+        $stockTransaction->unit_purchase_price = $unit_purchase_price;
+        $stockTransaction->unit_measure = $unit_measure;
+        $stockTransaction->created_by = $createdBy;
+        $stockTransaction->status = 'ACTIVE';
+        $stockTransaction->transaction_type = 'UPDATE';
+        $stockTransaction->save();
+
 
         $stockResponse = $this->populate($stock);
         return $stockResponse->toJson();
@@ -145,12 +162,12 @@ class StockController extends Controller {
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
 
-        $product = ProductCategories::where('id', $id)->first();
-        if ($product == null) {
+        $stock = Stock::where('id', $id)->first();
+        if ($stock == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
-        $product->status = 'ARCHIVED';
-        $product->update();
+        $stock->status = 'ARCHIVED';
+        $stock->update();
     }
 
     public function populate($stock) {

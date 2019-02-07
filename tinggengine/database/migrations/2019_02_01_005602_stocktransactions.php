@@ -25,7 +25,7 @@ class Stocktransactions extends Migration {
             $table->decimal('unit_selling_price', 5, 2);
             $table->decimal('unit_purchase_price', 5, 2);
             $table->string('unit_measure');
-            $table->enum('transaction_type', array('IN', 'OUT'));
+            $table->enum('transaction_type', array('IN', 'OUT', 'UPDATE'));
             $table->enum('status', array('ACTIVE', 'ARCHIVED'));
             $table->bigInteger('created_by')->unsigned();
             $table->timestamp('date_created')->default(DB::raw('CURRENT_TIMESTAMP'));

@@ -22,6 +22,8 @@ class Stockists extends Migration
             $table->string('reference_id')->unique();
             $table->datetime('join_date');
             $table->bigInteger('user_id');
+            $table->bigInteger('country_code');
+            $table->bigInteger('phone_number');            
             $table->enum('status',array('ACTIVE','ARCHIVED'));            
             $table->bigInteger('created_by')->unsigned();
             $table->timestamp('date_created')->default(DB::raw('CURRENT_TIMESTAMP'));

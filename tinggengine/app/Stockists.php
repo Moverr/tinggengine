@@ -12,7 +12,7 @@ class Stockists extends Model {
      * @var array
      */
     protected $fillable = [
-        'reference_id', 'join_date', 'user_id', 'status'
+        'reference_id', 'join_date','phone_number', 'user_id', 'status'
     ];
 
     /**

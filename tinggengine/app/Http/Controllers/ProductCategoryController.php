@@ -75,7 +75,7 @@ class ProductCategoryController extends Controller {
         $productCategory->save();
 
         $productResponse = $this->populate($productCategory);
-        return $productResponse;
+        return $productResponse->toJson();
     }
 
     public function update(Request $request) {
@@ -109,7 +109,8 @@ class ProductCategoryController extends Controller {
         }
 
 
-
+        $productCategory = new ProductCategories();
+        $productCategory->id = $productCategoryRequest->getId();
         $productCategory->name = $name;
         $productCategory->code = $code;
         $productCategory->update();

@@ -55,3 +55,15 @@ Route::delete('stock/{id}', 'StockController@archive');
 Route::get('stock/{offset}/{limit?}', 'StockController@index');
 
 
+
+
+//Stock 
+Route::get('stockist/', 'StockistController@index');
+Route::get('stockist/{id}', 'StockistController@get');
+Route::post('stockist/', 'StockistController@save');
+Route::put('stockist/', 'StockistController@update');
+Route::delete('stockist/{id}', 'StockistController@archive');
+Route::get('stockist/{offset}/{limit?}', 'StockistController@index');
+
+
+
