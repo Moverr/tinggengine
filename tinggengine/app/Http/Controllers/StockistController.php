@@ -63,6 +63,7 @@ class StockistController extends Controller {
 
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
+        $createdBy = $autneticaton_response->getId();
 
 
         $names = $request['names'];
@@ -86,10 +87,9 @@ class StockistController extends Controller {
         $stockistRequest->validate();
 
         //todo: check if there is a stockist with the same phone number
-
         $stockists = Stockists::where('phone_number', $phonenumber)->get();
 
-        if ($stockists != null || count($stockists) > 0) {
+        if (count($stockists) > 0) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Stockists exists in the database with same phone number ");
         }
 
@@ -102,19 +102,16 @@ class StockistController extends Controller {
 
 
         //todo:  validate the request
-        //todo: create user  
-        //todo: create stocist:. if username exist with the same name, and there is non :: stockist with the same phone number
-        //create one  and move ::
-        //todo: create a 
-
-
-
-        $reference_id = "refrence_id";
-        $quantity = $request['quantity'];
-        $unit_selling_price = $request['unit_selling_price'];
-        $unit_purchase_price = $request['unit_purchase_price'];
-        $unit_measure = $request['unit_measure'];
-        $createdBy = $autneticaton_response->getId();
+        $stockist = new Stockists();
+        $stockist->reference_id = $this->util->incrementalHash();
+        $stockist->join_date = $stockistRequest->getJoindate();
+        $stockist->user_id = $user->id;
+        $stockist->country_code = $stockistRequest->getCountrycode();
+        $stockist->phone_number = $stockistRequest->getPhonenumber();
+        $stockist->created_by = $createdBy;
+        $stockist->status = 'ACTIVE';
+        $stockist->join_date = date('Y-m-d');
+        $stockist->save();
     }
 
     public function update(Request $request) {
