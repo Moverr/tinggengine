@@ -26,6 +26,7 @@ class StockistResponse {
     private $status;
     private $datecreated;
     private $createdBy;
+    private $joindate;
 
     function __construct() {
         
@@ -119,14 +120,23 @@ class StockistResponse {
         $this->createdBy = $createdBy;
     }
 
+    function getJoindate() {
+        return $this->joindate;
+    }
+
+    function setJoindate($joindate) {
+        $this->joindate = $joindate;
+    }
+
     public function toJson() {
         return \GuzzleHttp\json_encode([
             'id' => $this->id,
             'name' => $this->firstname . '' . $this->lastname,
             'bussiness' => $this->companyname,
             'reference_id' => $this->reference_id,
+            'joindate' => $this->joindate,
             'createdBy' => $this->createdBy,
-            'dateUpdated' => $this->dateUpdated
+            'date_created' => $this->datecreated
         ]);
     }
 
