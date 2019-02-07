@@ -100,7 +100,6 @@ class StockistController extends Controller {
         $user->status = 'ACTIVE';
         $user->save();
 
-
         //todo:  validate the request
         $stockist = new Stockists();
         $stockist->reference_id = $this->util->incrementalHash();
@@ -110,8 +109,12 @@ class StockistController extends Controller {
         $stockist->phone_number = $stockistRequest->getPhonenumber();
         $stockist->created_by = $createdBy;
         $stockist->status = 'ACTIVE';
-        $stockist->join_date = date('Y-m-d');
+        $stockist->join_date = $joindate;
         $stockist->save();
+
+
+        //todo: response: the missing link is the profile ::
+        $stockitResponse = new StockistResponse();
     }
 
     public function update(Request $request) {
