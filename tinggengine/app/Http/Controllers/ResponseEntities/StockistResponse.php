@@ -14,21 +14,21 @@ namespace App\Http\Controllers\ResponseEntities;
  * @author mover  
  */
 class StockistResponse {
+
     private $id;
     private $firstname;
     private $lastname;
     private $companyname;
     private $countrycode;
     private $phonenumber;
-    private $username;    
+    private $username;
     private $status;
     private $datecreated;
-    
-    
+
     function __construct() {
         
     }
-    
+
     function getId() {
         return $this->id;
     }
@@ -100,7 +100,5 @@ class StockistResponse {
     function setDatecreated($datecreated) {
         $this->datecreated = $datecreated;
     }
-
-
 
 }
