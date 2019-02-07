@@ -93,18 +93,11 @@ class StockistController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Stockists exists in the database with same phone number ");
         }
 
-        //todo: create user :: 
-        $user = new User();
-        $user->username = $phonenumber;
-        $user->password = Utils::HashPassword("client123");
-        $user->status = 'ACTIVE';
-        $user->save();
-
         //todo:  validate the request
         $stockist = new Stockists();
         $stockist->reference_id = $this->util->incrementalHash();
         $stockist->join_date = $stockistRequest->getJoindate();
-        $stockist->user_id = $user->id;
+        $stockist->user_id = 1;
         $stockist->country_code = $stockistRequest->getCountrycode();
         $stockist->phone_number = $stockistRequest->getPhonenumber();
         $stockist->created_by = $createdBy;
@@ -112,16 +105,20 @@ class StockistController extends Controller {
         $stockist->join_date = $joindate;
         $stockist->save();
 
+        //todo: create user :: 
+        $user = new User();
+        $user->username = $phonenumber;
+        $user->password = Utils::HashPassword("client123");
+        $user->status = 'ACTIVE';
+        $user->save();
 
-        //todo: response: the missing link is the profile ::
-        $stockitResponse = new StockistResponse();
-        $stockitResponse->setCompanyname($companyname);
-        $stockitResponse->setCountrycode($countrycode);
-        $stockitResponse->setPhonenumber($phonenumber);
-        $stockitResponse->$stockist->reference_id;
 
+        $stockist->user_id = $user->id;
+        $stockist->update();
+        
+        $stockistResponse = $this->populate($stockist);
 
-        return $stockitResponse->toJson();
+        return $stockistResponse->toJson();
     }
 
     public function update(Request $request) {
