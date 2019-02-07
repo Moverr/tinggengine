@@ -119,7 +119,7 @@ class StockController extends Controller {
         $stockRequest->validate();
 
         $stockRequest = Stock::where('id', $stockRequest->getId())->first();
-        if ($product == null) {
+        if ($stockRequest == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
@@ -161,12 +161,12 @@ class StockController extends Controller {
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
 
-        $product = ProductCategories::where('id', $id)->first();
-        if ($product == null) {
+        $stock = Stock::where('id', $id)->first();
+        if ($stock == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
-        $product->status = 'ARCHIVED';
-        $product->update();
+        $stock->status = 'ARCHIVED';
+        $stock->update();
     }
 
     public function populate($stock) {
