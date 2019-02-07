@@ -89,10 +89,7 @@ class StockController extends Controller {
         $stockTransaction->status = 'ACTIVE';
         $stockTransaction->transaction_type = 'IN';
         $stockTransaction->save();
-
-
-
-
+ 
 
         $stockResponse = $this->populate($stock);
         return $stockResponse->toJson();
