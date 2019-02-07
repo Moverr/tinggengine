@@ -22,17 +22,41 @@ class StockistController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
         $stockists = Stockists::offset($offset)->limit($limit)->get();
-        $productResponses = [];
+        $stockistReference = [];
 
         foreach ($stockists as $record) {
-            $productResponses [] = $this->populate($record)->toJson();
+            $stockistReference [] = $this->populate($record)->toJson();
         }
 
-        return $productResponses;
+        return $stockistReference;
     }
 
     public function get(Request $request, $id) {
-        
+
+        $authentic = $request->header('authentication');
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
+
+        $stockists = Stockists::where('id', $id)->get();
+        if ($stockists == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+        }
+
+        $stockistReference = $this->populate($stockists[0]);
+        return $stockistReference->toJson();
+    }
+
+    public function validate(Request $request, $reference_id) {
+
+        $authentic = $request->header('authentication');
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
+
+        $stockists = Stockists::where('reference_id', $reference_id)->get();
+        if ($stockists == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+        }
+
+        $stockistReference = $this->populate($stockists[0]);
+        return $stockistReference->toJson();
     }
 
     public function save(Request $request) {
@@ -57,7 +81,7 @@ class StockistController extends Controller {
         $response->setCreatedBy($stockist->created_by);
         $response->setStatus($stockist->status);
         $response->setJoindate($stockist->join_date);
-         $response->setDatecreated($stockist->date_created);
+        $response->setDatecreated($stockist->date_created);
 
         return $response;
     }
