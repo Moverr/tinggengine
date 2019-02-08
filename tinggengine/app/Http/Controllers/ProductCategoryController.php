@@ -36,101 +36,21 @@ class ProductCategoryController extends Controller {
 
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-
-        $name = $request['name'];
-        $code = $request['code'];
-        $createdBy = $autneticaton_response->getId();
-
-        $productCategoryRequest = new ProductCategoryRequest($name, $code);
-        $productCategoryRequest->validate();
-
-        //set the author of the system :: 
-        $productCategoryRequest->setCreatedBy($createdBy);
-
-
-
-        $productCategory = ProductCategories::where('name', $name)
-                ->where('code', $code)
-                ->first();
-        if ($productCategory != null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product Category Exists with the same name or code in the database ");
-        }
-
-        $productCategory = new ProductCategories();
-        $productCategory->name = $name;
-        $productCategory->code = $code;
-        $productCategory->status = 'ACTIVE';
-        $productCategory->created_by = $createdBy;
-        $productCategory->save();
-
-        $productResponse = $this->populate($productCategory);
-        return $productResponse->toJson();
+        return $this->productcategoryservice->save($request, $autneticaton_response);
     }
 
     public function update(Request $request) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $name = $request['name'];
-        $code = $request['code'];
-
-        $productCategoryRequest = new ProductCategoryRequest($name, $code);
-
-        if ($request['id'] == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Mandatory field ID is missing");
-        }
-
-        $productCategoryRequest->setId($request['id']);
-        $productCategoryRequest->validate();
-
-        $user = ProductCategories::where('id', $productCategoryRequest->getId())->first();
-        if ($user == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
-        }
-
-
-        $productCategory = ProductCategories::where('name', $name)
-                ->where('code', $code)
-                ->where('id', "<>", $productCategoryRequest->getId())
-                ->first();
-        if ($productCategory != null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product Category Exists with the same name or code in the database ");
-        }
-
-
-        $productCategory = new ProductCategories();
-        $productCategory->id = $productCategoryRequest->getId();
-        $productCategory->name = $name;
-        $productCategory->code = $code;
-        $productCategory->update();
-
-        $productResponse = $this->populate($productCategory);
-        return $productResponse->toJson();
+        return $this->productcategoryservice->update($request);
     }
 
     public function archive(Request $request, $id) {
 
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-
-
-        $user = ProductCategories::where('id', $id)->first();
-        if ($user == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
-        }
-        $user->status = 'ARCHIVED';
-        $user->update();
-    }
-
-    public function populate($productCategories) {
-        $productCategoryResponse = new ProductCategoryResponse();
-        $productCategoryResponse->setId($productCategories->id);
-        $productCategoryResponse->setCreatedBy($productCategories->created_by);
-        $productCategoryResponse->setName($productCategories->name);
-        $productCategoryResponse->setCode($productCategories->code);
-        $productCategoryResponse->setDateCreated($productCategories->date_created);
-        $productCategoryResponse->setStatus($productCategories->status);
-        return $productCategoryResponse;
+        $this->productcategoryservice->archive($id);
     }
 
 }

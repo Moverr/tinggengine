@@ -26,7 +26,7 @@ class PurchaseController extends Controller {
     public function get(Request $request, $id) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-        return $this->purchaseService->get($id,$autneticaton_response);
+        return $this->purchaseService->get($id, $autneticaton_response);
     }
 
     public function save(Request $request) {
@@ -34,7 +34,7 @@ class PurchaseController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        return $this->purchaseService->save($request,$autneticaton_response);
+        return $this->purchaseService->save($request, $autneticaton_response);
     }
 
     public function update(Request $request) {
@@ -49,7 +49,7 @@ class PurchaseController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        return $this->purchaseService->update($id);
+          $this->purchaseService->archive($id);
     }
 
 }
