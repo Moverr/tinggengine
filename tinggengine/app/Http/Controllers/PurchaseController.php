@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Helpers\Utils;
 use App\Stock;
-use App\Http\Controllers\RequestEntities\StockRequest;
 use App\PurchaseOrders;
 use App\Http\Controllers\ResponseEntities\PurchaseOrderResponse;
+use App\Http\Controllers\RequestEntities\PurchaseOrderRequest;
+use App\PurchaseOrders;
 
 class PurchaseController extends Controller {
 
@@ -43,7 +44,7 @@ class PurchaseController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
-        $productResponse = $this->populate($purchaseorder);
+        $productResponse = $this->populate($purchaseorder[0]);
         return $productResponse->toJson();
     }
 
@@ -52,16 +53,18 @@ class PurchaseController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $product_id = $request['product_id'];
-        $reference_id = "refrence_id";
-        $quantity = $request['quantity'];
-        $unit_selling_price = $request['unit_selling_price'];
-        $unit_purchase_price = $request['unit_purchase_price'];
-        $unit_measure = $request['unit_measure'];
+        $stockist_id = $request['stockist_id'];
+        $order_date = $request['reference_id'];
+        $reference_id = $this->util->incrementalHash(5);
+        $createdBy = $autneticaton_response->getId();
 
+        $purchaseorderrequest = new PurchaseOrderRequest();
+        $purchaseorderrequest->setStockist_id($stockist_id);
+        $purchaseorderrequest->setOrder_date($order_date);
+        $purchaseorderrequest->setCreated_by($createdBy);
+        $purchaseorderrequest->setReference_id($reference_id);
 
-        $stockRequest = new StockRequest($product_id, $reference_id, $quantity, $unit_selling_price, $unit_purchase_price, $unit_measure);
-        $stockRequest->validate();
+        $purchaseorderrequest->validate();
 
         $stock = new Stock();
         $stock->product_id = $product_id;
@@ -81,14 +84,11 @@ class PurchaseController extends Controller {
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
 
-        $product_id = $request['product_id'];
-        $reference_id = "refrence_id";
-        $quantity = $request['quantity'];
-        $unit_selling_price = $request['unit_selling_price'];
-        $unit_purchase_price = $request['unit_purchase_price'];
-        $unit_measure = $request['unit_measure'];
+        $stockist_id = $request['stockist_id'];
+        $order_date = $request['reference_id'];
+        $reference_id = $this->util->incrementalHash(5);
 
-        $stockRequest = new StockRequest($product_id, $reference_id, $quantity, $unit_selling_price, $unit_purchase_price, $unit_measure);
+        $stockRequest = new PurchaseOrderRequest();
 
         if ($request['id'] == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Mandatory field ID is missing");

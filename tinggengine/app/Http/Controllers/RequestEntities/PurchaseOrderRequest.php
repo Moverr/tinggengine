@@ -26,7 +26,7 @@ class PurchaseOrderRequest {
     private $updated_by;
     private $date_created;
     private $date_updated;
-    
+
     function __construct() {
         
     }
@@ -111,7 +111,22 @@ class PurchaseOrderRequest {
         $this->date_updated = $date_updated;
     }
 
-    
-    
+    function validate() {
+        if ($this->getStockist_id() == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Stockist Id is  Mandatory");
+        }
+
+        if ($this->getOrder_date() == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Order date   is Mandatory");
+        }
+
+
+        if ($this->getReference_id() == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Reference Id  Mandatory");
+        }
+
+
+        return true;
+    }
 
 }
