@@ -7,6 +7,7 @@ use App\Http\Helpers\Utils;
 use App\Stock;
 use App\Http\Controllers\RequestEntities\StockRequest;
 use App\PurchaseOrders;
+use App\Http\Controllers\ResponseEntities\PurchaseOrderResponse;
 
 class PurchaseController extends Controller {
 
@@ -131,13 +132,13 @@ class PurchaseController extends Controller {
     }
 
     public function populate($purchaseorder) {
-        $productCategoryResponse = new ProductResponse();
-        $productCategoryResponse->setId($purchaseorder->id);
-        $productCategoryResponse->setCode($purchaseorder->code);
-        $productCategoryResponse->setName($purchaseorder->name);
-        $productCategoryResponse->setCategory($purchaseorder->category_id);
-        $productCategoryResponse->setDateCreated("N/A");
-        return $productCategoryResponse;
+        $purchaseorderresponse = new PurchaseOrderResponse();
+        $purchaseorderresponse->setId($purchaseorder->id);
+        $purchaseorderresponse->setCode($purchaseorder->code);
+        $purchaseorderresponse->setName($purchaseorder->name);
+        $purchaseorderresponse->setCategory($purchaseorder->category_id);
+        $purchaseorderresponse->setDateCreated("N/A");
+        return $purchaseorderresponse;
     }
 
 }
