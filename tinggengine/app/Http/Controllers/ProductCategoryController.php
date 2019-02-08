@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Helpers\Utils;
-use App\ProductCategories;
-use App\Http\Controllers\RequestEntities\ProductCategoryRequest;
-use App\Http\Controllers\ResponseEntities\ProductCategoryResponse;
 use App\Http\Services\ProductCategoryService;
 
 class ProductCategoryController extends Controller {

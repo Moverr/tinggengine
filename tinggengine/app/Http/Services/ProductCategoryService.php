@@ -46,7 +46,6 @@ class ProductCategoryService {
     }
 
     public function get($id, $autneticaton_response = null) {
-        $purchaseorder = PurchaseOrders::where('id', $id)->get();
         $productCategories = ProductCategories::where('id', $id)->get();
         if ($productCategories == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
