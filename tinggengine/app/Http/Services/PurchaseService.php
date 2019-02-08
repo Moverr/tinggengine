@@ -38,9 +38,7 @@ class PurchaseService {
     }
 
     public function getList($offset, $limit, $autneticaton_response = null) {
-        $purchaseOrders = PurchaseOrders::offset($offset)->limit($limit)->get();
-
-
+        $purchaseOrders = PurchaseOrders::offset($offset)->limit($limit)->get(); 
         $purchaseorderresponses = [];
         foreach ($purchaseOrders as $record) {
             $purchaseorderresponses [] = $this->populate($record)->toJson();
