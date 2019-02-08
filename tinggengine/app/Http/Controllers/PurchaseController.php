@@ -66,16 +66,15 @@ class PurchaseController extends Controller {
 
         $purchaseorderrequest->validate();
 
-        $stock = new Stock();
-        $stock->product_id = $product_id;
-        $stock->reference_id = "ReferenceID";
-        $stock->quantity = $quantity;
-        $stock->unit_selling_price = $unit_selling_price;
-        $stock->unit_purchase_price = null;
-        $stock->status = 'ACTIVE';
-        $stock->save();
+        $purchaseorder = new PurchaseOrders();
+        $purchaseorder->stockist_id = $purchaseorderrequest->getStockist_id();
+        $purchaseorder->reference_id = $purchaseorderrequest->getReference_id();
+        $purchaseorder->order_date = $purchaseorderrequest->getOrder_date();
+        $purchaseorder->created_by = $purchaseorderrequest->getCreated_by();
+        $purchaseorder->status = 'PENDING';
+        $purchaseorder->save();
 
-        $stockResponse = $this->populate($stock);
+        $stockResponse = $this->populate($purchaseorder);
         return $stockResponse->toJson();
     }
 
