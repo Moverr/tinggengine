@@ -140,6 +140,7 @@ class PurchaseController extends Controller {
         $purchaseorderresponse->setStatus($purchaseorder->status);
         $purchaseorderresponse->setCreated_by($purchaseorder->created_by);
         $purchaseorderresponse->setDate_created($purchaseorder->date_created);
+        $purchaseorderresponse->setId($purchaseorder->id);
 
         return $purchaseorderresponse;
     }
