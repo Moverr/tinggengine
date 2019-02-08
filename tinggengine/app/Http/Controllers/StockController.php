@@ -8,13 +8,16 @@ use App\Stock;
 use App\Http\Controllers\RequestEntities\StockRequest;
 use App\Http\Controllers\ResponseEntities\StockResponse;
 use App\StockTransactions;
+use App\Http\Services\StockService;
 
 class StockController extends Controller {
 
     private $util;
+     private $stockservice;
 
     function __construct() {
         $this->util = new Utils();
+        $this->stockservice = new StockService();
     }
 
     public function index(Request $request, $offset = 0, $limit = 10) {
