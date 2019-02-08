@@ -8,26 +8,22 @@ use App\Http\Controllers\ResponseEntities\StockistResponse;
 use App\Http\Controllers\RequestEntities\StockistRequest;
 use App\Stockists;
 use App\User;
+use App\Http\Services\StockistService;
 
 class StockistController extends Controller {
 
     private $util;
+    private $stockistservice;
 
     function __construct() {
         $this->util = new Utils();
+        $this->stockistservice = new StockistService();
     }
 
     public function index(Request $request, $offset = 0, $limit = 10) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-        $stockists = Stockists::offset($offset)->limit($limit)->get();
-        $stockistReference = [];
-
-        foreach ($stockists as $record) {
-            $stockistReference [] = $this->populate($record)->toJson();
-        }
-
-        return $stockistReference;
+        return $this->stockistservice->getList($offset, $limit);
     }
 
     public function get(Request $request, $id) {
@@ -35,13 +31,7 @@ class StockistController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $stockists = Stockists::where('id', $id)->get();
-        if ($stockists == null || count($stockists) == 0) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
-        }
-
-        $stockistReference = $this->populate($stockists[0]);
-        return $stockistReference->toJson();
+        return $this->stockistservice->get($id);
     }
 
     public function checkrefence(Request $request, $reference_id) {
@@ -49,158 +39,26 @@ class StockistController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $stockists = Stockists::where('reference_id', $reference_id)->get();
-
-        if ($stockists == null || count($stockists) == 0) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
-        }
-
-        $stockistReference = $this->populate($stockists[0]);
-        return $stockistReference->toJson();
+        return $this->stockistservice->checkrefence($reference_id);
     }
 
     public function save(Request $request) {
 
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-        $createdBy = $autneticaton_response->getId();
-
-
-        $names = $request['names'];
-        $companyname = $request['companyname'];
-        $joindate = $request['joindate'];
-        $phonenumber = $request['phonenumber'];
-        $countrycode = $request['countrcode'];
-
-        $stockistRequest = new StockistRequest();
-        if ($names != null) {
-            $namearray = split(" ", $names);
-            $stockistRequest->setFirstname($namearray[0]);
-            $stockistRequest->setLastname($namearray[1]);
-        }
-
-        $stockistRequest->setCountrycode($countrycode);
-        $stockistRequest->setPhonenumber($phonenumber);
-        $stockistRequest->setCompanyname($companyname);
-
-        //todo: validate 
-        $stockistRequest->validate();
-
-        //todo: check if there is a stockist with the same phone number
-        $stockists = Stockists::where('phone_number', $phonenumber)->get();
-
-        if (count($stockists) > 0) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Stockists exists in the database with same phone number ");
-        }
-
-        //todo:  validate the request
-        $stockist = new Stockists();
-        $stockist->reference_id = $this->util->incrementalHash();
-        $stockist->join_date = $stockistRequest->getJoindate();
-        $stockist->user_id = 1;
-        $stockist->country_code = $stockistRequest->getCountrycode();
-        $stockist->phone_number = $stockistRequest->getPhonenumber();
-        $stockist->created_by = $createdBy;
-        $stockist->status = 'ACTIVE';
-        $stockist->join_date = $joindate;
-        $stockist->save();
-
-        //todo: create user :: 
-        $user = new User();
-        $user->username = $phonenumber;
-        $user->password = Utils::HashPassword("client123");
-        $user->status = 'ACTIVE';
-        $user->save();
-
-
-        $stockist->user_id = $user->id;
-        $stockist->update();
-
-        $stockistResponse = $this->populate($stockist);
-
-        return $stockistResponse->toJson();
+        return $this->stockistservice->save($request, $autneticaton_response);
     }
 
     public function update(Request $request) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-        $updatedBy = $autneticaton_response->getId();
-
-
-        $names = $request['names'];
-        $companyname = $request['companyname'];
-        $joindate = $request['joindate'];
-        $phonenumber = $request['phonenumber'];
-        $countrycode = $request['countrcode'];
-
-        $stockistRequest = new StockistRequest();
-        if ($names != null) {
-            $namearray = split(" ", $names);
-            $stockistRequest->setFirstname($namearray[0]);
-            $stockistRequest->setLastname($namearray[1]);
-        }
-
-        $stockistRequest->setCountrycode($countrycode);
-        $stockistRequest->setPhonenumber($phonenumber);
-        $stockistRequest->setCompanyname($companyname);
-
-
-        if ($request['id'] == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Mandatory field ID is missing");
-        }
-
-        $stockistRequest->setId($request['id']);
-        $stockistRequest->validate();
-
-        $stockist = Stockists::where('id', $stockistRequest->getId())->first();
-        if ($stockist == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
-        }
-
-
-
-        $stockist->reference_id = $this->util->incrementalHash();
-        $stockist->join_date = $stockistRequest->getJoindate();
-        $stockist->user_id = 1;
-        $stockist->country_code = $stockistRequest->getCountrycode();
-        $stockist->phone_number = $stockistRequest->getPhonenumber();
-
-        $stockist->join_date = $joindate;
-        $stockist->id = $request['id'];
-        $stockist->updated_by = $updatedBy;
-
-        $stockist->update();
-
-        $stockistResponse = $this->populate($stockist);
-        return $stockistResponse->toJson();
+        return $this->stockistservice->update($request);
     }
 
     public function archive(Request $request, $id) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-
-
-        $stockist = Stockists::where('id', $id)->first();
-        if ($stockist == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
-        }
-        $stockist->status = 'ARCHIVED';
-        $stockist->update();
-    }
-
-    public function populate($stockist) {
-        $response = new StockistResponse();
-        $response->setId($stockist->id);
-        //todo : we shall overcome
-        $response->setReference_id($stockist->reference_id);
-        $response->setCountrycode($stockist->countrycode);
-        $response->setPhonenumber($stockist->phone_number);
-        $response->setCreatedBy($stockist->created_by);
-        $response->setStatus($stockist->status);
-        $response->setJoindate($stockist->join_date);
-        $response->setDatecreated($stockist->date_created);
-
-        return $response;
+        $this->stockistservice->archive($id);
     }
 
 }
