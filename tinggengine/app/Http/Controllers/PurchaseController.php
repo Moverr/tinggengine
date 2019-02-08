@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Helpers\Utils;
 use App\Stock;
 use App\Http\Controllers\RequestEntities\StockRequest;
-use App\Stock;
+use App\PurchaseOrders;
+use App\Http\Controllers\ResponseEntities\PurchaseOrderResponse;
 
 class PurchaseController extends Controller {
 
@@ -20,20 +21,29 @@ class PurchaseController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $stock = Stock::offset($offset)->limit($limit)->get();
-        return json_encode($stock);
+        $purchaseOrders = PurchaseOrders::offset($offset)->limit($limit)->get();
+
+
+        $purchaseorderresponses = [];
+        foreach ($purchaseOrders as $record) {
+            $purchaseorderresponses [] = $this->populate($record)->toJson();
+        }
+
+
+
+        return ($purchaseorderresponses);
     }
 
     public function get(Request $request, $id) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $stock = Products::where('id', $id)->get();
-        if ($stock == null) {
+        $purchaseorder = PurchaseOrders::where('id', $id)->get();
+        if ($purchaseorder == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
-        $productResponse = $this->populate($stock);
+        $productResponse = $this->populate($purchaseorder);
         return $productResponse->toJson();
     }
 
@@ -121,14 +131,17 @@ class PurchaseController extends Controller {
         $product->update();
     }
 
-    public function populate($products) {
-        $productCategoryResponse = new ProductResponse();
-        $productCategoryResponse->setId($products[0]->id);
-        $productCategoryResponse->setCode($products[0]->code);
-        $productCategoryResponse->setName($products[0]->name);
-        $productCategoryResponse->setCategory($products[0]->category_id);
-        $productCategoryResponse->setDateCreated("N/A");
-        return $productCategoryResponse;
+    public function populate($purchaseorder) {
+        $purchaseorderresponse = new PurchaseOrderResponse();
+        $purchaseorderresponse->setStockist_id($purchaseorder->stockist_id);
+        $purchaseorderresponse->setOrder_date($purchaseorder->order_date);
+        $purchaseorderresponse->setReference_id($purchaseorder->reference_id);
+        $purchaseorderresponse->setTotal_amount($purchaseorder->total_amount);
+        $purchaseorderresponse->setStatus($purchaseorder->status);
+        $purchaseorderresponse->setCreated_by($purchaseorder->created_by);
+        $purchaseorderresponse->setDate_created($purchaseorder->date_created);
+
+        return $purchaseorderresponse;
     }
 
 }

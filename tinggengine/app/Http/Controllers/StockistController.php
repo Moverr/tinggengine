@@ -115,18 +115,77 @@ class StockistController extends Controller {
 
         $stockist->user_id = $user->id;
         $stockist->update();
-        
+
         $stockistResponse = $this->populate($stockist);
 
         return $stockistResponse->toJson();
     }
 
     public function update(Request $request) {
-        
+        $authentic = $request->header('authentication');
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
+        $updatedBy = $autneticaton_response->getId();
+
+
+        $names = $request['names'];
+        $companyname = $request['companyname'];
+        $joindate = $request['joindate'];
+        $phonenumber = $request['phonenumber'];
+        $countrycode = $request['countrcode'];
+
+        $stockistRequest = new StockistRequest();
+        if ($names != null) {
+            $namearray = split(" ", $names);
+            $stockistRequest->setFirstname($namearray[0]);
+            $stockistRequest->setLastname($namearray[1]);
+        }
+
+        $stockistRequest->setCountrycode($countrycode);
+        $stockistRequest->setPhonenumber($phonenumber);
+        $stockistRequest->setCompanyname($companyname);
+
+
+        if ($request['id'] == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Mandatory field ID is missing");
+        }
+
+        $stockistRequest->setId($request['id']);
+        $stockistRequest->validate();
+
+        $stockist = Stockists::where('id', $stockistRequest->getId())->first();
+        if ($stockist == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+        }
+
+
+
+        $stockist->reference_id = $this->util->incrementalHash();
+        $stockist->join_date = $stockistRequest->getJoindate();
+        $stockist->user_id = 1;
+        $stockist->country_code = $stockistRequest->getCountrycode();
+        $stockist->phone_number = $stockistRequest->getPhonenumber();
+
+        $stockist->join_date = $joindate;
+        $stockist->id = $request['id'];
+        $stockist->updated_by = $updatedBy;
+
+        $stockist->update();
+
+        $stockistResponse = $this->populate($stockist);
+        return $stockistResponse->toJson();
     }
 
     public function archive(Request $request, $id) {
-        
+        $authentic = $request->header('authentication');
+        $autneticaton_response = $this->util->validateAuthenction($authentic);
+
+
+        $stockist = Stockists::where('id', $id)->first();
+        if ($stockist == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+        }
+        $stockist->status = 'ARCHIVED';
+        $stockist->update();
     }
 
     public function populate($stockist) {
