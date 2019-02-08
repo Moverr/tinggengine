@@ -126,10 +126,7 @@ class ProductCategoryService {
     }
 
     public function archive($id, $autneticaton_response = null) {
-        $authentic = $request->header('authentication');
-        $autneticaton_response = $this->util->validateAuthenction($authentic);
-
-
+       
         $user = ProductCategories::where('id', $id)->first();
         if ($user == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
