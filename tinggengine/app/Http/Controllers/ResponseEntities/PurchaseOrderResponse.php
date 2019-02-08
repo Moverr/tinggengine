@@ -27,7 +27,7 @@ class PurchaseOrderResponse {
     private $updated_by;
     private $date_created;
     private $date_updated;
-    
+
     function getId() {
         return $this->id;
     }
@@ -116,6 +116,17 @@ class PurchaseOrderResponse {
         $this->date_updated = $date_updated;
     }
 
-
+    public function toJson() {
+        return \GuzzleHttp\json_encode([
+            'id' => $this->id,
+            'stockist_id' => $this->stockist_id,
+            'reference_id' => $this->reference_id,
+            'order_date' => $this->order_date,
+            'total_amount' => $this->total_amount,
+            'status' => $this->status,
+            'createdBy' => $this->created_by,
+            'date_created' => $this->date_created
+        ]);
+    }
 
 }

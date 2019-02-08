@@ -133,11 +133,14 @@ class PurchaseController extends Controller {
 
     public function populate($purchaseorder) {
         $purchaseorderresponse = new PurchaseOrderResponse();
-        $purchaseorderresponse->setId($purchaseorder->id);
-        $purchaseorderresponse->setCode($purchaseorder->code);
-        $purchaseorderresponse->setName($purchaseorder->name);
-        $purchaseorderresponse->setCategory($purchaseorder->category_id);
-        $purchaseorderresponse->setDateCreated("N/A");
+        $purchaseorderresponse->setStockist_id($purchaseorder->stockist_id);
+        $purchaseorderresponse->setOrder_date($purchaseorder->order_date);
+        $purchaseorderresponse->setReference_id($purchaseorder->reference_id);
+        $purchaseorderresponse->setTotal_amount($purchaseorder->total_amount);
+        $purchaseorderresponse->setStatus($purchaseorder->status);
+        $purchaseorderresponse->setCreated_by($purchaseorder->created_by);
+        $purchaseorderresponse->setDate_created($purchaseorder->date_created);
+
         return $purchaseorderresponse;
     }
 
