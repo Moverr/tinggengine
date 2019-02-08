@@ -8,31 +8,34 @@ use App\Stock;
 use App\PurchaseOrders;
 use App\Http\Controllers\ResponseEntities\PurchaseOrderResponse;
 use App\Http\Controllers\RequestEntities\PurchaseOrderRequest;
-use App\PurchaseOrders;
+use App\Http\Services\PurchaseService;
 
 class PurchaseController extends Controller {
 
     private $util;
+    private $purchaseService;
 
     function __construct() {
         $this->util = new Utils();
+        $this->purchaseService = PurchaseService::getInstance();
     }
 
     public function index(Request $request, $offset = 0, $limit = 10) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $purchaseOrders = PurchaseOrders::offset($offset)->limit($limit)->get();
+//        $purchaseOrders = PurchaseOrders::offset($offset)->limit($limit)->get();
+//
+//
+//        $purchaseorderresponses = [];
+//        foreach ($purchaseOrders as $record) {
+//            $purchaseorderresponses [] = $this->populate($record)->toJson();
+//        }
+
+        return  $this->purchaseService->getList($offset, $limit);
 
 
-        $purchaseorderresponses = [];
-        foreach ($purchaseOrders as $record) {
-            $purchaseorderresponses [] = $this->populate($record)->toJson();
-        }
-
-
-
-        return ($purchaseorderresponses);
+//        return ($purchaseorderresponses);
     }
 
     public function get(Request $request, $id) {
@@ -65,6 +68,10 @@ class PurchaseController extends Controller {
         $purchaseorderrequest->setReference_id($reference_id);
 
         $purchaseorderrequest->validate();
+
+        //todo:verify stockist. 
+        //todo: verify that the stockist join date is not greater than 
+
 
         $purchaseorder = new PurchaseOrders();
         $purchaseorder->stockist_id = $purchaseorderrequest->getStockist_id();
