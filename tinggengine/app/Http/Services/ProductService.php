@@ -137,15 +137,15 @@ class ProductService {
     }
 
     public function populate($products) {
-        $productCategoryResponse = new ProductResponse();
-        $productCategoryResponse->setId($products->id);
-        $productCategoryResponse->setCode($products->code);
-        $productCategoryResponse->setName($products->name);
-        $productCategoryResponse->setCategory($products->category_id);
-        $productCategoryResponse->setDateCreated($products->date_created);
-        $productCategoryResponse->setCreatedBy($products->created_by);
-        $productCategoryResponse->setStatus($products->status);
-        return $productCategoryResponse;
+        $productResponse = new ProductResponse();
+        $productResponse->setId($products->id);
+        $productResponse->setCode($products->code);
+        $productResponse->setName($products->name);
+        $productResponse->setCategory($products->category_id);
+        $productResponse->setDateCreated($products->date_created);
+        $productResponse->setCreatedBy($products->created_by);
+        $productResponse->setStatus($products->status);
+        return $productResponse;
     }
 
 }
