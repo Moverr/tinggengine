@@ -25,21 +25,18 @@ class StockController extends Controller {
     public function get(Request $request, $id) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-
         return $this->stockservice->get($id);
     }
 
     public function save(Request $request) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-
         return $this->stockservice->save($request, $autneticaton_response);
     }
 
     public function update(Request $request) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-
         return $this->stockservice->update($request);
     }
 
@@ -47,7 +44,6 @@ class StockController extends Controller {
 
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-
         $this->stockservice->archive($id);
     }
 
