@@ -38,7 +38,7 @@ class PurchaseService {
         return self::$instance;
     }
 
-    public function getList($offset, $limit, $autnetication = null) {
+    public function getList($offset, $limit, $autneticaton_response = null) {
         $purchaseOrders = PurchaseOrders::offset($offset)->limit($limit)->get();
 
 
@@ -50,7 +50,7 @@ class PurchaseService {
         return $purchaseorderresponses;
     }
 
-    public function get($id, $authenctication = null) {
+    public function get($id, $autneticaton_response = null) {
         $purchaseorder = PurchaseOrders::where('id', $id)->get();
         if ($purchaseorder == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
@@ -60,9 +60,9 @@ class PurchaseService {
         return $productResponse->toJson();
     }
 
-    public function save($request, $authentication = null) {
+    public function save($request, $autneticaton_response = null) {
         $stockist_id = $request['stockist_id'];
-        $order_date = $request['reference_id'];
+        $order_date = $request['order_date'];
         $reference_id = $this->util->incrementalHash(5);
         $createdBy = $autneticaton_response->getId();
 
@@ -124,7 +124,7 @@ class PurchaseService {
         return $stockResponse->toJson();
     }
 
-    public function archive($id, $authentication = null) {
+    public function archive($id, $autneticaton_response = null) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
