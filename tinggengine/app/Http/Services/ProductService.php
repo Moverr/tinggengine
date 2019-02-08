@@ -60,16 +60,16 @@ class ProductService {
         $createdBy = $autneticaton_response->getId();
 
 
-        $productCategoryRequest = new ProductRequest($name, $code, $categoryId);
-        $productCategoryRequest->validate();
+        $productRequest = new ProductRequest($name, $code, $categoryId);
+        $productRequest->validate();
 
         //set the author of the system :: 
-        $productCategoryRequest->setCreatedBy($createdBy);
+        $productRequest->setCreatedBy($createdBy);
 
 //        add a composite key to avoid multiple inserts of the same
 //                ->where('category_id', $categoryId)
 
-        $products = Products::where('name', $name)
+        $products = Products::where('name', $productRequest->getName())
                 ->where('code', $code)
                 ->first();
         if ($products != null) {
@@ -77,12 +77,11 @@ class ProductService {
         }
 
         $products = new Products();
-        $products->name = $name;
-        $products->code = $code;
-        $products->category_id = $categoryId;
+        $products->name = $productRequest->getName();
+        $products->code = $productRequest->getCode();
+        $products->category_id = $productRequest->getCategoryId();
         $products->status = 'ACTIVE';
         $products->created_by = $createdBy;
-
         $products->save();
 
         $productResponse = $this->populate($products);
