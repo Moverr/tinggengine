@@ -2,7 +2,6 @@
 
 namespace App\Http\Services;
 
-use Illuminate\Http\Request;
 use App\Http\Helpers\Utils;
 use App\Stock;
 use App\PurchaseOrders;
