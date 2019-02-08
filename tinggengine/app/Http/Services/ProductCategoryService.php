@@ -1,42 +1,62 @@
 <?php
 
-namespace App\Http\Controllers;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
-use Illuminate\Http\Request;
+namespace App\Http\Services;
+
 use App\Http\Helpers\Utils;
 use App\ProductCategories;
 use App\Http\Controllers\RequestEntities\ProductCategoryRequest;
 use App\Http\Controllers\ResponseEntities\ProductCategoryResponse;
-use App\Http\Services\ProductCategoryService;
 
-class ProductCategoryController extends Controller {
+/**
+ * Description of ProductCategoryService
+ *
+ * @author mover  
+ */
+class ProductCategoryService {
 
+    private static $instance;
     private $util;
-    private $productcategoryservice;
 
     function __construct() {
         $this->util = new Utils();
-        $this->productcategoryservice = ProductCategoryService::getInstance();
     }
 
-    public function index(Request $request, $offset = 0, $limit = 10) {
-        $authentic = $request->header('authentication');
-        $autneticaton_response = $this->util->validateAuthenction($authentic);
-        return $this->productcategoryservice->getList($offset, $limit);
+    public static function getInstance() {
+        if (!isset(self::$instance)) {
+            self::$instance = new ProductCategoryService();
+        }
+        return self::$instance;
     }
 
-    public function get(Request $request, $id) {
-        $authentic = $request->header('authentication');
-        $autneticaton_response = $this->util->validateAuthenction($authentic);
+    public function getList($offset, $limit, $autneticaton_response = null) {
+        $productCategories = ProductCategories::offset($offset)->limit($limit)->get();
 
-        return $this->productcategoryservice->get($id);
+        $productcategoryResponses = [];
+        foreach ($productCategories as $record) {
+            $productcategoryResponses [] = $this->populate($record)->toJson();
+        }
+
+        return ($productcategoryResponses);
     }
 
-    public function save(Request $request) {
+    public function get($id, $autneticaton_response = null) {
+        $purchaseorder = PurchaseOrders::where('id', $id)->get();
+        $productCategories = ProductCategories::where('id', $id)->get();
+        if ($productCategories == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+        }
 
-        $authentic = $request->header('authentication');
-        $autneticaton_response = $this->util->validateAuthenction($authentic);
+        $productResponse = $this->populate($productCategories[0]);
+        return $productResponse->toJson();
+    }
 
+    public function save($request, $autneticaton_response = null) {
         $name = $request['name'];
         $code = $request['code'];
         $createdBy = $autneticaton_response->getId();
@@ -67,9 +87,7 @@ class ProductCategoryController extends Controller {
         return $productResponse->toJson();
     }
 
-    public function update(Request $request) {
-        $authentic = $request->header('authentication');
-        $autneticaton_response = $this->util->validateAuthenction($authentic);
+    public function update($request, $authentication = null) {
 
         $name = $request['name'];
         $code = $request['code'];
@@ -108,8 +126,7 @@ class ProductCategoryController extends Controller {
         return $productResponse->toJson();
     }
 
-    public function archive(Request $request, $id) {
-
+    public function archive($id, $autneticaton_response = null) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
