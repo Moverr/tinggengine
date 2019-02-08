@@ -34,7 +34,7 @@ class PurchaseService {
         return self::$instance;
     }
 
-    public function getList($offset, $limit) {
+    public function getList($offset, $limit, $autnetication = null) {
         $purchaseOrders = PurchaseOrders::offset($offset)->limit($limit)->get();
 
 
@@ -44,6 +44,46 @@ class PurchaseService {
         }
 
         return $purchaseorderresponses;
+    }
+
+    public function get($id, $authenctication = null) {
+        $purchaseorder = PurchaseOrders::where('id', $id)->get();
+        if ($purchaseorder == null) {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+        }
+
+        $productResponse = $this->populate($purchaseorder[0]);
+        return $productResponse->toJson();
+    }
+    
+    public function save($request, $authentication = null){
+         $stockist_id = $request['stockist_id'];
+        $order_date = $request['reference_id'];
+        $reference_id = $this->util->incrementalHash(5);
+        $createdBy = $autneticaton_response->getId();
+
+        $purchaseorderrequest = new PurchaseOrderRequest();
+        $purchaseorderrequest->setStockist_id($stockist_id);
+        $purchaseorderrequest->setOrder_date($order_date);
+        $purchaseorderrequest->setCreated_by($createdBy);
+        $purchaseorderrequest->setReference_id($reference_id);
+
+        $purchaseorderrequest->validate();
+
+        //todo:verify stockist. 
+        //todo: verify that the stockist join date is not greater than 
+
+
+        $purchaseorder = new PurchaseOrders();
+        $purchaseorder->stockist_id = $purchaseorderrequest->getStockist_id();
+        $purchaseorder->reference_id = $purchaseorderrequest->getReference_id();
+        $purchaseorder->order_date = $purchaseorderrequest->getOrder_date();
+        $purchaseorder->created_by = $purchaseorderrequest->getCreated_by();
+        $purchaseorder->status = 'PENDING';
+        $purchaseorder->save();
+
+        $stockResponse = $this->populate($purchaseorder);
+        return $stockResponse->toJson();
     }
 
     public function populate($purchaseorder) {

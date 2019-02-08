@@ -23,32 +23,13 @@ class PurchaseController extends Controller {
     public function index(Request $request, $offset = 0, $limit = 10) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-
-//        $purchaseOrders = PurchaseOrders::offset($offset)->limit($limit)->get();
-//
-//
-//        $purchaseorderresponses = [];
-//        foreach ($purchaseOrders as $record) {
-//            $purchaseorderresponses [] = $this->populate($record)->toJson();
-//        }
-
-        return  $this->purchaseService->getList($offset, $limit);
-
-
-//        return ($purchaseorderresponses);
+        return $this->purchaseService->getList($offset, $limit);
     }
 
     public function get(Request $request, $id) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-
-        $purchaseorder = PurchaseOrders::where('id', $id)->get();
-        if ($purchaseorder == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
-        }
-
-        $productResponse = $this->populate($purchaseorder[0]);
-        return $productResponse->toJson();
+        return $this->purchaseService->get($id);
     }
 
     public function save(Request $request) {
@@ -56,33 +37,7 @@ class PurchaseController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $stockist_id = $request['stockist_id'];
-        $order_date = $request['reference_id'];
-        $reference_id = $this->util->incrementalHash(5);
-        $createdBy = $autneticaton_response->getId();
-
-        $purchaseorderrequest = new PurchaseOrderRequest();
-        $purchaseorderrequest->setStockist_id($stockist_id);
-        $purchaseorderrequest->setOrder_date($order_date);
-        $purchaseorderrequest->setCreated_by($createdBy);
-        $purchaseorderrequest->setReference_id($reference_id);
-
-        $purchaseorderrequest->validate();
-
-        //todo:verify stockist. 
-        //todo: verify that the stockist join date is not greater than 
-
-
-        $purchaseorder = new PurchaseOrders();
-        $purchaseorder->stockist_id = $purchaseorderrequest->getStockist_id();
-        $purchaseorder->reference_id = $purchaseorderrequest->getReference_id();
-        $purchaseorder->order_date = $purchaseorderrequest->getOrder_date();
-        $purchaseorder->created_by = $purchaseorderrequest->getCreated_by();
-        $purchaseorder->status = 'PENDING';
-        $purchaseorder->save();
-
-        $stockResponse = $this->populate($purchaseorder);
-        return $stockResponse->toJson();
+        return $this->purchaseService->save($request);
     }
 
     public function update(Request $request) {
