@@ -21,8 +21,16 @@ class PurchaseController extends Controller {
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
         $purchaseOrders = PurchaseOrders::offset($offset)->limit($limit)->get();
-        
-        return json_encode($purchaseOrders);
+
+
+        $purchaseorderresponses = [];
+        foreach ($purchaseOrders as $record) {
+            $purchaseorderresponses [] = $this->populate($record)->toJson();
+        }
+
+
+
+        return ($purchaseorderresponses);
     }
 
     public function get(Request $request, $id) {
