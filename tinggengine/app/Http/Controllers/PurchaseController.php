@@ -38,12 +38,12 @@ class PurchaseController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $stock = Products::where('id', $id)->get();
-        if ($stock == null) {
+        $purchaseorder = PurchaseOrders::where('id', $id)->get();
+        if ($purchaseorder == null) {
             throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
         }
 
-        $productResponse = $this->populate($stock);
+        $productResponse = $this->populate($purchaseorder);
         return $productResponse->toJson();
     }
 
