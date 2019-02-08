@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Helpers\Utils;
 use App\Stock;
 use App\Http\Controllers\RequestEntities\StockRequest;
-use App\Stock;
 use App\PurchaseOrders;
 
 class PurchaseController extends Controller {
@@ -22,6 +21,7 @@ class PurchaseController extends Controller {
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
         $purchaseOrders = PurchaseOrders::offset($offset)->limit($limit)->get();
+        
         return json_encode($purchaseOrders);
     }
 
@@ -122,12 +122,12 @@ class PurchaseController extends Controller {
         $product->update();
     }
 
-    public function populate($products) {
+    public function populate($purchaseorder) {
         $productCategoryResponse = new ProductResponse();
-        $productCategoryResponse->setId($products[0]->id);
-        $productCategoryResponse->setCode($products[0]->code);
-        $productCategoryResponse->setName($products[0]->name);
-        $productCategoryResponse->setCategory($products[0]->category_id);
+        $productCategoryResponse->setId($purchaseorder->id);
+        $productCategoryResponse->setCode($purchaseorder->code);
+        $productCategoryResponse->setName($purchaseorder->name);
+        $productCategoryResponse->setCategory($purchaseorder->category_id);
         $productCategoryResponse->setDateCreated("N/A");
         return $productCategoryResponse;
     }

@@ -68,3 +68,15 @@ Route::get('stockist/{offset}/{limit?}', 'StockistController@index');
 
 
 
+
+//Purchase Orders 
+Route::get('purchases/', 'PurchaseController@index');
+Route::get('purchases/validatereference/{reference_id}', 'PurchaseController@checkrefence');
+Route::get('purchases/{id}', 'PurchaseController@get');
+Route::post('purchases/', 'PurchaseController@save');
+Route::put('purchases/', 'PurchaseController@update');
+Route::delete('purchases/{id}', 'PurchaseController@archive');
+Route::get('purchases/{offset}/{limit?}', 'PurchaseController@index');
+
+
+
