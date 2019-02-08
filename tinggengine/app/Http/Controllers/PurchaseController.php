@@ -7,6 +7,7 @@ use App\Http\Helpers\Utils;
 use App\Stock;
 use App\Http\Controllers\RequestEntities\StockRequest;
 use App\Stock;
+use App\PurchaseOrders;
 
 class PurchaseController extends Controller {
 
@@ -20,8 +21,8 @@ class PurchaseController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        $stock = Stock::offset($offset)->limit($limit)->get();
-        return json_encode($stock);
+        $purchaseOrders = PurchaseOrders::offset($offset)->limit($limit)->get();
+        return json_encode($purchaseOrders);
     }
 
     public function get(Request $request, $id) {
