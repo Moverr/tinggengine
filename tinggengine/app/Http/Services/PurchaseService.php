@@ -13,12 +13,14 @@ use App\Http\Controllers\RequestEntities\PurchaseOrderRequest;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  * Description of PurchaseService
  *
  * @author mover  
  */
+use App\Http\Helpers\Utils;
+use App\Http\Controllers\ResponseEntities\PurchaseOrderResponse;
+
 class PurchaseService {
 
     //put your code here
@@ -38,7 +40,7 @@ class PurchaseService {
     }
 
     public function getList($offset, $limit, $autneticaton_response = null) {
-        $purchaseOrders = PurchaseOrders::offset($offset)->limit($limit)->get(); 
+        $purchaseOrders = PurchaseOrders::offset($offset)->limit($limit)->get();
         $purchaseorderresponses = [];
         foreach ($purchaseOrders as $record) {
             $purchaseorderresponses [] = $this->populate($record)->toJson();
