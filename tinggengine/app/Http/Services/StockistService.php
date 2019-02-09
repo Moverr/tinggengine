@@ -6,14 +6,14 @@
  * and open the template in the editor.
  */
 
+
+namespace App\Http\Services;
 use App\Http\Helpers\Utils;
 use App\Http\Controllers\ResponseEntities\StockistResponse;
 use App\Http\Controllers\RequestEntities\StockistRequest;
 use App\Stockists;
 use App\User;
-
-namespace App\Http\Services;
-
+use Exception; 
 /**
  * Description of StockistService
  *
@@ -50,7 +50,7 @@ class StockistService {
     public function get($id, $autneticaton_response = null) {
         $stockists = Stockists::where('id', $id)->get();
         if ($stockists == null || count($stockists) == 0) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase",403);
         }
 
         $stockistReference = $this->populate($stockists[0]);
@@ -61,7 +61,7 @@ class StockistService {
         $stockists = Stockists::where('reference_id', $reference_id)->get();
 
         if ($stockists == null || count($stockists) == 0) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase",403);
         }
 
         $stockistReference = $this->populate($stockists[0]);
@@ -96,7 +96,7 @@ class StockistService {
         $stockists = Stockists::where('phone_number', $phonenumber)->get();
 
         if (count($stockists) > 0) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Stockists exists in the database with same phone number ");
+            throw new Exception("Stockists exists in the database with same phone number ",403);
         }
 
         //todo:  validate the request
@@ -151,7 +151,7 @@ class StockistService {
 
 
         if ($request['id'] == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Mandatory field ID is missing");
+            throw new Exception("Mandatory field ID is missing",403);
         }
 
         $stockistRequest->setId($request['id']);
@@ -159,7 +159,7 @@ class StockistService {
 
         $stockist = Stockists::where('id', $stockistRequest->getId())->first();
         if ($stockist == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase",403);
         }
 
 
@@ -184,7 +184,7 @@ class StockistService {
 
         $product = ProductCategories::where('id', $id)->first();
         if ($product == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase",403);
         }
         $product->status = 'ARCHIVED';
         $product->update();

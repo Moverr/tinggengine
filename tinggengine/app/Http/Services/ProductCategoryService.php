@@ -12,6 +12,7 @@ use App\Http\Helpers\Utils;
 use App\ProductCategories;
 use App\Http\Controllers\RequestEntities\ProductCategoryRequest;
 use App\Http\Controllers\ResponseEntities\ProductCategoryResponse;
+use Exception; 
 
 /**
  * Description of ProductCategoryService
@@ -48,7 +49,7 @@ class ProductCategoryService {
     public function get($id, $autneticaton_response = null) {
         $productCategories = ProductCategories::where('id', $id)->get();
         if ($productCategories == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase",403);
         }
 
         $productResponse = $this->populate($productCategories[0]);
@@ -72,7 +73,7 @@ class ProductCategoryService {
                 ->where('code', $code)
                 ->first();
         if ($productCategory != null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product Category Exists with the same name or code in the database ");
+            throw new Exception("Product Category Exists with the same name or code in the database ",403);
         }
 
         $productCategory = new ProductCategories();
@@ -94,7 +95,7 @@ class ProductCategoryService {
         $productCategoryRequest = new ProductCategoryRequest($name, $code);
 
         if ($request['id'] == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Mandatory field ID is missing");
+            throw new Exception("Mandatory field ID is missing");
         }
 
         $productCategoryRequest->setId($request['id']);
@@ -102,7 +103,7 @@ class ProductCategoryService {
 
         $user = ProductCategories::where('id', $productCategoryRequest->getId())->first();
         if ($user == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase",403);
         }
 
 
@@ -111,7 +112,7 @@ class ProductCategoryService {
                 ->where('id', "<>", $productCategoryRequest->getId())
                 ->first();
         if ($productCategory != null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product Category Exists with the same name or code in the database ");
+            throw new Exception("Product Category Exists with the same name or code in the database ",403);
         }
 
 
@@ -129,7 +130,7 @@ class ProductCategoryService {
        
         $user = ProductCategories::where('id', $id)->first();
         if ($user == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase",403);
         }
         $user->status = 'ARCHIVED';
         $user->update();

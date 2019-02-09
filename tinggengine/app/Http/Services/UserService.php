@@ -13,6 +13,7 @@ use App\Http\Controllers\RequestEntities\UserRequest;
 use App\Http\Helpers\Utils;
 use App\Http\Controllers\ResponseEntities\UserResponse;
 use App\Http\Controllers\RequestEntities\LoginRequest;
+use Exception;
 
 /**
  * Description of UserService
@@ -53,7 +54,7 @@ class UserService {
 
         $user = User::where('id', $id)->get();
         if ($user == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase");
         }
 
         $userResponse = $this->populate($user[0]);
@@ -85,7 +86,7 @@ class UserService {
 
         $user = User::where('username', $username)->first();
         if ($user != null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("User Exists with the same username in the database ");
+            throw new Exception("User Exists with the same username in the database ");
         }
 
         $user = new User();
@@ -106,7 +107,7 @@ class UserService {
         $userRequest = new UserRequest($username, $password, $repassword, $role_id);
 
         if ($request['id'] == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Mandatory field ID is missing");
+            throw new Exception("Mandatory field ID is missing",403);
         }
 
         $userRequest->setId($request['id']);
@@ -114,7 +115,7 @@ class UserService {
 
         $user = User::where('id', $userRequest->getId())->first();
         if ($user == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase",403);
         }
 
         //todo: check if user exists wit the same username 
@@ -122,7 +123,7 @@ class UserService {
                 ->where('id', "<>", $userRequest->getId())
                 ->first();
         if ($existing_user != null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("User Exists with the same username in the database ");
+            throw new Exception("User Exists with the same username in the database ",403);
         }
 
 
@@ -135,7 +136,7 @@ class UserService {
 
         $user = User::where('id', $id)->first();
         if ($user == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase",403);
         }
         $user->status = 'ARCHIVED';
         $user->update();

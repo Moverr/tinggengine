@@ -7,7 +7,7 @@ use App\Stock;
 use App\PurchaseOrders;
 use App\Http\Controllers\ResponseEntities\PurchaseOrderResponse;
 use App\Http\Controllers\RequestEntities\PurchaseOrderRequest;
-
+use Exception; 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -52,7 +52,7 @@ class PurchaseService {
     public function get($id, $autneticaton_response = null) {
         $purchaseorder = PurchaseOrders::where('id', $id)->get();
         if ($purchaseorder == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase",403);
         }
 
         $productResponse = $this->populate($purchaseorder[0]);
@@ -97,7 +97,7 @@ class PurchaseService {
         $stockRequest = new PurchaseOrderRequest();
 
         if ($request['id'] == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Mandatory field ID is missing");
+            throw new Exception("Mandatory field ID is missing",403);
         }
 
         $stockRequest->setId($request['id']);
@@ -105,7 +105,7 @@ class PurchaseService {
 
         $stockRequest = Stock::where('id', $stockRequest->getId())->first();
         if ($product == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase");
         }
 
 
@@ -130,7 +130,7 @@ class PurchaseService {
 
         $product = ProductCategories::where('id', $id)->first();
         if ($product == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase",403);
         }
         $product->status = 'ARCHIVED';
         $product->update();
