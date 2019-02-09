@@ -8,6 +8,8 @@
 
 namespace App\Http\Controllers\RequestEntities;
 
+use Exception;
+
 /**
  * Description of PurchaseOrderRequest
  *
@@ -113,16 +115,16 @@ class PurchaseOrderRequest {
 
     function validate() {
         if ($this->getStockist_id() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Stockist Id is  Mandatory");
+            throw new Exception("Stockist Id is  Mandatory", 403);
         }
 
         if ($this->getOrder_date() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Order date   is Mandatory");
+            throw new Exception("Order date   is Mandatory", 403);
         }
 
 
         if ($this->getReference_id() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Reference Id  Mandatory");
+            throw new Exception("Reference Id  Mandatory", 403);
         }
 
 

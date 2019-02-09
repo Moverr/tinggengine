@@ -8,6 +8,8 @@
 
 namespace App\Http\Controllers\RequestEntities;
 
+use Exception;
+
 /**
  * Description of ProductRequest
  *
@@ -28,7 +30,7 @@ class ProductRequest {
         $this->categoryId = $categoryId;
     }
 
-        function getId() {
+    function getId() {
         return $this->id;
     }
 
@@ -81,19 +83,18 @@ class ProductRequest {
 
 
         if ($this->getCode() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product Code is Mandatory");
+            throw new Exception("Product Code is Mandatory", 403);
         }
 
         if ($this->getName() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("product Name is Mandatory");
+            throw new Exception("product Name is Mandatory", 403);
         }
 
 
 
         if ($this->getCategoryId() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product Category   is Mandatory");
+            throw new Exception("Product Category   is Mandatory", 403);
         }
-
 
 
 
