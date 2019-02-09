@@ -33,8 +33,8 @@ class User extends Model {
     }
 
     public function role() {
-        return $this->hasOne(
-                        'App\UserRoles'
+        return $this->hasManyThrough(
+                        'App\Roles','App\UserRoles','id','id'
         );
     }
 

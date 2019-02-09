@@ -149,7 +149,7 @@ class UserService {
         }
 
         $userResponse->setId($user->id);
-        $userResponse->setRole($user->role_id);
+        $userResponse->setRole($user->role);
         $userResponse->setDateCreated($user->date_created);
         $userResponse->setProfile($user->profile);
 
