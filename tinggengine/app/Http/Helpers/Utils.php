@@ -55,7 +55,7 @@ class Utils {
                 ->where('status', "ACTIVE")
                 ->first();
         if ($existing_user == null) {
-            throw new \Illuminate\Validation\UnauthorizedException("Invalid  user credentials");
+            throw new \Illuminate\Validation\UnauthorizedException("Invalid  user credentials",403);
         }
 
         $auth = new \App\Http\Controllers\ResponseEntities\AuthResponse();

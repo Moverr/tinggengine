@@ -12,6 +12,7 @@ use App\User;
 use App\Http\Controllers\RequestEntities\UserRequest;
 use App\Http\Helpers\Utils;
 use App\Http\Controllers\ResponseEntities\UserResponse;
+use App\Http\Controllers\RequestEntities\LoginRequest;
 
 /**
  * Description of UserService
@@ -21,6 +22,7 @@ use App\Http\Controllers\ResponseEntities\UserResponse;
 class UserService {
 
     private $util;
+    private static $instance;
 
     function __construct() {
         $this->util = new Utils();
@@ -62,7 +64,7 @@ class UserService {
         $username = $request['username'];
         $password = $request['password'];
 
-        $loginRequest = new RequestEntities\LoginRequest();
+        $loginRequest = new LoginRequest();
         $loginRequest->setPassword($password);
         $loginRequest->setUsername($username);
         $loginRequest->validate();

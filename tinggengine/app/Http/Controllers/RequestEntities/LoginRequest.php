@@ -8,6 +8,9 @@
 
 namespace App\Http\Controllers\RequestEntities;
 
+
+use Exception;
+
 /**
  * Description of LoginRequest
  *
@@ -41,11 +44,11 @@ class LoginRequest {
 
     function validate() {
         if ($this->getUsername() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Username is mandatory");
+            throw new Exception("Username is mandatory", 403);
         }
 
         if ($this->getPassword() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Password is mandatory");
+            throw new Exception("Password is mandatory", 403);
         }
     }
 
