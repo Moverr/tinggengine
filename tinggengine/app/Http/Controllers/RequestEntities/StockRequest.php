@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\RequestEntities;
 
+use Exception;
 /**
  * Description of StockRequest
  *
@@ -111,35 +112,35 @@ class StockRequest {
 
 
         if ($this->getProduct_id() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product  is Mandatory");
+            throw new Exception("Product  is Mandatory", 403);
         }
 
         if ($this->getReference_id() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Reference ID   is Mandatory");
+            throw new Exception("Reference ID   is Mandatory", 403);
         }
 
 
 
         if ($this->getQuantity() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Quantity is Mandatory");
+            throw new Exception("Quantity is Mandatory", 403);
         }
 
 
 
         if ($this->getUnit_selling_price() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException(" Unit Selling Price  is Mandatory");
+            throw new Exception(" Unit Selling Price  is Mandatory", 403);
         }
 
 
         if ($this->getUnit_purchase_price() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException(" Unit Purchase Price  is Mandatory");
+            throw new Exception(" Unit Purchase Price  is Mandatory", 403);
         }
 
 
 
 
         if ($this->getUnit_measure() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException(" Unit measure is Mandatory");
+            throw new Exception(" Unit measure is Mandatory",403);
         }
 
 
