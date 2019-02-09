@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\RequestEntities;
+use Exception; 
 
 class UserRequest {
 

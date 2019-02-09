@@ -107,7 +107,7 @@ class UserService {
         $userRequest = new UserRequest($username, $password, $repassword, $role_id);
 
         if ($request['id'] == null) {
-            throw new Exception("Mandatory field ID is missing",403);
+            throw new Exception("Mandatory field ID is missing", 403);
         }
 
         $userRequest->setId($request['id']);
@@ -115,7 +115,7 @@ class UserService {
 
         $user = User::where('id', $userRequest->getId())->first();
         if ($user == null) {
-            throw new Exception("Record does not exist in the daabase",403);
+            throw new Exception("Record does not exist in the daabase", 403);
         }
 
         //todo: check if user exists wit the same username 
@@ -123,7 +123,7 @@ class UserService {
                 ->where('id', "<>", $userRequest->getId())
                 ->first();
         if ($existing_user != null) {
-            throw new Exception("User Exists with the same username in the database ",403);
+            throw new Exception("User Exists with the same username in the database ", 403);
         }
 
 
@@ -136,7 +136,7 @@ class UserService {
 
         $user = User::where('id', $id)->first();
         if ($user == null) {
-            throw new Exception("Record does not exist in the daabase",403);
+            throw new Exception("Record does not exist in the daabase", 403);
         }
         $user->status = 'ARCHIVED';
         $user->update();
@@ -149,7 +149,7 @@ class UserService {
         }
 
         $userResponse->setId($user->id);
-        $userResponse->setRole($user->role->role_id);
+        $userResponse->setRole($user->role_id);
         $userResponse->setDateCreated($user->date_created);
         $userResponse->setProfile($user->profile);
 
