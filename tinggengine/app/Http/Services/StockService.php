@@ -41,7 +41,7 @@ class StockService {
         $stock = Stock::offset($offset)->limit($limit)->get();
         $productResponses = [];
         foreach ($stock as $record) {
-            $productResponses [] = $this->populate($record)->toJson();
+            $productResponses [] = $this->populate($record)->toString();
         }
 
         return $productResponses;
@@ -54,7 +54,7 @@ class StockService {
         }
 
         $productResponse = $this->populate($stock[0]);
-        return $productResponse->toJson();
+        return $productResponse->toString();
     }
 
     public function save($request, $autneticaton_response = null) {
@@ -105,7 +105,7 @@ class StockService {
 
 
         $stockResponse = $this->populate($stock);
-        return $stockResponse->toJson();
+        return $stockResponse->toString();
     }
 
     public function update($request, $authentication = null) {
@@ -162,7 +162,7 @@ class StockService {
 
 
         $stockResponse = $this->populate($stock);
-        return $stockResponse->toJson();
+        return $stockResponse->toString();
     }
 
     public function archive($id, $autneticaton_response = null) {
@@ -185,7 +185,7 @@ class StockService {
         $stockResponse->setUnitmeasure($stock->unit_measure);
         $stockResponse->setStatus($stock->status);
         $stockResponse->setCreatedBy($stock->created_by);
-        $stockResponse->setDateCreated($stock->date_created);
+        $stockResponse->setDateCreated($this->util->convertToTimestamp($stock->date_created));
         return $stockResponse;
     }
 
