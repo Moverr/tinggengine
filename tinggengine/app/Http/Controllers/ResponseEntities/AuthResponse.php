@@ -49,11 +49,15 @@ class AuthResponse {
     }
 
     public function toJson() {
-        return \GuzzleHttp\json_encode([
+        return \GuzzleHttp\json_encode($this->toString());
+    }
+
+    public function toString() {
+        return [
             'id' => $this->id,
             'authentication' => $this->authentication,
             'role_id' => $this->role_id
-        ]);
+        ];
     }
 
 }
