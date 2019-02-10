@@ -41,7 +41,7 @@ class StockistService {
         $stockistReference = [];
 
         foreach ($stockists as $record) {
-            $stockistReference [] = $this->populate($record)->toJson();
+            $stockistReference [] = $this->populate($record)->toString();
         }
 
         return $stockistReference;
@@ -54,7 +54,7 @@ class StockistService {
         }
 
         $stockistReference = $this->populate($stockists[0]);
-        return $stockistReference->toJson();
+        return $stockistReference->toString();
     }
 
     public function checkrefence($reference_id, $autneticaton_response = null) {
@@ -65,7 +65,7 @@ class StockistService {
         }
 
         $stockistReference = $this->populate($stockists[0]);
-        return $stockistReference->toJson();
+        return $stockistReference->toString();
     }
 
     public function save($request, $autneticaton_response = null) {
@@ -124,7 +124,7 @@ class StockistService {
 
         $stockistResponse = $this->populate($stockist);
 
-        return $stockistResponse->toJson();
+        return $stockistResponse->toString();
     }
 
     public function update($request, $authentication = null) {
@@ -177,7 +177,7 @@ class StockistService {
         $stockist->update();
 
         $stockistResponse = $this->populate($stockist);
-        return $stockistResponse->toJson();
+        return $stockistResponse->toString();
     }
 
     public function archive($id, $autneticaton_response = null) {
