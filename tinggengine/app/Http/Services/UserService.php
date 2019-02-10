@@ -43,7 +43,7 @@ class UserService {
         $userResponses = [];
         foreach ($users as $user) {
             $userResponse = $this->populate($user);
-            $userResponses[] = $userResponse->toJson();
+            $userResponses[] = $userResponse->toString();
         }
 
 

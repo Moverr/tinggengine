@@ -85,14 +85,19 @@ class UserResponse {
     }
 
     public function toJson() {
-        return \GuzzleHttp\json_encode([
+        return \GuzzleHttp\json_encode( $this->toString());
+    }
+    
+     public function toString() {
+        return [
             'id' => $this->id,
             'username' => $this->username,
             'role' => $this->role,
             'profile' => $this->profile,
             'dateCreated' => $this->dateCreated,
             'author' => $this->author
-        ]);
+        ];
     }
+    
 
 }
