@@ -141,9 +141,9 @@ class ProductService {
         $productResponse->setId($products->id);
         $productResponse->setCode($products->code);
         $productResponse->setName($products->name);
-        $productResponse->setCategory($products->category_id);
-        $productResponse->setDateCreated($products->date_created);
-        $productResponse->setCreatedBy($products->created_by);
+        $productResponse->setCategory($products->Category->name);
+        $productResponse->setDateCreated($this->util->convertToTimestamp($products->date_created));
+        $productResponse->setCreatedBy($products->Author->username);
         $productResponse->setStatus($products->status);
         return $productResponse;
     }

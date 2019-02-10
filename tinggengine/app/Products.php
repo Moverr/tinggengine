@@ -27,7 +27,11 @@ class Products extends Model {
     const UPDATED_AT = 'date_updated';
 
     public function Category() {
-        return $this->belongsTo('App\ProductCategories', 'foreign_key', 'category_id');
+        return $this->hasOne('App\ProductCategories', 'id', 'category_id');
+    }
+    
+     public function Author() {
+        return $this->hasOne('App\User', 'id', 'created_by');
     }
 
 }
