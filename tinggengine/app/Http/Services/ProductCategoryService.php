@@ -139,7 +139,7 @@ class ProductCategoryService {
     public function populate($productCategories) {
         $productCategoryResponse = new ProductCategoryResponse();
         $productCategoryResponse->setId($productCategories->id);
-        $productCategoryResponse->setCreatedBy($productCategories->created_by);
+         $productCategoryResponse->setCreatedBy($productCategories->Author->username); 
         $productCategoryResponse->setName($productCategories->name);
         $productCategoryResponse->setCode($productCategories->code);
         $productCategoryResponse->setDateCreated($this->util->convertToTimestamp($productCategories->date_created));
