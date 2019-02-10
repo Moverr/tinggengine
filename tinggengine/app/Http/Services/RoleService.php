@@ -46,7 +46,11 @@ class RoleService {
         $roleResponse->setName($role->name);
         $roleResponse->setDescription($role->description);
         $roleResponse->setIs_system($role->is_system == 1 ? TRUE : FALSE );
-        $roleResponse->setPermissions($role->permission);
+        $permissions = [];
+        foreach ($role->permission as $record) {
+            $permissions[] = $record;
+        }
+        $roleResponse->setPermissions($permissions);
 
 
 

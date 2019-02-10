@@ -152,10 +152,9 @@ class UserService {
         $userResponse->setId($user->id);
         foreach ($user->role as $role) {
             if ($role->status == 'ACTIVE') {
-                $roles[] = $role;
-                $roleResponse = RoleService::getInstance()->populate($role);
+                $roles[] =   RoleService::getInstance()->populate($role)->toString();
 
-                ;
+                
             }
         }
 
