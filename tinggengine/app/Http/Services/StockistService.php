@@ -6,14 +6,16 @@
  * and open the template in the editor.
  */
 
-
 namespace App\Http\Services;
+
 use App\Http\Helpers\Utils;
 use App\Http\Controllers\ResponseEntities\StockistResponse;
 use App\Http\Controllers\RequestEntities\StockistRequest;
 use App\Stockists;
 use App\User;
-use Exception; 
+use App\Profiles;
+use Exception;
+
 /**
  * Description of StockistService
  *
@@ -50,7 +52,7 @@ class StockistService {
     public function get($id, $autneticaton_response = null) {
         $stockists = Stockists::where('id', $id)->get();
         if ($stockists == null || count($stockists) == 0) {
-            throw new Exception("Record does not exist in the daabase",403);
+            throw new Exception("Record does not exist in the daabase", 403);
         }
 
         $stockistReference = $this->populate($stockists[0]);
@@ -61,7 +63,7 @@ class StockistService {
         $stockists = Stockists::where('reference_id', $reference_id)->get();
 
         if ($stockists == null || count($stockists) == 0) {
-            throw new Exception("Record does not exist in the daabase",403);
+            throw new Exception("Record does not exist in the daabase", 403);
         }
 
         $stockistReference = $this->populate($stockists[0]);
@@ -80,7 +82,7 @@ class StockistService {
 
         $stockistRequest = new StockistRequest();
         if ($names != null) {
-            $namearray = split(" ", $names);
+            $namearray = explode(" ", $names);
             $stockistRequest->setFirstname($namearray[0]);
             $stockistRequest->setLastname($namearray[1]);
         }
@@ -96,12 +98,13 @@ class StockistService {
         $stockists = Stockists::where('phone_number', $phonenumber)->get();
 
         if (count($stockists) > 0) {
-            throw new Exception("Stockists exists in the database with same phone number ",403);
+            throw new Exception("Stockists exists in the database with same phone number ", 403);
         }
 
+        $reference_id = $this->util->incrementalHash();
         //todo:  validate the request
         $stockist = new Stockists();
-        $stockist->reference_id = $this->util->incrementalHash();
+        $stockist->reference_id = $reference_id;
         $stockist->join_date = $stockistRequest->getJoindate();
         $stockist->user_id = 1;
         $stockist->country_code = $stockistRequest->getCountrycode();
@@ -113,14 +116,27 @@ class StockistService {
 
         //todo: create user :: 
         $user = new User();
-        $user->username = $phonenumber;
+        $user->username = $reference_id;
         $user->password = Utils::HashPassword("client123");
         $user->status = 'ACTIVE';
+        $user->created_by = $createdBy;
         $user->save();
 
 
         $stockist->user_id = $user->id;
         $stockist->update();
+
+        //todo: create Profile for User
+        $profiles = new Profiles();
+        $profiles->firstname = $stockistRequest->getFirstname();
+        $profiles->lastname = $stockistRequest->getLastname();
+        $profiles->companyname = $stockistRequest->getCompanyname();
+        $profiles->created_by = $createdBy;
+        $profiles->save();
+
+        $user->profile_id = $profiles->id;
+        $user->update();
+
 
         $stockistResponse = $this->populate($stockist);
 
@@ -151,7 +167,7 @@ class StockistService {
 
 
         if ($request['id'] == null) {
-            throw new Exception("Mandatory field ID is missing",403);
+            throw new Exception("Mandatory field ID is missing", 403);
         }
 
         $stockistRequest->setId($request['id']);
@@ -159,7 +175,7 @@ class StockistService {
 
         $stockist = Stockists::where('id', $stockistRequest->getId())->first();
         if ($stockist == null) {
-            throw new Exception("Record does not exist in the daabase",403);
+            throw new Exception("Record does not exist in the daabase", 403);
         }
 
 
@@ -184,7 +200,7 @@ class StockistService {
 
         $product = ProductCategories::where('id', $id)->first();
         if ($product == null) {
-            throw new Exception("Record does not exist in the daabase",403);
+            throw new Exception("Record does not exist in the daabase", 403);
         }
         $product->status = 'ARCHIVED';
         $product->update();
@@ -192,11 +208,12 @@ class StockistService {
 
     public function populate($stockist) {
         $response = new StockistResponse();
-        $response->setId($stockist->id); 
+        $response->setId($stockist->id);
         $response->setFirstname($stockist->User->profile['firstname']);
         $response->setLastname($stockist->User->profile['lastname']);
+        $response->setCompanyname($stockist->User->profile['companyname']);
         $response->setReference_id($stockist->reference_id);
-        $response->setCountrycode($stockist->countrycode);
+        $response->setCountrycode($stockist->country_code);
         $response->setPhonenumber($stockist->phone_number);
         $response->setCreatedBy($stockist->Author->username);
         $response->setStatus($stockist->status);
