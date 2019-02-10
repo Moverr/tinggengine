@@ -6,15 +6,15 @@ use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 
-class Handler extends ExceptionHandler
-{
+class Handler extends ExceptionHandler {
+
     /**
      * A list of the exception types that are not reported.
      *
      * @var array
      */
     protected $dontReport = [
-        //
+            //
     ];
 
     /**
@@ -33,8 +33,7 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return void
      */
-    public function report(Exception $exception)
-    {
+    public function report(Exception $exception) {
         parent::report($exception);
     }
 
@@ -45,10 +44,15 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception)
-    {
-       return  parent::render($request, $exception);
-//        $error = ['error' => $exception->getMessage()];
-//        return new JsonResponse($error, $exception->getCode() > 0 ? $exception->getCode() : 422);
+    public function render($request, Exception $exception) {
+
+
+        if ($exception->getCode()) {
+            $error = ['error' => $exception->getMessage()];
+
+            return new JsonResponse($error, $exception->getCode() > 0 ? $exception->getCode() : 422);
+        }
+        return parent::render($request, $exception);
     }
+
 }
