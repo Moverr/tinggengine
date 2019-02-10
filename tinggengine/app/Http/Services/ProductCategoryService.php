@@ -40,7 +40,7 @@ class ProductCategoryService {
 
         $productcategoryResponses = [];
         foreach ($productCategories as $record) {
-            $productcategoryResponses [] = $this->populate($record)->toJson();
+            $productcategoryResponses [] = $this->populate($record)->toString();
         }
 
         return ($productcategoryResponses);
@@ -142,7 +142,7 @@ class ProductCategoryService {
         $productCategoryResponse->setCreatedBy($productCategories->created_by);
         $productCategoryResponse->setName($productCategories->name);
         $productCategoryResponse->setCode($productCategories->code);
-        $productCategoryResponse->setDateCreated($productCategories->date_created);
+        $productCategoryResponse->setDateCreated($this->util->convertToTimestamp($productCategories->date_created));
         $productCategoryResponse->setStatus($productCategories->status);
         return $productCategoryResponse;
     }

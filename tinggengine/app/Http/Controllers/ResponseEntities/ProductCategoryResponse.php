@@ -103,6 +103,7 @@ class ProductCategoryResponse {
             'code' => $this->code,
             'status' => $this->status,
             'createdBy' => $this->createdBy,
+            'dateCreated' => $this->dateCreated,
             'dateUpdated' => $this->dateUpdated
         ]);
     }
