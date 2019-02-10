@@ -126,7 +126,8 @@ class StockistResponse {
     public function toString() {
         return ([
             'id' => $this->id,
-            'name' => $this->firstname . '' . $this->lastname,
+            'name' => $this->firstname . ' ' . $this->lastname,
+            'countrycode' => $this->countrycode,
             'phonenuber' => $this->phonenumber,
             'bussiness' => $this->companyname,
             'reference_id' => $this->reference_id,

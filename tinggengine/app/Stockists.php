@@ -26,8 +26,12 @@ class Stockists extends Model {
     const CREATED_AT = 'date_created';
     const UPDATED_AT = 'date_updated';
 
-    public function Users() {
-        return $this->belongsTo('App\User', 'foreign_key', 'user_id');
+    public function Author() {
+        return $this->belongsTo('App\User', 'created_by', 'id');
+    }
+    
+     public function User() {
+        return $this->belongsTo('App\User', 'user_id', 'id');
     }
 
 }

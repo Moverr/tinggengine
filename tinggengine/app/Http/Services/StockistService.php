@@ -192,15 +192,16 @@ class StockistService {
 
     public function populate($stockist) {
         $response = new StockistResponse();
-        $response->setId($stockist->id);
-        //todo : we shall overcome
+        $response->setId($stockist->id); 
+        $response->setFirstname($stockist->User->profile['firstname']);
+        $response->setLastname($stockist->User->profile['lastname']);
         $response->setReference_id($stockist->reference_id);
         $response->setCountrycode($stockist->countrycode);
         $response->setPhonenumber($stockist->phone_number);
-        $response->setCreatedBy($stockist->created_by);
+        $response->setCreatedBy($stockist->Author->username);
         $response->setStatus($stockist->status);
         $response->setJoindate($stockist->join_date);
-        $response->setDatecreated($stockist->date_created);
+        $response->setDatecreated($this->util->convertToTimestamp($stockist->date_created));
 
         return $response;
     }
