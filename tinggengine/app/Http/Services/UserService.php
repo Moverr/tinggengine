@@ -157,7 +157,7 @@ class UserService {
         }
 
         $userResponse->setRole($roles);
-        $userResponse->setDateCreated($user->date_created);
+        $userResponse->setDateCreated($this->util::convertToTimestamp($user->date_created));
         $userResponse->setProfile($user->profile);
 
         return $userResponse;
