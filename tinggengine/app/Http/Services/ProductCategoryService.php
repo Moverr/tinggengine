@@ -12,7 +12,7 @@ use App\Http\Helpers\Utils;
 use App\ProductCategories;
 use App\Http\Controllers\RequestEntities\ProductCategoryRequest;
 use App\Http\Controllers\ResponseEntities\ProductCategoryResponse;
-use Exception; 
+use Exception;
 
 /**
  * Description of ProductCategoryService
@@ -49,7 +49,7 @@ class ProductCategoryService {
     public function get($id, $autneticaton_response = null) {
         $productCategories = ProductCategories::where('id', $id)->get();
         if ($productCategories == null) {
-            throw new Exception("Record does not exist in the daabase",403);
+            throw new Exception("Record does not exist in the daabase", 403);
         }
 
         $productResponse = $this->populate($productCategories[0]);
@@ -73,7 +73,7 @@ class ProductCategoryService {
                 ->where('code', $code)
                 ->first();
         if ($productCategory != null) {
-            throw new Exception("Product Category Exists with the same name or code in the database ",403);
+            throw new Exception("Product Category Exists with the same name or code in the database ", 403);
         }
 
         $productCategory = new ProductCategories();
@@ -103,7 +103,7 @@ class ProductCategoryService {
 
         $user = ProductCategories::where('id', $productCategoryRequest->getId())->first();
         if ($user == null) {
-            throw new Exception("Record does not exist in the daabase",403);
+            throw new Exception("Record does not exist in the daabase", 403);
         }
 
 
@@ -112,7 +112,7 @@ class ProductCategoryService {
                 ->where('id', "<>", $productCategoryRequest->getId())
                 ->first();
         if ($productCategory != null) {
-            throw new Exception("Product Category Exists with the same name or code in the database ",403);
+            throw new Exception("Product Category Exists with the same name or code in the database ", 403);
         }
 
 
@@ -127,10 +127,10 @@ class ProductCategoryService {
     }
 
     public function archive($id, $autneticaton_response = null) {
-       
+
         $user = ProductCategories::where('id', $id)->first();
         if ($user == null) {
-            throw new Exception("Record does not exist in the daabase",403);
+            throw new Exception("Record does not exist in the daabase", 403);
         }
         $user->status = 'ARCHIVED';
         $user->update();

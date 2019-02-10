@@ -38,7 +38,7 @@ class ProductService {
         $products = Products::offset($offset)->limit($limit)->get();
         $productResponses = [];
         foreach ($products as $record) {
-            $productResponses [] = $this->populate($record)->toJson();
+            $productResponses [] = $this->populate($record)->toString();
         }
         return ($productResponses);
     }
@@ -50,7 +50,7 @@ class ProductService {
         }
 
         $productResponse = $this->populate($products[0]);
-        return $productResponse->toJson();
+        return $productResponse->toString();
     }
 
     public function save($request, $autneticaton_response = null) {
@@ -85,7 +85,7 @@ class ProductService {
         $products->save();
 
         $productResponse = $this->populate($products);
-        return $productResponse->toJson();
+        return $productResponse->toString();
     }
 
     public function update($request, $authentication = null) {
@@ -124,7 +124,7 @@ class ProductService {
         $product->update();
 
         $productResponse = $this->populate($product);
-        return $productResponse->toJson();
+        return $productResponse->toString();
     }
 
     public function archive($id, $autneticaton_response = null) {
