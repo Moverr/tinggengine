@@ -153,10 +153,12 @@ class UserService {
         foreach ($user->role as $role) {
             if ($role->status == 'ACTIVE') {
                 $roles[] = $role;
+                $roleResponse = RoleService::getInstance()->populate($role);
 
                 ;
             }
         }
+
 
         $userResponse->setRole($roles);
         $userResponse->setDateCreated($this->util::convertToTimestamp($user->date_created));

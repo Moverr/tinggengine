@@ -82,7 +82,7 @@ class RoleResponse {
         $this->is_system = $is_system;
     }
 
-    function setPermissions(PermissionResponse $permissions) {
+    function setPermissions( $permissions) {
         $this->permissions = $permissions;
     }
 

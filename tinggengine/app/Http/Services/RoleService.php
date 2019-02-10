@@ -13,6 +13,7 @@ use App\Http\Controllers\RequestEntities\UserRequest;
 use App\Http\Helpers\Utils;
 use App\Http\Controllers\ResponseEntities\UserResponse;
 use App\Http\Controllers\RequestEntities\LoginRequest;
+use App\Http\Controllers\ResponseEntities\RoleResponse;
 use Exception;
 
 /**
@@ -37,31 +38,19 @@ class RoleService {
         }
         return self::$instance;
     }
-    
-    
-     public function populate($role) {
-        $userResponse = new UserResponse();
-        if ($role->username != null) {
-            $userResponse->setUsername($role->username);
-        }
 
-        $roles = [];
-        $userResponse->setId($role->id);
-        foreach ($role->role as $role) {
-            if ($role->status == 'ACTIVE') {
-                $roles[] = $role;
+    public function populate($role) {
+        $roleResponse = new RoleResponse();
+        $roleResponse->setId($role->id);
+        $roleResponse->setCode($role->code);
+        $roleResponse->setName($role->name);
+        $roleResponse->setDescription($role->description);
+        $roleResponse->setIs_system($role->is_system == 1 ? TRUE : FALSE );
+        $roleResponse->setPermissions($role->permission);
 
-                ;
-            }
-        }
 
-        $userResponse->setRole($roles);
-        $userResponse->setDateCreated($this->util::convertToTimestamp($role->date_created));
-        $profileResponse = ProfileService::getInstance()->populate($role->profile);
-        $userResponse->setProfile($profileResponse->toString());
 
-        return $userResponse;
+        return $roleResponse;
     }
-    
 
 }
