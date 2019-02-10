@@ -92,7 +92,7 @@ class UserResponse {
         return [
             'id' => $this->id,
             'username' => $this->username,
-            'role' => $this->role,
+            'roles' => $this->role,
             'profile' => $this->profile,
             'dateCreated' => $this->dateCreated,
             'author' => $this->author
