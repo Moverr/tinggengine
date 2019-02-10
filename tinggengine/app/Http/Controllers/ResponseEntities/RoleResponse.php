@@ -8,6 +8,8 @@ namespace App\Http\Controllers\ResponseEntities;
  * and open the template in the editor.
  */
 
+use App\Http\Controllers\ResponseEntities\PermissionResponse;
+
 /**
  * Description of RoleResponse
  *
@@ -80,10 +82,23 @@ class RoleResponse {
         $this->is_system = $is_system;
     }
 
-    function setPermissions($permissions) {
+    function setPermissions(PermissionResponse $permissions) {
         $this->permissions = $permissions;
     }
 
-   
+    public function toJson() {
+        return \GuzzleHttp\json_encode($this->toString());
+    }
+
+    public function toString() {
+        return [
+            'id' => $this->id,
+            'code' => $this->code,
+            'name' => $this->name,
+            'description' => $this->description,
+            'is_system' => $this->is_system,
+            'permissions' => $this->permissions,
+        ];
+    }
 
 }
