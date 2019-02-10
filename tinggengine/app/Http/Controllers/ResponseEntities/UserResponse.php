@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\ResponseEntities;
- 
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -28,6 +27,7 @@ class UserResponse {
     function __construct() {
         
     }
+
     function getId() {
         return $this->id;
     }
@@ -76,8 +76,6 @@ class UserResponse {
         $this->datUpdated = $datUpdated;
     }
 
-
-    
     function getProfile() {
         return $this->profile;
     }
@@ -86,18 +84,15 @@ class UserResponse {
         $this->profile = $profile;
     }
 
-        
-     public function toJson() {
+    public function toJson() {
         return \GuzzleHttp\json_encode([
             'id' => $this->id,
             'username' => $this->username,
-            'role_id' => $this->role,
-             'profile' => $this->profile,
+            'role' => $this->role,
+            'profile' => $this->profile,
             'dateCreated' => $this->dateCreated,
-            'author' =>   $this->author 
+            'author' => $this->author
         ]);
     }
-    
-     
 
 }
