@@ -178,13 +178,13 @@ class StockService {
         $stockResponse = new StockResponse();
         $stockResponse->setId($stock->id);
         $stockResponse->setReference($stock->reference_id);
-        $stockResponse->setProduct($stock->product_id);
+        $stockResponse->setProduct(["id"=>$stock->Product->id,"name"=>$stock->Product->name]);
         $stockResponse->setQuantity($stock->quantity);
         $stockResponse->setUnitsellingprice($stock->unit_selling_price);
         $stockResponse->setUnitpurchaseprice($stock->unit_purchase_price);
         $stockResponse->setUnitmeasure($stock->unit_measure);
         $stockResponse->setStatus($stock->status);
-        $stockResponse->setCreatedBy($stock->created_by);
+        $stockResponse->setCreatedBy($stock->Author->username);
         $stockResponse->setDateCreated($this->util->convertToTimestamp($stock->date_created));
         return $stockResponse;
     }
