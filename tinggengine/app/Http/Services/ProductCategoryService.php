@@ -53,7 +53,7 @@ class ProductCategoryService {
         }
 
         $productResponse = $this->populate($productCategories[0]);
-        return $productResponse->toJson();
+        return $productResponse->toString();
     }
 
     public function save($request, $autneticaton_response = null) {
@@ -84,7 +84,7 @@ class ProductCategoryService {
         $productCategory->save();
 
         $productResponse = $this->populate($productCategory);
-        return $productResponse->toJson();
+        return $productResponse->toString();
     }
 
     public function update($request, $authentication = null) {
@@ -123,7 +123,7 @@ class ProductCategoryService {
         $productCategory->update();
 
         $productResponse = $this->populate($productCategory);
-        return $productResponse->toJson();
+        return $productResponse->toString();
     }
 
     public function archive($id, $autneticaton_response = null) {
