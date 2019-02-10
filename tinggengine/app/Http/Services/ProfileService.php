@@ -14,9 +14,8 @@ use App\Http\Controllers\RequestEntities\UserRequest;
 use App\Http\Helpers\Utils;
 use App\Http\Controllers\ResponseEntities\UserResponse;
 use App\Http\Controllers\RequestEntities\LoginRequest;
-use App\Http\Services\ProfileService;
 use App\Profiles;
-use Exception;
+use App\Http\Controllers\ResponseEntities\ProfileResponse;
 
 /**
  * Description of ProfileService
@@ -34,9 +33,16 @@ class ProfileService {
         $this->util = new Utils();
     }
 
-    public function populate(Profiles $profile) {
+    public static function getInstance() {
+        if (!isset(self::$instance)) {
+            self::$instance = new ProfileService();
+        }
+        return self::$instance;
+    }
 
-        $profileResponse = new ProfileService();
+    public function populate($profile) {
+
+        $profileResponse = new ProfileResponse();
         if ($profile != null) {
             $profileResponse->setId($profile->id);
             $profileResponse->setFirstname($profile->firstname);

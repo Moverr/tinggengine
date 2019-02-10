@@ -153,12 +153,15 @@ class UserService {
         foreach ($user->role as $role) {
             if ($role->status == 'ACTIVE') {
                 $roles[] = $role;
+
+                ;
             }
         }
 
         $userResponse->setRole($roles);
         $userResponse->setDateCreated($this->util::convertToTimestamp($user->date_created));
-        $userResponse->setProfile($user->profile);
+        $profileResponse = ProfileService::getInstance()->populate($user->profile);
+        $userResponse->setProfile($profileResponse->toString());
 
         return $userResponse;
     }

@@ -67,8 +67,8 @@ class ProfileResponse {
         $this->status = $status;
     }
 
-    public function toJson() {
-        return \GuzzleHttp\json_encode([
+    public function toString() {
+        return  ([
             'id' => $this->id,
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
