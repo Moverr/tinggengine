@@ -148,8 +148,15 @@ class UserService {
             $userResponse->setUsername($user->username);
         }
 
+        $roles = [];
         $userResponse->setId($user->id);
-        $userResponse->setRole($user->role);
+        foreach ($user->role as $role) {
+            if ($role->status == 'ACTIVE') {
+                $roles[] = $role;
+            }
+        }
+
+        $userResponse->setRole($roles);
         $userResponse->setDateCreated($user->date_created);
         $userResponse->setProfile($user->profile);
 
