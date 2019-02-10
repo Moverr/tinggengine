@@ -13,6 +13,7 @@ use App\Products;
 use App\Http\Controllers\ResponseEntities\ProductResponse;
 use App\Http\Controllers\RequestEntities\ProductRequest;
 use Exception;
+
 /**
  * Description of ProductService
  *
@@ -46,7 +47,7 @@ class ProductService {
     public function get($id, $autneticaton_response = null) {
         $products = Products::where('id', $id)->get();
         if ($products == null) {
-            throw new Exception("Record does not exist in the daabase",403);
+            throw new Exception("Record does not exist in the daabase", 403);
         }
 
         $productResponse = $this->populate($products[0]);
@@ -73,7 +74,7 @@ class ProductService {
                 ->where('code', $code)
                 ->first();
         if ($products != null) {
-            throw new Exception("Product   Exists with the same name or code in the database ",403);
+            throw new Exception("Product   Exists with the same name or code in the database ", 403);
         }
 
         $products = new Products();
@@ -97,7 +98,7 @@ class ProductService {
         $productsRequest = new ProductRequest($name, $code, $categoryId);
 
         if ($request['id'] == null) {
-            throw new Exception("Mandatory field ID is missing",403);
+            throw new Exception("Mandatory field ID is missing", 403);
         }
 
         $productsRequest->setId($request['id']);
@@ -105,7 +106,7 @@ class ProductService {
 
         $product = Products::where('id', $productsRequest->getId())->first();
         if ($product == null) {
-            throw new Exception("Record does not exist in the daabase",403);
+            throw new Exception("Record does not exist in the daabase", 403);
         }
 
 
@@ -115,7 +116,7 @@ class ProductService {
                 ->where('id', "<>", $productsRequest->getId())
                 ->first();
         if ($product != null) {
-            throw new Exception("Product  Exists with the same name or code in the database ",403);
+            throw new Exception("Product  Exists with the same name or code in the database ", 403);
         }
 
         $product->name = $name;
@@ -130,7 +131,7 @@ class ProductService {
     public function archive($id, $autneticaton_response = null) {
         $product = Products::where('id', $id)->first();
         if ($product == null) {
-            throw new Exception("Record does not exist in the daabase",403);
+            throw new Exception("Record does not exist in the daabase", 403);
         }
         $product->status = 'ARCHIVED';
         $product->update();
@@ -141,7 +142,7 @@ class ProductService {
         $productResponse->setId($products->id);
         $productResponse->setCode($products->code);
         $productResponse->setName($products->name);
-        $productResponse->setCategory(["id"=>$products->id,"name"=>$products->Category->name,]);
+        $productResponse->setCategory(["id" => $products->id, "name" => $products->Category->name,]);
         $productResponse->setDateCreated($this->util->convertToTimestamp($products->date_created));
         $productResponse->setCreatedBy($products->Author->username);
         $productResponse->setStatus($products->status);
