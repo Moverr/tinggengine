@@ -89,7 +89,7 @@ class PurchaseService {
             $purchaseOrderItem->setProduct_id($item['product_id']);
             $purchaseOrderItem->setUnit_selling_price($item['unit_selling_price']);
             $purchaseOrderItem->validate();
-            $purchaseOrderItems = $purchaseOrderItem;
+            $purchaseOrderItems[] = $purchaseOrderItem;
         }
 
 
@@ -112,12 +112,12 @@ class PurchaseService {
             $purchaseOrderItem = new PurchaseOrderItems();
             $purchaseOrderItem->purchase_order_id = $purchaseorder->id;
             $purchaseOrderItem->product_id = $record->getProduct_id();
-            $purchaseOrderItem->quantity = $purchaseorder->getQuantity();
-            $purchaseOrderItem->unit_selling_price = $purchaseorder->getUnit_selling_price();
-            $totalselprice = $this->calculateTotalPrice($purchaseorder->getUnit_selling_price(), $purchaseorder->getQuantity());
+            $purchaseOrderItem->quantity = $record->getQuantity();
+            $purchaseOrderItem->unit_selling_price = $record->getUnit_selling_price();
+            $totalselprice = $this->calculateTotalPrice($record->getUnit_selling_price(), $record->getQuantity());
             $purchaseOrderItem->total_selling_price = $totalselprice;
+            $purchaseOrderItem->created_by = $purchaseorderrequest->getCreated_by();
             $purchaseOrderItem->save();
-
             $totalvalue += $totalselprice;
         }
 
