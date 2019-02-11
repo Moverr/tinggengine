@@ -23,6 +23,7 @@ class PurchaseOrderRequest {
     private $reference_id;
     private $order_date;
     private $total_amount;
+    private $purchase_items;
     private $status;
     private $created_by;
     private $updated_by;

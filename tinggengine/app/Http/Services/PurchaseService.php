@@ -59,7 +59,12 @@ class PurchaseService {
     }
 
     public function save($request, $autneticaton_response = null) {
+
+        //todo: get stockist reference id 
         $stockist_id = $request['stockist_id'];
+       
+        
+        
         $order_date = $request['order_date'];
         $reference_id = $this->util->incrementalHash(5);
         $createdBy = $autneticaton_response->getId();
