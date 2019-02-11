@@ -93,6 +93,24 @@ class PurchaseOrderItemsRequest {
     }
 
     
+     function validate() {
+        if ($this->getProduct_id() == null) {
+            throw new Exception("Product  Id is  Mandatory", 403);
+        }
+
+        if ($this->getQuantity() == null) {
+            throw new Exception("Quantity   is Mandatory", 403);
+        }
+
+
+        if ($this->getUnit_selling_price() == null) {
+            throw new Exception("Selling Price   Mandatory", 403);
+        }
+
+
+        return true;
+    }
+
     
 
 
