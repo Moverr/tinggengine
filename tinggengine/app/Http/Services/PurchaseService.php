@@ -8,6 +8,7 @@ use App\PurchaseOrders;
 use App\Http\Controllers\ResponseEntities\PurchaseOrderResponse;
 use App\Http\Controllers\RequestEntities\PurchaseOrderRequest;
 use App\Http\Controllers\RequestEntities\PurchaseOrderItemsRequest;
+use App\PurchaseOrderItems;
 use Exception;
 
 /*
@@ -81,7 +82,7 @@ class PurchaseService {
 
         //validate purchase order items
 
-       $purchaseOrderItems = [];
+        $purchaseOrderItems = [];
         foreach ($items as $item) {
             $purchaseOrderItem = new PurchaseOrderItemsRequest();
             $purchaseOrderItem->setQuantity($item['quantity']);
@@ -89,10 +90,10 @@ class PurchaseService {
             $purchaseOrderItem->setUnit_selling_price($item['unit_selling_price']);
             $purchaseOrderItem->validate();
             $purchaseOrderItems = $purchaseOrderItem;
-             }
+        }
 
 
- 
+
         //todo:verify stockist. 
         //todo: verify that the stockist join date is not greater than 
 
@@ -105,8 +106,27 @@ class PurchaseService {
         $purchaseorder->status = 'PENDING';
         $purchaseorder->save();
 
+        //todo: add the items
+        $totalvalue = 0;
+        foreach ($purchaseOrderItems as $record) {
+            $purchaseOrderItem = new PurchaseOrderItems();
+            $purchaseOrderItem->purchase_order_id = $purchaseorder->id;
+            $purchaseOrderItem->product_id = $record->getProduct_id();
+            $purchaseOrderItem->quantity = $purchaseorder->getQuantity();
+            $purchaseOrderItem->unit_selling_price = $purchaseorder->getUnit_selling_price();
+            $totalselprice = $this->calculateTotalPrice($purchaseorder->getUnit_selling_price(), $purchaseorder->getQuantity());
+            $purchaseOrderItem->total_selling_price = $totalselprice;
+            $purchaseOrderItem->save();
+
+            $totalvalue += $totalselprice;
+        }
+
         $stockResponse = $this->populate($purchaseorder);
         return $stockResponse->toString();
+    }
+
+    public function calculateTotalPrice($unitprice, $quantity) {
+        return ($unitprice * $quantity);
     }
 
     public function update($request, $authentication = null) {
