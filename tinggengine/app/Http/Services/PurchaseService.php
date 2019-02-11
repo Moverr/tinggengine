@@ -62,9 +62,9 @@ class PurchaseService {
 
         //todo: get stockist reference id 
         $stockist_id = $request['stockist_id'];
-       
-        
-        
+
+
+
         $order_date = $request['order_date'];
         $reference_id = $this->util->incrementalHash(5);
         $createdBy = $autneticaton_response->getId();
@@ -76,6 +76,10 @@ class PurchaseService {
         $purchaseorderrequest->setReference_id($reference_id);
 
         $purchaseorderrequest->validate();
+        
+        //validate purchase order items
+        
+        throw new Exception("Interesting",403);
 
         //todo:verify stockist. 
         //todo: verify that the stockist join date is not greater than 
