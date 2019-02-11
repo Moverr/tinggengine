@@ -68,6 +68,7 @@ class PurchaseService {
 
         $order_date = $request['order_date'];
         $reference_id = $this->util->incrementalHash(5);
+        $items = $request['items'];
         $createdBy = $autneticaton_response->getId();
 
         $purchaseorderrequest = new PurchaseOrderRequest();
@@ -75,13 +76,14 @@ class PurchaseService {
         $purchaseorderrequest->setOrder_date($order_date);
         $purchaseorderrequest->setCreated_by($createdBy);
         $purchaseorderrequest->setReference_id($reference_id);
+        $purchaseorderrequest->setItems($items);
         $purchaseorderrequest->validate();
 
         //validate purchase order items
         $purchaseOrderItems = new PurchaseOrderItemsRequest();
-        $purchaseOrderItems->setQuantity($request['items']['quantity']);
-        $purchaseOrderItems->setProduct_id($request['items']['product_id']);
-        $purchaseOrderItems->setQuantity($request['items']['unit_selling_price']);
+        $purchaseOrderItems->setQuantity($items['quantity']);
+        $purchaseOrderItems->setProduct_id($items['product_id']);
+        $purchaseOrderItems->setQuantity($items['unit_selling_price']);
         $purchaseOrderItems->validate();
 
 
