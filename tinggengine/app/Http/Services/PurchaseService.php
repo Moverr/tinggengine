@@ -7,6 +7,7 @@ use App\Stock;
 use App\PurchaseOrders;
 use App\Http\Controllers\ResponseEntities\PurchaseOrderResponse;
 use App\Http\Controllers\RequestEntities\PurchaseOrderRequest;
+use App\Http\Controllers\RequestEntities\PurchaseOrderItemsRequest;
 use Exception;
 
 /*
@@ -74,12 +75,16 @@ class PurchaseService {
         $purchaseorderrequest->setOrder_date($order_date);
         $purchaseorderrequest->setCreated_by($createdBy);
         $purchaseorderrequest->setReference_id($reference_id);
-
         $purchaseorderrequest->validate();
-        
+
         //validate purchase order items
-        
-        throw new Exception("Interesting",403);
+        $purchaseOrderItems = new PurchaseOrderItemsRequest();
+        $purchaseOrderItems->setQuantity($request['items']['quantity']);
+        $purchaseOrderItems->setProduct_id($request['items']['product_id']);
+        $purchaseOrderItems->setQuantity($request['items']['unit_selling_price']);
+
+
+        throw new Exception("Interesting", 403);
 
         //todo:verify stockist. 
         //todo: verify that the stockist join date is not greater than 

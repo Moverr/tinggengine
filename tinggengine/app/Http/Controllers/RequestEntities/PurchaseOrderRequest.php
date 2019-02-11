@@ -23,7 +23,7 @@ class PurchaseOrderRequest {
     private $reference_id;
     private $order_date;
     private $total_amount;
-    private $purchase_items;
+    private $items;
     private $status;
     private $created_by;
     private $updated_by;
@@ -33,7 +33,7 @@ class PurchaseOrderRequest {
     function __construct() {
         
     }
-
+    
     function getId() {
         return $this->id;
     }
@@ -52,6 +52,10 @@ class PurchaseOrderRequest {
 
     function getTotal_amount() {
         return $this->total_amount;
+    }
+
+    function getItems() {
+        return $this->items;
     }
 
     function getStatus() {
@@ -94,6 +98,10 @@ class PurchaseOrderRequest {
         $this->total_amount = $total_amount;
     }
 
+    function setItems($items) {
+        $this->items = $items;
+    }
+
     function setStatus($status) {
         $this->status = $status;
     }
@@ -114,6 +122,9 @@ class PurchaseOrderRequest {
         $this->date_updated = $date_updated;
     }
 
+        
+    
+ 
     function validate() {
         if ($this->getStockist_id() == null) {
             throw new Exception("Stockist Id is  Mandatory", 403);
@@ -128,6 +139,11 @@ class PurchaseOrderRequest {
             throw new Exception("Reference Id  Mandatory", 403);
         }
 
+        
+        if($this->getItems() == null){
+            throw new Exception("There must be alteast one item on the purchase order",403);
+        }
+        
 
         return true;
     }
