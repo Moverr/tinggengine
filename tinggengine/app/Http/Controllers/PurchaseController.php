@@ -49,7 +49,7 @@ class PurchaseController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-          $this->purchaseService->archive($id);
+        $this->purchaseService->archive($id);
     }
 
 }

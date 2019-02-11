@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\RequestEntities;
 
+use Exception;
 /**
  * Description of StockistRequest
  *
@@ -123,16 +124,16 @@ class StockistRequest {
 
         function validate() {
         if ($this->getFirstname() == null && $this->getLastname()) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Names are  Mandatory");
+            throw new Exception("Names are  Mandatory");
         }
 
         if ($this->getCompanyname() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Company/Shop Name  is Mandatory");
+            throw new Exception("Company/Shop Name  is Mandatory",403);
         }
 
 
         if ($this->getPhonenumber() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Default Phone Number  is Mandatory");
+            throw new Exception("Default Phone Number  is Mandatory",403);
         }
 
 

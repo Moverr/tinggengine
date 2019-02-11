@@ -93,12 +93,17 @@ class ProductCategoryResponse {
     }
 
     public function toJson() {
-        return \GuzzleHttp\json_encode([
+        return \GuzzleHttp\json_encode($this->toString());
+    }
+    
+    public function toString(){
+        return ([
             'id' => $this->id,
             'name' => $this->name,
             'code' => $this->code,
             'status' => $this->status,
             'createdBy' => $this->createdBy,
+            'dateCreated' => $this->dateCreated,
             'dateUpdated' => $this->dateUpdated
         ]);
     }

@@ -26,8 +26,13 @@ class Stock extends Model {
     const CREATED_AT = 'date_created';
     const UPDATED_AT = 'date_updated';
 
-    public function Stock() {
-        return $this->belongsTo('App\Products', 'foreign_key', 'product_id');
+    public function Product() {
+        return $this->hasOne('App\Products', 'id', 'product_id');
     }
+    
+      public function Author() {
+        return $this->hasOne('App\User', 'id', 'created_by');
+    }
+
 
 }

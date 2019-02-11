@@ -7,6 +7,7 @@
  */
 
 namespace App\Http\Controllers\RequestEntities;
+use Exception;
 
 /**
  * Description of ProductCategoryRequest
@@ -68,11 +69,11 @@ class ProductCategoryRequest {
 
     function validate() {
         if ($this->getCode() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product Code is mandatory");
+            throw new  Exception("Product Code is mandatory",403);
         }
 
         if ($this->getName() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Product Name is mandatory");
+            throw new Exception("Product Name is mandatory",403);
         }
     }
 

@@ -21,7 +21,7 @@ class Profiles extends Migration
             $table->bigIncrements('id');
             $table->string('firstname')->nullable();
             $table->string('lastname')->nullable();
-            $table->string('compnayname')->nullable();             
+            $table->string('companyname')->nullable();             
             $table->enum('status',array('ACTIVE','ARCHIVED'));
             $table->bigInteger('created_by')->unsigned();
             $table->timestamp('date_created')->default(DB::raw('CURRENT_TIMESTAMP'));

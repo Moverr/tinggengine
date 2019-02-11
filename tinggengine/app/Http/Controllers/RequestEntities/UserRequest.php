@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\RequestEntities;
+use Exception; 
 
 class UserRequest {
 
@@ -103,31 +104,28 @@ class UserRequest {
 
 
         if ($this->getUsername() == null || strlen($this->getUsername()) == 0) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Username is Mandatory");
+            throw new Exception("Username is Mandatory", 403);
         }
 
 
         if ($this->getPassword() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Password is Mandatory");
+            throw new Exception("Password is Mandatory", 403);
         }
 
         if ($this->getRepassword() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Password is Mandatory");
+            throw new Exception("Password is Mandatory", 403);
         }
 
 
 
         if ($this->getRoleId() == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Role  is Mandatory");
+            throw new Exception("Role  is Mandatory", 403);
         }
 
 
         if ($this->getPassword() != $this->getRepassword()) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Passwords do not match");
+            throw new Exception("Passwords do not match", 403);
         }
-
-
-
 
 
         return true;

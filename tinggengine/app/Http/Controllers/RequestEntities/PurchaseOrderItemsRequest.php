@@ -8,12 +8,15 @@
 
 namespace App\Http\Controllers\RequestEntities;
 
+use Exception;
+
 /**
  * Description of PurchaseOrderItemsRequest
  *
  * @author mover  
  */
 class PurchaseOrderItemsRequest {
+
     //put your code here
     private $id;
     private $purchase_order;
@@ -23,11 +26,11 @@ class PurchaseOrderItemsRequest {
     private $total_selling_price;
     private $status;
     private $created_by;
-    
+
     function __construct() {
         
     }
-    
+
     function getId() {
         return $this->id;
     }
@@ -92,9 +95,22 @@ class PurchaseOrderItemsRequest {
         $this->created_by = $created_by;
     }
 
-    
-    
+    function validate() {
+        if ($this->getProduct_id() == null) {
+            throw new Exception("Product  Id is  Mandatory", 403);
+        }
+
+        if ($this->getQuantity() == null) {
+            throw new Exception("Quantity   is Mandatory", 403);
+        }
 
 
-    
+        if ($this->getUnit_selling_price() == null) {
+            throw new Exception("Selling Price   Mandatory", 403);
+        }
+
+
+        return true;
+    }
+
 }

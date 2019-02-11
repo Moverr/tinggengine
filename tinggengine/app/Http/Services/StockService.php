@@ -13,6 +13,7 @@ use App\Stock;
 use App\Http\Controllers\RequestEntities\StockRequest;
 use App\Http\Controllers\ResponseEntities\StockResponse;
 use App\StockTransactions;
+use Exception; 
 
 /**
  * Description of StockService
@@ -40,7 +41,7 @@ class StockService {
         $stock = Stock::offset($offset)->limit($limit)->get();
         $productResponses = [];
         foreach ($stock as $record) {
-            $productResponses [] = $this->populate($record)->toJson();
+            $productResponses [] = $this->populate($record)->toString();
         }
 
         return $productResponses;
@@ -49,11 +50,11 @@ class StockService {
     public function get($id, $autneticaton_response = null) {
         $stock = Stock::where('id', $id)->get();
         if ($stock == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase",403);
         }
 
         $productResponse = $this->populate($stock[0]);
-        return $productResponse->toJson();
+        return $productResponse->toString();
     }
 
     public function save($request, $autneticaton_response = null) {
@@ -70,7 +71,7 @@ class StockService {
         $existing_stock = Stock::where('product_id', $product_id)
                 ->first();
         if ($existing_stock != null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException(" Stock exists under the same product , kindly update instead of creating new stock ");
+            throw new Exception(" Stock exists under the same product , kindly update instead of creating new stock ",403);
         }
 
 
@@ -104,7 +105,7 @@ class StockService {
 
 
         $stockResponse = $this->populate($stock);
-        return $stockResponse->toJson();
+        return $stockResponse->toString();
     }
 
     public function update($request, $authentication = null) {
@@ -120,7 +121,7 @@ class StockService {
         $stockRequest = new StockRequest($product_id, $reference_id, $quantity, $unit_selling_price, $unit_purchase_price, $unit_measure);
 
         if ($request['id'] == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Mandatory field ID is missing");
+            throw new Exception("Mandatory field ID is missing",403);
         }
 
         $stockRequest->setId($request['id']);
@@ -128,7 +129,7 @@ class StockService {
 
         $stockResult = Stock::where('id', $stockRequest->getId())->first();
         if ($stockResult == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase",403);
         }
 
 
@@ -161,13 +162,13 @@ class StockService {
 
 
         $stockResponse = $this->populate($stock);
-        return $stockResponse->toJson();
+        return $stockResponse->toString();
     }
 
     public function archive($id, $autneticaton_response = null) {
         $stock = Stock::where('id', $id)->first();
         if ($stock == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase",403);
         }
         $stock->status = 'ARCHIVED';
         $stock->update();
@@ -177,14 +178,14 @@ class StockService {
         $stockResponse = new StockResponse();
         $stockResponse->setId($stock->id);
         $stockResponse->setReference($stock->reference_id);
-        $stockResponse->setProduct($stock->product_id);
+        $stockResponse->setProduct(["id"=>$stock->Product->id,"name"=>$stock->Product->name]);
         $stockResponse->setQuantity($stock->quantity);
         $stockResponse->setUnitsellingprice($stock->unit_selling_price);
         $stockResponse->setUnitpurchaseprice($stock->unit_purchase_price);
         $stockResponse->setUnitmeasure($stock->unit_measure);
         $stockResponse->setStatus($stock->status);
-        $stockResponse->setCreatedBy($stock->created_by);
-        $stockResponse->setDateCreated($stock->date_created);
+        $stockResponse->setCreatedBy($stock->Author->username);
+        $stockResponse->setDateCreated($this->util->convertToTimestamp($stock->date_created));
         return $stockResponse;
     }
 

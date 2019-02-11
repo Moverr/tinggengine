@@ -111,7 +111,11 @@ class StockResponse {
     }
 
     public function toJson() {
-        return \GuzzleHttp\json_encode([
+        return \GuzzleHttp\json_encode($this->toString());
+    }
+
+    public function toString() {
+        return ([
             'id' => $this->id,
             'reference' => $this->reference,
             'product' => $this->product,

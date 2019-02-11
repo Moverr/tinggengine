@@ -119,10 +119,15 @@ class StockistResponse {
         $this->createdBy = $createdBy;
     }
 
-        public function toJson() {
-        return \GuzzleHttp\json_encode([
+    public function toJson() {
+        return \GuzzleHttp\json_encode($this->toString());
+    }
+
+    public function toString() {
+        return ([
             'id' => $this->id,
-            'name' => $this->firstname . '' . $this->lastname,
+            'name' => $this->firstname . ' ' . $this->lastname,
+            'countrycode' => $this->countrycode,
             'phonenuber' => $this->phonenumber,
             'bussiness' => $this->companyname,
             'reference_id' => $this->reference_id,

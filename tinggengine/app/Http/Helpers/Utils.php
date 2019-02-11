@@ -2,6 +2,8 @@
 
 namespace App\Http\Helpers;
 
+use DateTime;
+
 class Utils {
 
     function __construct() {
@@ -55,7 +57,7 @@ class Utils {
                 ->where('status', "ACTIVE")
                 ->first();
         if ($existing_user == null) {
-            throw new \Illuminate\Validation\UnauthorizedException("Invalid  user credentials");
+            throw new \Illuminate\Validation\UnauthorizedException("Invalid  user credentials", 403);
         }
 
         $auth = new \App\Http\Controllers\ResponseEntities\AuthResponse();
@@ -164,6 +166,13 @@ class Utils {
 
             return $text;
         }
+    }
+
+    public static function convertToTimestamp($date) {
+        if($date instanceof DateTime){
+            return strtotime($date);
+        }
+        
     }
 
 }

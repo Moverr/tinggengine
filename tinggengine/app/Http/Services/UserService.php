@@ -12,6 +12,8 @@ use App\User;
 use App\Http\Controllers\RequestEntities\UserRequest;
 use App\Http\Helpers\Utils;
 use App\Http\Controllers\ResponseEntities\UserResponse;
+use App\Http\Controllers\RequestEntities\LoginRequest;
+use Exception;
 
 /**
  * Description of UserService
@@ -21,6 +23,7 @@ use App\Http\Controllers\ResponseEntities\UserResponse;
 class UserService {
 
     private $util;
+    private static $instance;
 
     function __construct() {
         $this->util = new Utils();
@@ -40,7 +43,7 @@ class UserService {
         $userResponses = [];
         foreach ($users as $user) {
             $userResponse = $this->populate($user);
-            $userResponses[] = $userResponse->toJson();
+            $userResponses[] = $userResponse->toString();
         }
 
 
@@ -51,7 +54,7 @@ class UserService {
 
         $user = User::where('id', $id)->get();
         if ($user == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase");
         }
 
         $userResponse = $this->populate($user[0]);
@@ -62,7 +65,7 @@ class UserService {
         $username = $request['username'];
         $password = $request['password'];
 
-        $loginRequest = new RequestEntities\LoginRequest();
+        $loginRequest = new LoginRequest();
         $loginRequest->setPassword($password);
         $loginRequest->setUsername($username);
         $loginRequest->validate();
@@ -83,7 +86,7 @@ class UserService {
 
         $user = User::where('username', $username)->first();
         if ($user != null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("User Exists with the same username in the database ");
+            throw new Exception("User Exists with the same username in the database ");
         }
 
         $user = new User();
@@ -104,7 +107,7 @@ class UserService {
         $userRequest = new UserRequest($username, $password, $repassword, $role_id);
 
         if ($request['id'] == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Mandatory field ID is missing");
+            throw new Exception("Mandatory field ID is missing", 403);
         }
 
         $userRequest->setId($request['id']);
@@ -112,7 +115,7 @@ class UserService {
 
         $user = User::where('id', $userRequest->getId())->first();
         if ($user == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase", 403);
         }
 
         //todo: check if user exists wit the same username 
@@ -120,7 +123,7 @@ class UserService {
                 ->where('id', "<>", $userRequest->getId())
                 ->first();
         if ($existing_user != null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("User Exists with the same username in the database ");
+            throw new Exception("User Exists with the same username in the database ", 403);
         }
 
 
@@ -133,7 +136,7 @@ class UserService {
 
         $user = User::where('id', $id)->first();
         if ($user == null) {
-            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException("Record does not exist in the daabase");
+            throw new Exception("Record does not exist in the daabase", 403);
         }
         $user->status = 'ARCHIVED';
         $user->update();
@@ -145,10 +148,21 @@ class UserService {
             $userResponse->setUsername($user->username);
         }
 
+        $roles = [];
         $userResponse->setId($user->id);
-        $userResponse->setRole($user->role->role_id);
-        $userResponse->setDateCreated($user->date_created);
-        $userResponse->setProfile($user->profile);
+        foreach ($user->role as $role) {
+            if ($role->status == 'ACTIVE') {
+                $roles[] =   RoleService::getInstance()->populate($role)->toString();
+
+                
+            }
+        }
+
+
+        $userResponse->setRole($roles);
+        $userResponse->setDateCreated($this->util::convertToTimestamp($user->date_created));
+        $profileResponse = ProfileService::getInstance()->populate($user->profile);
+        $userResponse->setProfile($profileResponse->toString());
 
         return $userResponse;
     }
