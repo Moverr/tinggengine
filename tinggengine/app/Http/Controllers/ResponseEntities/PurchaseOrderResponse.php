@@ -17,7 +17,7 @@ class PurchaseOrderResponse {
 
     //put your code here
     private $id;
-    private $stockist_id;
+    private $stockist;
     private $reference_id;
     private $order_date;
     private $total_amount;
@@ -32,8 +32,8 @@ class PurchaseOrderResponse {
         return $this->id;
     }
 
-    function getStockist_id() {
-        return $this->stockist_id;
+    function getStockist() {
+        return $this->stockist;
     }
 
     function getReference_id() {
@@ -76,8 +76,8 @@ class PurchaseOrderResponse {
         $this->id = $id;
     }
 
-    function setStockist_id($stockist_id) {
-        $this->stockist_id = $stockist_id;
+    function setStockist($stockist) {
+        $this->stockist = $stockist;
     }
 
     function setReference_id($reference_id) {
@@ -117,9 +117,13 @@ class PurchaseOrderResponse {
     }
 
     public function toJson() {
-        return \GuzzleHttp\json_encode([
+        return \GuzzleHttp\json_encode($this->toString());
+    }
+    
+    public function toString(){
+        return ([
             'id' => $this->id,
-            'stockist_id' => $this->stockist_id,
+            'stockist' => $this->stockist,
             'reference_id' => $this->reference_id,
             'order_date' => $this->order_date,
             'total_amount' => $this->total_amount,
@@ -128,5 +132,6 @@ class PurchaseOrderResponse {
             'date_created' => $this->date_created
         ]);
     }
+    
 
 }

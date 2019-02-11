@@ -7,20 +7,19 @@ use App\Stock;
 use App\PurchaseOrders;
 use App\Http\Controllers\ResponseEntities\PurchaseOrderResponse;
 use App\Http\Controllers\RequestEntities\PurchaseOrderRequest;
-use Exception; 
+use Exception;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 /**
  * Description of PurchaseService
  *
  * @author mover  
  */
-use App\Http\Helpers\Utils;
-use App\Http\Controllers\ResponseEntities\PurchaseOrderResponse;
-
 class PurchaseService {
 
     //put your code here
@@ -43,7 +42,7 @@ class PurchaseService {
         $purchaseOrders = PurchaseOrders::offset($offset)->limit($limit)->get();
         $purchaseorderresponses = [];
         foreach ($purchaseOrders as $record) {
-            $purchaseorderresponses [] = $this->populate($record)->toJson();
+            $purchaseorderresponses [] = $this->populate($record)->toString();
         }
 
         return $purchaseorderresponses;
@@ -52,11 +51,11 @@ class PurchaseService {
     public function get($id, $autneticaton_response = null) {
         $purchaseorder = PurchaseOrders::where('id', $id)->get();
         if ($purchaseorder == null) {
-            throw new Exception("Record does not exist in the daabase",403);
+            throw new Exception("Record does not exist in the daabase", 403);
         }
 
         $productResponse = $this->populate($purchaseorder[0]);
-        return $productResponse->toJson();
+        return $productResponse->toString();
     }
 
     public function save($request, $autneticaton_response = null) {
@@ -86,7 +85,7 @@ class PurchaseService {
         $purchaseorder->save();
 
         $stockResponse = $this->populate($purchaseorder);
-        return $stockResponse->toJson();
+        return $stockResponse->toString();
     }
 
     public function update($request, $authentication = null) {
@@ -97,7 +96,7 @@ class PurchaseService {
         $stockRequest = new PurchaseOrderRequest();
 
         if ($request['id'] == null) {
-            throw new Exception("Mandatory field ID is missing",403);
+            throw new Exception("Mandatory field ID is missing", 403);
         }
 
         $stockRequest->setId($request['id']);
@@ -120,7 +119,7 @@ class PurchaseService {
         $stock->update();
 
         $stockResponse = $this->populate($stock);
-        return $stockResponse->toJson();
+        return $stockResponse->toString();
     }
 
     public function archive($id, $autneticaton_response = null) {
@@ -130,7 +129,7 @@ class PurchaseService {
 
         $product = ProductCategories::where('id', $id)->first();
         if ($product == null) {
-            throw new Exception("Record does not exist in the daabase",403);
+            throw new Exception("Record does not exist in the daabase", 403);
         }
         $product->status = 'ARCHIVED';
         $product->update();
@@ -138,13 +137,18 @@ class PurchaseService {
 
     public function populate($purchaseorder) {
         $purchaseorderresponse = new PurchaseOrderResponse();
-        $purchaseorderresponse->setStockist_id($purchaseorder->stockist_id);
+        $purchaseorderresponse->setStockist(
+                [
+                    "id" => $purchaseorder->Stockist->id,
+                    "reference_id" => $purchaseorder->Stockist->reference_id
+                ]
+        );
         $purchaseorderresponse->setOrder_date($purchaseorder->order_date);
         $purchaseorderresponse->setReference_id($purchaseorder->reference_id);
         $purchaseorderresponse->setTotal_amount($purchaseorder->total_amount);
         $purchaseorderresponse->setStatus($purchaseorder->status);
-        $purchaseorderresponse->setCreated_by($purchaseorder->created_by);
-        $purchaseorderresponse->setDate_created($purchaseorder->date_created);
+        $purchaseorderresponse->setCreated_by($purchaseorder->Author->username);
+        $purchaseorderresponse->setDate_created($this->util->convertToTimestamp($purchaseorder->date_created));
         $purchaseorderresponse->setId($purchaseorder->id);
 
         return $purchaseorderresponse;
