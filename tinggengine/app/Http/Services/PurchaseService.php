@@ -82,6 +82,7 @@ class PurchaseService {
         $purchaseOrderItems->setQuantity($request['items']['quantity']);
         $purchaseOrderItems->setProduct_id($request['items']['product_id']);
         $purchaseOrderItems->setQuantity($request['items']['unit_selling_price']);
+        $purchaseOrderItems->validate();
 
 
         throw new Exception("Interesting", 403);
