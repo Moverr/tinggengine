@@ -80,15 +80,19 @@ class PurchaseService {
         $purchaseorderrequest->validate();
 
         //validate purchase order items
-        $purchaseOrderItems = new PurchaseOrderItemsRequest();
-        $purchaseOrderItems->setQuantity($items['quantity']);
-        $purchaseOrderItems->setProduct_id($items['product_id']);
-        $purchaseOrderItems->setQuantity($items['unit_selling_price']);
-        $purchaseOrderItems->validate();
+
+       $purchaseOrderItems = [];
+        foreach ($items as $item) {
+            $purchaseOrderItem = new PurchaseOrderItemsRequest();
+            $purchaseOrderItem->setQuantity($item['quantity']);
+            $purchaseOrderItem->setProduct_id($item['product_id']);
+            $purchaseOrderItem->setUnit_selling_price($item['unit_selling_price']);
+            $purchaseOrderItem->validate();
+            $purchaseOrderItems = $purchaseOrderItem;
+             }
 
 
-        throw new Exception("Interesting", 403);
-
+ 
         //todo:verify stockist. 
         //todo: verify that the stockist join date is not greater than 
 
