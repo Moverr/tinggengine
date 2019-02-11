@@ -38,7 +38,9 @@ class UsersController extends Controller {
     public function save(Request $request) {
 
         // $authentic = $request->header('authentication');
-        // $autneticaton_response = $this->util->validateAuthenction($authentic);
+        $autneticaton_response = null;
+        // $this->util->validateAuthenction($authentic);
+
         return $this->userservice->save($request, $autneticaton_response);
     }
 
