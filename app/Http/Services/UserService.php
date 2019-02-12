@@ -152,9 +152,7 @@ class UserService {
         $userResponse->setId($user->id);
         foreach ($user->role as $role) {
             if ($role->status == 'ACTIVE') {
-                $roles[] =   RoleService::getInstance()->populate($role)->toString();
-
-                
+                $roles[] = RoleService::getInstance()->populate($role)->toString();
             }
         }
 
@@ -162,7 +160,9 @@ class UserService {
         $userResponse->setRole($roles);
         $userResponse->setDateCreated($this->util::convertToTimestamp($user->date_created));
         $profileResponse = ProfileService::getInstance()->populate($user->profile);
-        $userResponse->setProfile($profileResponse->toString());
+        if ($profileResponse != null) {
+            $userResponse->setProfile($profileResponse->toString());
+        }
 
         return $userResponse;
     }
