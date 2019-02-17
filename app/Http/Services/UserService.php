@@ -58,7 +58,7 @@ class UserService {
         }
 
         $userResponse = $this->populate($user[0]);
-        return $userResponse->toJson();
+        return $userResponse->toString();
     }
 
     public function login($request) {
@@ -71,7 +71,7 @@ class UserService {
         $loginRequest->validate();
 
         $response = $this->util->validateUser($username, $password);
-        return $response->toJson();
+        return $response->toString();
     }
 
     public function save($request, $autneticaton_response = null) {
@@ -96,7 +96,7 @@ class UserService {
         $user->save();
 
         $userResponse = $this->populate($user);
-        return $userResponse->toJson();
+        return $userResponse->toString();
     }
 
     public function update($request, $authentication = null) {
@@ -129,7 +129,7 @@ class UserService {
 
 
         $userResponse = $this->populate($user);
-        return $userResponse->toJson();
+        return $userResponse->toString();
     }
 
     public function archive($id, $autneticaton_response = null) {
@@ -152,9 +152,7 @@ class UserService {
         $userResponse->setId($user->id);
         foreach ($user->role as $role) {
             if ($role->status == 'ACTIVE') {
-                $roles[] =   RoleService::getInstance()->populate($role)->toString();
-
-                
+                $roles[] = RoleService::getInstance()->populate($role)->toString();
             }
         }
 
@@ -162,7 +160,9 @@ class UserService {
         $userResponse->setRole($roles);
         $userResponse->setDateCreated($this->util::convertToTimestamp($user->date_created));
         $profileResponse = ProfileService::getInstance()->populate($user->profile);
-        $userResponse->setProfile($profileResponse->toString());
+        if ($profileResponse != null) {
+            $userResponse->setProfile($profileResponse->toString());
+        }
 
         return $userResponse;
     }

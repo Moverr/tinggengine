@@ -118,9 +118,9 @@ class UserRequest {
 
 
 
-        if ($this->getRoleId() == null) {
-            throw new Exception("Role  is Mandatory", 403);
-        }
+        // if ($this->getRoleId() == null) {
+        //     throw new Exception("Role  is Mandatory", 403);
+        // }
 
 
         if ($this->getPassword() != $this->getRepassword()) {

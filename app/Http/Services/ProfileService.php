@@ -41,15 +41,15 @@ class ProfileService {
     }
 
     public function populate($profile) {
-
-        $profileResponse = new ProfileResponse();
-        if ($profile != null) {
-            $profileResponse->setId($profile->id);
-            $profileResponse->setFirstname($profile->firstname);
-            $profileResponse->setLastname($profile->lastname);
-            $profileResponse->setCompanyname($profile->companyname);
-            $profileResponse->setStatus($profile->status);
+        if ($profile == null) {
+            return null;
         }
+        $profileResponse = new ProfileResponse();  
+        $profileResponse->setId($profile->id);
+        $profileResponse->setFirstname($profile->firstname);
+        $profileResponse->setLastname($profile->lastname);
+        $profileResponse->setCompanyname($profile->companyname);
+        $profileResponse->setStatus($profile->status);
 
         return $profileResponse;
     }
