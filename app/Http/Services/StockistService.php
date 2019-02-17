@@ -39,7 +39,7 @@ class StockistService {
     }
 
     public function getList($offset, $limit, $autneticaton_response = null) {
-        $stockists = Stockists::offset($offset)->limit($limit)->get();
+        $stockists = Stockists::offset($offset)->limit($limit)->orderBy('date_created', 'desc')->get();
         $stockistReference = [];
 
         foreach ($stockists as $record) {

@@ -36,7 +36,7 @@ class ProductCategoryService {
     }
 
     public function getList($offset, $limit, $autneticaton_response = null) {
-        $productCategories = ProductCategories::offset($offset)->limit($limit)->get();
+        $productCategories = ProductCategories::offset($offset)->limit($limit)->orderBy('date_created', 'desc')->get();
 
         $productcategoryResponses = [];
         foreach ($productCategories as $record) {
