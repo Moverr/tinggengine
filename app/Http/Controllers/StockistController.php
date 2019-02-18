@@ -4,10 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Helpers\Utils;
-use App\Http\Controllers\ResponseEntities\StockistResponse;
-use App\Http\Controllers\RequestEntities\StockistRequest;
-use App\Stockists;
-use App\User;
 use App\Http\Services\StockistService;
 
 class StockistController extends Controller {

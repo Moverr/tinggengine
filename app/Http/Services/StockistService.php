@@ -63,7 +63,7 @@ class StockistService {
         $stockists = Stockists::where('reference_id', $reference_id)->get();
 
         if ($stockists == null || count($stockists) == 0) {
-            throw new Exception("Record does not exist in the daabase", 403);
+            throw new Exception("Stockist Reference does not exist in the daabase", 403);
         }
 
         $stockistReference = $this->populate($stockists[0]);
