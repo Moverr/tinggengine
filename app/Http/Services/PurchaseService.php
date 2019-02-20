@@ -41,7 +41,7 @@ class PurchaseService {
     }
 
     public function getList($offset, $limit, $autneticaton_response = null) {
-        $purchaseOrders = PurchaseOrders::offset($offset)->limit($limit)->get();
+        $purchaseOrders = PurchaseOrders::offset($offset)->limit($limit)->orderBy('date_created', 'desc')->get();
         $purchaseorderresponses = [];
         foreach ($purchaseOrders as $record) {
             $purchaseorderresponses [] = $this->populate($record)->toString();
@@ -63,9 +63,11 @@ class PurchaseService {
     public function save($request, $autneticaton_response = null) {
 
         //todo: get stockist reference id 
-        $stockist_id = $request['stockist_id'];
+        $stockist_reference = $request['stockist_reference'];
+       $stockist =  StockistService::getInstance()->checkrefence($stockist_reference);
+        $stockist_id = $stockist['id'];
 
-
+ 
 
         $order_date = $request['order_date'];
         $reference_id = $this->util->incrementalHash(5);
@@ -121,6 +123,9 @@ class PurchaseService {
             $totalvalue += $totalselprice;
         }
 
+        $purchaseorder->total_amount = $totalvalue;
+        $purchaseorder->update();
+        
         $stockResponse = $this->populate($purchaseorder);
         return $stockResponse->toString();
     }

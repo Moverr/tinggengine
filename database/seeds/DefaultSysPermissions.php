@@ -11,11 +11,21 @@ class DefaultSysPermissions extends Seeder
      */
     public function run()
     {
-        DB::table('permissions')->insert([
-            'id' => 1,
-            'name' => 'ALL_FUNCTIONS',
-            'code' => 'ALL_FUNCTIONS'
+//        DB::table('permissions')->insert([
+//            'id' => 1,
+//            'name' => 'ALL_FUNCTIONS',
+//            'code' => 'ALL_FUNCTIONS'
+//        ]);
+        
+            DB::table('productcategories')->insert([
+             
+            'name' => 'CATEGORIES',
+            'code' => 'CAT',
+            'status'=>'ACTIVE',
+            'created_by'=>1
         ]);
+    
+            
     
     }
 }

@@ -63,7 +63,7 @@ class StockistService {
         $stockists = Stockists::where('reference_id', $reference_id)->get();
 
         if ($stockists == null || count($stockists) == 0) {
-            throw new Exception("Record does not exist in the daabase", 403);
+            throw new Exception("Stockist Reference does not exist in the daabase", 403);
         }
 
         $stockistReference = $this->populate($stockists[0]);
@@ -145,7 +145,7 @@ class StockistService {
 
     public function update($request, $authentication = null) {
 
-        $updatedBy = $autneticaton_response->getId();
+        $updatedBy = $authentication->getId();
 
 
         $names = $request['names'];
@@ -156,7 +156,7 @@ class StockistService {
 
         $stockistRequest = new StockistRequest();
         if ($names != null) {
-            $namearray = split(" ", $names);
+            $namearray = explode(" ", $names);
             $stockistRequest->setFirstname($namearray[0]);
             $stockistRequest->setLastname($namearray[1]);
         }
@@ -178,19 +178,33 @@ class StockistService {
             throw new Exception("Record does not exist in the daabase", 403);
         }
 
-
-
-        $stockist->reference_id = $this->util->incrementalHash();
+      
+        $profile = $stockist->User->profile;
+         
+//        $stockist->reference_id = $this->util->incrementalHash();
         $stockist->join_date = $stockistRequest->getJoindate();
-        $stockist->user_id = 1;
+//        $stockist->user_id = 1;
         $stockist->country_code = $stockistRequest->getCountrycode();
         $stockist->phone_number = $stockistRequest->getPhonenumber();
 
         $stockist->join_date = $joindate;
-        $stockist->id = $request['id'];
+//        $stockist->id = $request['id'];
         $stockist->updated_by = $updatedBy;
 
         $stockist->update();
+
+
+       
+        if ($profile != null) {
+             
+            $profile->firstname = $stockistRequest->getFirstname();
+            $profile->lastname = $stockistRequest->getLastname();
+            $profile->companyname = $stockistRequest->getCompanyname();
+            $profile->update();
+        }
+
+
+
 
         $stockistResponse = $this->populate($stockist);
         return $stockistResponse->toString();

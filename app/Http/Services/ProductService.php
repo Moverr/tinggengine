@@ -110,12 +110,12 @@ class ProductService {
         }
 
 
-        $product = Products::where('name', $name)
+        $productVal = Products::where('name', $name)
                 ->where('code', $code)
                 ->where('category_id', $categoryId)
                 ->where('id', "<>", $productsRequest->getId())
                 ->first();
-        if ($product != null) {
+        if ($productVal != null) {
             throw new Exception("Product  Exists with the same name or code in the database ", 403);
         }
 
