@@ -35,5 +35,9 @@ class PurchaseOrders extends Model {
     }
     
     
+    public function items(){
+       return $this->hasMany('App\PurchaseOrderItems', 'purchase_order_id','id');
+    }
+    
 
 }

@@ -159,7 +159,8 @@ class StockistService {
         if ($names != null) {
             $namearray = explode(" ", $names);
             $stockistRequest->setFirstname($namearray[0]);
-            $stockistRequest->setLastname($namearray[1]);
+            if(isset($namearray[1]))
+                $stockistRequest->setLastname($namearray[1]);
         }
 
         $stockistRequest->setCountrycode($countrycode);
