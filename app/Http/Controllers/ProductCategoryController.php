@@ -40,7 +40,7 @@ class ProductCategoryController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        return $this->productcategoryservice->update($request);
+        return $this->productcategoryservice->update($request,$autneticaton_response);
     }
 
     public function archive(Request $request, $id) {

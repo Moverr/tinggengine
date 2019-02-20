@@ -87,39 +87,47 @@ class ProductCategoryService {
         return $productResponse->toString();
     }
 
-    public function update($request, $authentication = null) {
+    public function update($request, $autneticaton_response = null) {
 
         $name = $request['name'];
         $code = $request['code'];
+        $createdBy = $autneticaton_response->getId();
 
+ 
         $productCategoryRequest = new ProductCategoryRequest($name, $code);
+        $productCategoryRequest->validate();
 
+        //set the author of the system :: 
+        $productCategoryRequest->setCreatedBy($createdBy);
+
+        
         if ($request['id'] == null) {
             throw new Exception("Mandatory field ID is missing");
         }
 
         $productCategoryRequest->setId($request['id']);
-        $productCategoryRequest->validate();
-
-        $user = ProductCategories::where('id', $productCategoryRequest->getId())->first();
-        if ($user == null) {
+         
+        $productCategory = ProductCategories::where('id', $productCategoryRequest->getId())->first();
+        if ($productCategory == null) {
             throw new Exception("Record does not exist in the daabase", 403);
         }
 
 
-        $productCategory = ProductCategories::where('name', $name)
+        $product_category = ProductCategories::where('name', $name)
                 ->where('code', $code)
                 ->where('id', "<>", $productCategoryRequest->getId())
                 ->first();
-        if ($productCategory != null) {
+        if ($product_category != null) {
             throw new Exception("Product Category Exists with the same name or code in the database ", 403);
         }
 
 
-        $productCategory = new ProductCategories();
-        $productCategory->id = $productCategoryRequest->getId();
-        $productCategory->name = $name;
-        $productCategory->code = $code;
+
+         
+        $productCategory->name = $productCategoryRequest->getName();
+        $productCategory->code = $productCategoryRequest->getCode();
+        $productCategory->updated_by = $createdBy;
+
         $productCategory->update();
 
         $productResponse = $this->populate($productCategory);
@@ -139,7 +147,7 @@ class ProductCategoryService {
     public function populate($productCategories) {
         $productCategoryResponse = new ProductCategoryResponse();
         $productCategoryResponse->setId($productCategories->id);
-         $productCategoryResponse->setCreatedBy($productCategories->Author->username); 
+        $productCategoryResponse->setCreatedBy($productCategories->Author->username);
         $productCategoryResponse->setName($productCategories->name);
         $productCategoryResponse->setCode($productCategories->code);
         $productCategoryResponse->setDateCreated($this->util->convertToTimestamp($productCategories->date_created));
