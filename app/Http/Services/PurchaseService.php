@@ -201,9 +201,11 @@ class PurchaseService {
         $purchaseorderresponse->setId($purchaseorder->id);
 
         //   return var_dump($purchaseorder[0]->items);
+        
+        $itemsResponse = [];
         foreach ($purchaseorder->items as $item) {
             if ($item->status == 'ACTIVE') {
-                PurchaseOrderItemsService::getInstance()->populate($item);
+               $itemsResponse[]= PurchaseOrderItemsService::getInstance()->populate($item)->toString();
             }
         }
 

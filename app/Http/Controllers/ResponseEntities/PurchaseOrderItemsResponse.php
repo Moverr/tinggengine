@@ -14,6 +14,7 @@ namespace App\Http\Controllers\ResponseEntities;
  * @author mover  
  */
 class PurchaseOrderItemsResponse {
+
     //put your code here
     private $id;
     private $purchase_order;
@@ -24,7 +25,7 @@ class PurchaseOrderItemsResponse {
     private $status;
     private $created_by;
     private $date_created;
-    
+
     function __construct() {
         
     }
@@ -101,5 +102,22 @@ class PurchaseOrderItemsResponse {
         $this->date_created = $date_created;
     }
 
+    public function toJson() {
+        return \GuzzleHttp\json_encode($this->toString());
+    }
+
+    public function toString() {
+        return ([
+            'id' => $this->id,
+            'purchase_order' => $this->purchase_order,
+            'product_id' => $this->product_id,
+            'quantity' => $this->quantity,
+            'unit_selling_price' => $this->unit_selling_price,
+            'total_selling_price' => $this->total_selling_price,
+            'status' => $this->status,
+            'created_by' => $this->created_by,
+            'date_created' => $this->date_created,
+        ]);
+    }
 
 }
