@@ -127,6 +127,7 @@ class PurchaseOrderResponse {
             'reference_id' => $this->reference_id,
             'order_date' => $this->order_date,
             'total_amount' => $this->total_amount,
+            'items'=>$this->purchase_items,
             'status' => $this->status,
             'createdBy' => $this->created_by,
             'date_created' => $this->date_created

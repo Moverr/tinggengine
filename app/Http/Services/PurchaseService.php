@@ -209,6 +209,8 @@ class PurchaseService {
             }
         }
 
+        $purchaseorderresponse->setPurchase_items($itemsResponse);
+        
         return $purchaseorderresponse;
     }
 
