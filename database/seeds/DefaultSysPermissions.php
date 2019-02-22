@@ -36,12 +36,21 @@ class DefaultSysPermissions extends Seeder {
          
         
         DB::table('users')->insert([
+            'id'=>1,
             'username' => 'admin',
             'password' => sha1('admin@123'),
             'status' => 'ACTIVE',
-            'group' => 'ADMINISTRATOR',
+            'group' => 'ADMINISTRATOR'
             
         ]);
+        
+        
+        DB::table('userrole')->insert([
+            'user_id' => 1,
+            'role_id' => 1 
+        ]);
+        
+        
         
         
     }
