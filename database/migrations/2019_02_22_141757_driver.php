@@ -11,6 +11,8 @@ class Driver extends Migration
      *
      * @return void
      */
+    private $tablename = 'drivers';
+    
     public function up()
     {
         //
@@ -23,6 +25,6 @@ class Driver extends Migration
      */
     public function down()
     {
-        //
+         Schema::dropIfExists($this->tablename);
     }
 }
