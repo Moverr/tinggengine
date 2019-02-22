@@ -21,7 +21,7 @@ class Driver extends Migration {
             $table->bigInteger('user_id');
             $table->bigInteger('country_code');
             $table->bigInteger('phone_number');
-            $table->bigInteger('dealer_id');
+            $table->bigInteger('dealer_id')->unsigned();
             $table->enum('status', array('ACTIVE', 'ARCHIVED'));
             $table->bigInteger('created_by')->unsigned();
             $table->timestamp('date_created')->default(DB::raw('CURRENT_TIMESTAMP'));
