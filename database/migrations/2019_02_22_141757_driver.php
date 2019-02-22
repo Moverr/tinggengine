@@ -32,7 +32,7 @@ class Driver extends Migration {
         Schema::table($this->tablename, function (Blueprint $table) {
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');
-             $table->foreign('dealer_id')->references('id')->on('dealers');
+            $table->foreign('dealer_id')->references('id')->on('dealers');
         });
     }
 

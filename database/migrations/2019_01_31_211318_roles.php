@@ -24,7 +24,7 @@ class Roles extends Migration
             $table->string('description')->nullable();
             $table->enum('status',array('ACTIVE','ARCHIVED'));
             $table->boolean('is_system');
-            $table->bigInteger('created_by')->unsigned();
+            $table->bigInteger('created_by')->unsigned()->nullable();
             $table->timestamp('date_created')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->bigInteger('updated_by')->nullable()->unsigned();
             $table->datetime('date_updated')->nullable();  
