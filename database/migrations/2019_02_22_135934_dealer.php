@@ -4,40 +4,37 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
-{
+class Dealer extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    private  $tablename = 'users';
-    
+    private $tablename = 'dealers';
 
-    public function up()
-    {
+    public function up() {
         Schema::create($this->tablename, function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('username')->unique();
-            $table->string('password'); 
-            $table->enum('status',array('ACTIVE','PENDING','ARCHIVED'));
-            $table->enum('group',array('ADMINISTRATOR','DEALER','DRIVER','STOCKIST',''));            
-            $table->bigInteger('profile_id')->nullable();
-            $table->bigInteger('created_by')->nullable()->unsigned();;
+            $table->bigIncrements('id'); 
+            $table->string('reference_id')->unique();
+            $table->datetime('join_date');
+            $table->bigInteger('user_id');
+            $table->bigInteger('country_code');
+            $table->bigInteger('phone_number');            
+            $table->enum('status',array('ACTIVE','ARCHIVED'));            
+            $table->bigInteger('created_by')->unsigned();
             $table->timestamp('date_created')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->bigInteger('updated_by')->nullable()->unsigned();
-            $table->datetime('date_updated')->nullable(); 
+            $table->datetime('date_updated')->nullable();  
+            
+             
         });
 
-
-        Schema::table($this->tablename, function (Blueprint $table) {       
-
+         Schema::table($this->tablename, function (Blueprint $table) {  
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');             
              
         });
-         
-
 
     }
 
@@ -46,8 +43,9 @@ class CreateUsersTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
+        //
          Schema::dropIfExists($this->tablename);
     }
+
 }
