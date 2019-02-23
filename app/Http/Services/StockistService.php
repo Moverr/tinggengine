@@ -125,6 +125,7 @@ class StockistService {
         $userRequest->setPassword($clientPassword);
         $userRequest->setRepassword($clientPassword);
         $userRequest->setUsername($reference_id);
+        $userRequest->setGroup($group);
         $user = $this->userService->saveUser($userRequest, $autneticaton_response);
 
 
