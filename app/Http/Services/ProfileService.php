@@ -41,47 +41,30 @@ class ProfileService {
         return self::$instance;
     }
 
-    
     public function save($request, $autneticaton_response = null) {
 
-        $username = $request['username'];
-        $password = $request['password'];
-        $repassword = $request['repassword'];
-        $role_id = $request['role_id'];
-        $userRequest = new UserRequest($username, $password, $repassword, $role_id); 
-        $user = $this->saveProfile($userRequest, $autneticaton_response);
-        $userResponse = $this->populate($user);
-        return $userResponse->toString();
+        throw new Exception("Not Yet Implemented", 403);
     }
 
     public function saveProfile(ProfileRequest $profileRequest, $autneticaton_response = null) {
+        $createdBy = $autneticaton_response->getId();
 
-        $profileRequest->validate();
 
-        $user = User::where('username', $profileRequest->getUsername())->first();
-        if ($user != null) {
-            throw new Exception("User Exists with the same username in the database ");
-        }
+        $profiles = new Profiles();
+        $profiles->firstname = $profileRequest->getFirstname();
+        $profiles->lastname = $profileRequest->getLastname();
+        $profiles->companyname = $profileRequest->getCompanyname();
+        $profiles->created_by = $createdBy;
+        $profiles->save();
 
-        $user = new User();
-        $user->username = $profileRequest->getUsername();
-        $user->password = Utils::HashPassword($profileRequest->getPassword());
-        $user->status = 'ACTIVE';
-        if ($autneticaton_response != null) {
-            $createdBy = $autneticaton_response->getId();
-            $user->created_by = $createdBy;
-        }
-        $user->save();
-        return $user;
+        return $profiles;
     }
 
-    
-    
     public function populate($profile) {
         if ($profile == null) {
             return null;
         }
-        $profileResponse = new ProfileResponse();  
+        $profileResponse = new ProfileResponse();
         $profileResponse->setId($profile->id);
         $profileResponse->setFirstname($profile->firstname);
         $profileResponse->setLastname($profile->lastname);
