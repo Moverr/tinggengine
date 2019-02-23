@@ -15,7 +15,7 @@ use App\Stockists;
 use App\User;
 use App\Profiles;
 use Exception;
-
+use App\Http\Controllers\RequestEntities\UserRequest;
 /**
  * Description of StockistService
  *
@@ -27,8 +27,10 @@ class StockistService {
     private $util;
     private static $instance;
 
+    private $userService;
     function __construct() {
         $this->util = new Utils();
+        $this->userService =   UserService()::getInstance();
     }
 
     public static function getInstance() {
@@ -116,6 +118,18 @@ class StockistService {
         $stockist->save();
 
         //todo: create user :: 
+        
+        
+        $clientPassword = Utils::HashPassword("client123");
+        $userRequest = new UserRequest();
+        $userRequest->setPassword($clientPassword);
+        $userRequest->setRepassword($clientPassword);
+        $userRequest->setUsername($reference_id);
+        
+        
+        
+        
+        
         $user = new User();
         $user->username = $reference_id;
         $user->password = Utils::HashPassword("client123");
