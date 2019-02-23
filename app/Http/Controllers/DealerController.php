@@ -20,7 +20,7 @@ class DealerController extends Controller {
     public function index(Request $request, $offset = 0, $limit = 10) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-        return $this->dealerService->getList($offset, $limit);
+        return $this->dealerService->getList($offset, $limit,$autneticaton_response);
     }
 
     public function get(Request $request, $id) {
@@ -28,7 +28,7 @@ class DealerController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        return $this->dealerService->get($id);
+        return $this->dealerService->get($id,$autneticaton_response);
     }
 
     public function checkrefence(Request $request, $reference_id) {
@@ -55,7 +55,7 @@ class DealerController extends Controller {
     public function archive(Request $request, $id) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-        $this->dealerService->archive($id);
+        $this->dealerService->archive($id,$autneticaton_response);
     }
 
 }
