@@ -77,9 +77,7 @@ class ProfileRequest {
             throw new Exception("Last Name is Mandatory", 403);
         }
 
-
-
-      
+       
 
 
         return true;
