@@ -10,13 +10,14 @@ namespace App\Http\Services;
 
 use App\Http\Controllers\RequestEntities\ProfileRequest;
 use App\Http\Controllers\RequestEntities\StockistRequest;
-use App\Http\Controllers\RequestEntities\UserRequest;
-use App\Http\Controllers\ResponseEntities\StockistResponse;
+use App\Http\Controllers\RequestEntities\UserRequest; 
 use App\Http\Helpers\Utils;
 use App\Http\Services\UserService;
 use App\Stockists;
 use Exception;
 use ProductCategories;
+use App\Http\Controllers\RequestEntities\DealerRequest;
+use App\Http\Controllers\ResponseEntities\DealerResponse;
 
 /**
  * Description of StockistService
@@ -86,23 +87,23 @@ class DealerService {
         $phonenumber = $request['phonenumber'];
         $countrycode = $request['countrcode'];
 
-        $stockistRequest = new StockistRequest();
+        $dealerRequest = new DealerRequest();
         if ($names != null) {
             $namearray = explode(" ", $names);
-            $stockistRequest->setFirstname($namearray[0]);
+            $dealerRequest->setFirstname($namearray[0]);
             if (isset($namearray[1])) {
-                $stockistRequest->setLastname($namearray[1]);
+                $dealerRequest->setLastname($namearray[1]);
             }
         }
 
         $reference_id = $this->util->incrementalHash();
 
         //populate stockist request
-        $stockistRequest->setCountrycode($countrycode);
-        $stockistRequest->setPhonenumber($phonenumber);
-        $stockistRequest->setCompanyname($companyname);
-        $stockistRequest->setReference_id($reference_id);
-        $stockistRequest->setJoindate($joindate);
+        $dealerRequest->setCountrycode($countrycode);
+        $dealerRequest->setPhonenumber($phonenumber);
+        $dealerRequest->setCompanyname($companyname);
+        $dealerRequest->setReference_id($reference_id);
+        $dealerRequest->setJoindate($joindate);
 
         //populate user request
         $clientPassword = ("client123");
@@ -110,18 +111,18 @@ class DealerService {
         $userRequest->setPassword($clientPassword);
         $userRequest->setRepassword($clientPassword);
         $userRequest->setUsername($reference_id);
-        $userRequest->setGroup('STOCKIST');
+        $userRequest->setGroup('DEALER');
 
         //populate profile request
         $profileRequest = new ProfileRequest();
-        $profileRequest->setCompanyname($stockistRequest->getCompanyname());
-        $profileRequest->setFirstname($stockistRequest->getFirstname());
-        $profileRequest->setLastname($stockistRequest->getLastname());
+        $profileRequest->setCompanyname($dealerRequest->getCompanyname());
+        $profileRequest->setFirstname($dealerRequest->getFirstname());
+        $profileRequest->setLastname($dealerRequest->getLastname());
 
 
 
         //todo: validate 
-        $stockistRequest->validate();
+        $dealerRequest->validate();
 
 
         //todo: check if there is a stockist with the same phone number
@@ -133,7 +134,7 @@ class DealerService {
 
 
         //todo:  save stockist 
-        $stockist = $this->saveStockist($stockistRequest, $autneticaton_response);
+        $stockist = $this->saveStockist($dealerRequest, $autneticaton_response);
 
         //todo: create user :: 
         $user = $this->userService->saveUser($userRequest, $autneticaton_response);
@@ -150,9 +151,9 @@ class DealerService {
         $user->profile_id = $profiles->id;
         $user->update();
 
-        $stockistResponse = $this->populate($stockist);
+        $dealerResponse = $this->populate($stockist);
 
-        return $stockistResponse->toString();
+        return $dealerResponse->toString();
     }
 
     public function saveStockist(StockistRequest $stockistRequest, $autneticaton_response = null) {
@@ -237,8 +238,8 @@ class DealerService {
 
 
 
-        $stockistResponse = $this->populate($stockist);
-        return $stockistResponse->toString();
+        $dealerResponse = $this->populate($stockist);
+        return $dealerResponse->toString();
     }
 
     public function archive($id, $autneticaton_response = null) {
@@ -251,19 +252,19 @@ class DealerService {
         $product->update();
     }
 
-    public function populate($stockist) {
-        $response = new StockistResponse();
-        $response->setId($stockist->id);
-        $response->setFirstname($stockist->User->profile['firstname']);
-        $response->setLastname($stockist->User->profile['lastname']);
-        $response->setCompanyname($stockist->User->profile['companyname']);
-        $response->setReference_id($stockist->reference_id);
-        $response->setCountrycode($stockist->country_code);
-        $response->setPhonenumber($stockist->phone_number);
-        $response->setCreatedBy($stockist->Author->username);
-        $response->setStatus($stockist->status);
-        $response->setJoindate($stockist->join_date);
-        $response->setDatecreated($this->util->convertToTimestamp($stockist->date_created));
+    public function populate($dealer) {
+        $response = new DealerResponse();
+        $response->setId($dealer->id);
+        $response->setFirstname($dealer->User->profile['firstname']);
+        $response->setLastname($dealer->User->profile['lastname']);
+        $response->setCompanyname($dealer->User->profile['companyname']);
+        $response->setReference_id($dealer->reference_id);
+        $response->setCountrycode($dealer->country_code);
+        $response->setPhonenumber($dealer->phone_number);
+        $response->setCreatedBy($dealer->Author->username);
+        $response->setStatus($dealer->status);
+        $response->setJoindate($dealer->join_date);
+        $response->setDatecreated($this->util->convertToTimestamp($dealer->date_created));
 
         return $response;
     }
