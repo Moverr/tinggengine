@@ -64,29 +64,22 @@ class ProfileRequest {
 
 
 
-        if ($this->getUsername() == null || strlen($this->getUsername()) == 0) {
-            throw new Exception("Username is Mandatory", 403);
+        if ($this->getCompantname() == null || strlen($this->getCompantname()) == 0) {
+             $this->setCompantname("N/A");
         }
 
 
-        if ($this->getPassword() == null) {
-            throw new Exception("Password is Mandatory", 403);
+        if ($this->getFirstname() == null) {
+            throw new Exception("First Name is Mandatory", 403);
         }
 
-        if ($this->getRepassword() == null) {
-            throw new Exception("Password is Mandatory", 403);
+        if ($this->getLastname() == null) {
+            throw new Exception("Last Name is Mandatory", 403);
         }
 
 
 
-        // if ($this->getRoleId() == null) {
-        //     throw new Exception("Role  is Mandatory", 403);
-        // }
-
-
-        if ($this->getPassword() != $this->getRepassword()) {
-            throw new Exception("Passwords do not match", 403);
-        }
+      
 
 
         return true;
