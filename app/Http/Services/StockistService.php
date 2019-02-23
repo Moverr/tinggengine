@@ -17,6 +17,7 @@ use App\Profiles;
 use Exception;
 use App\Http\Controllers\RequestEntities\UserRequest;
 
+use App\Http\Services\UserService;
 /**
  * Description of StockistService
  *
@@ -31,7 +32,7 @@ class StockistService {
 
     function __construct() {
         $this->util = new Utils();
-        $this->userService = UserService()::getInstance();
+        $this->userService = UserService::getInstance();
     }
 
     public static function getInstance() {

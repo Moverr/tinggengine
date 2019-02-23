@@ -75,42 +75,38 @@ class UserService {
     }
 
     public function save($request, $autneticaton_response = null) {
- 
-        $user = $this->saveUser($request, $autneticaton_response);
-        $userResponse = $this->populate($user);
-        return $userResponse->toString();
-    }
-
-    
-        public function saveUser($request, $autneticaton_response = null) {
 
         $username = $request['username'];
         $password = $request['password'];
         $repassword = $request['repassword'];
         $role_id = $request['role_id'];
+        $userRequest = new UserRequest($username, $password, $repassword, $role_id); 
+        $user = $this->saveUser($userRequest, $autneticaton_response);
+        $userResponse = $this->populate($user);
+        return $userResponse->toString();
+    }
 
-        $userRequest = new UserRequest($username, $password, $repassword, $role_id);
+    public function saveUser(UserRequest $userRequest, $autneticaton_response = null) {
+
         $userRequest->validate();
 
-        $user = User::where('username', $username)->first();
+        $user = User::where('username', $userRequest->getUsername())->first();
         if ($user != null) {
             throw new Exception("User Exists with the same username in the database ");
         }
 
         $user = new User();
-        $user->username = $username;
-        $user->password = Utils::HashPassword($password);
+        $user->username = $userRequest->getUsername();
+        $user->password = Utils::HashPassword($userRequest->getPassword());
         $user->status = 'ACTIVE';
-        if($autneticaton_response != null){
+        if ($autneticaton_response != null) {
             $createdBy = $autneticaton_response->getId();
             $user->created_by = $createdBy;
         }
-        $user->save(); 
+        $user->save();
         return $user;
     }
 
-    
-    
     public function update($request, $authentication = null) {
         $username = $request['username'];
         $password = $request['password'];
