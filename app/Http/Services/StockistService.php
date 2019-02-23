@@ -30,10 +30,12 @@ class StockistService {
     private $util;
     private static $instance;
     private $userService;
+    private $profileServie;
 
     function __construct() {
         $this->util = new Utils();
         $this->userService = UserService::getInstance();
+        $this->profileServie = ProfileService::getInstance();
     }
 
     public static function getInstance() {
@@ -137,15 +139,8 @@ class StockistService {
         $profileRequest->setCompantname($stockistRequest->getCompanyname());
         $profileRequest->setFirstname($stockistRequest->getFirstname());
         $profileRequest->setLastname($stockistRequest->getLastname());
-        
 
-        //todo: create Profile for User
-        $profiles = new Profiles();
-        $profiles->firstname = $stockistRequest->getFirstname();
-        $profiles->lastname = $stockistRequest->getLastname();
-        $profiles->companyname = $stockistRequest->getCompanyname();
-        $profiles->created_by = $createdBy;
-        $profiles->save();
+        $profiles = $this->profileServie->saveProfile($profileRequest, $autneticaton_response);
 
         $user->profile_id = $profiles->id;
         $user->update();
