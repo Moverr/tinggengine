@@ -128,7 +128,7 @@ class StockistService {
         $user = $this->userService->saveUser($userRequest, $autneticaton_response);
 
 
-        $stockist->user_id = $userResponse['id'];
+        $stockist->user_id = $user->id;
         $stockist->update();
 
         //todo: create Profile for User
