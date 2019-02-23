@@ -18,13 +18,12 @@ class ProfileRequest {
     
     private $firstname;
     private $lastname;
-    private $compantname; 
+    private $companyname; 
     private $userid;
     
     function __construct() {
         
     }
-    
     function getFirstname() {
         return $this->firstname;
     }
@@ -33,8 +32,8 @@ class ProfileRequest {
         return $this->lastname;
     }
 
-    function getCompantname() {
-        return $this->compantname;
+    function getCompanyname() {
+        return $this->companyname;
     }
 
     function getUserid() {
@@ -49,22 +48,21 @@ class ProfileRequest {
         $this->lastname = $lastname;
     }
 
-    function setCompantname($compantname) {
-        $this->compantname = $compantname;
+    function setCompanyname($companyname) {
+        $this->companyname = $companyname;
     }
 
     function setUserid($userid) {
         $this->userid = $userid;
     }
 
-    
-    
+        
         
     function validate() {
 
 
 
-        if ($this->getCompantname() == null || strlen($this->getCompantname()) == 0) {
+        if ($this->getCompanyname() == null || strlen($this->getCompanyname()) == 0) {
              $this->setCompantname("N/A");
         }
 

@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\RequestEntities;
 
 use Exception;
+
 /**
  * Description of StockistRequest
  *
@@ -28,7 +29,8 @@ class StockistRequest {
     private $status;
     private $datecreated;
     private $joindate;
-    
+    private $reference_id;
+
     function __construct() {
         
     }
@@ -113,7 +115,6 @@ class StockistRequest {
         $this->datecreated = $datecreated;
     }
 
-    
     function getJoindate() {
         return $this->joindate;
     }
@@ -122,18 +123,26 @@ class StockistRequest {
         $this->joindate = $joindate;
     }
 
-        function validate() {
+    function getReference_id() {
+        return $this->reference_id;
+    }
+
+    function setReference_id($reference_id) {
+        $this->reference_id = $reference_id;
+    }
+
+    function validate() {
         if ($this->getFirstname() == null && $this->getLastname()) {
             throw new Exception("Names are  Mandatory");
         }
 
         if ($this->getCompanyname() == null) {
-            throw new Exception("Company/Shop Name  is Mandatory",403);
+            throw new Exception("Company/Shop Name  is Mandatory", 403);
         }
 
 
         if ($this->getPhonenumber() == null) {
-            throw new Exception("Default Phone Number  is Mandatory",403);
+            throw new Exception("Default Phone Number  is Mandatory", 403);
         }
 
 
