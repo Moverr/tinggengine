@@ -15,7 +15,7 @@ use Exception;
  *
  * @author mover  
  */
-class DealerRequest {
+class DriverRequest {
 
     //put your code here
     private $id;
@@ -30,11 +30,13 @@ class DealerRequest {
     private $datecreated;
     private $joindate;
     private $reference_id;
+    private $dealer_id;
 
     function __construct() {
         
     }
-
+    
+    
     function getId() {
         return $this->id;
     }
@@ -73,6 +75,18 @@ class DealerRequest {
 
     function getDatecreated() {
         return $this->datecreated;
+    }
+
+    function getJoindate() {
+        return $this->joindate;
+    }
+
+    function getReference_id() {
+        return $this->reference_id;
+    }
+
+    function getDealer_id() {
+        return $this->dealer_id;
     }
 
     function setId($id) {
@@ -115,23 +129,26 @@ class DealerRequest {
         $this->datecreated = $datecreated;
     }
 
-    function getJoindate() {
-        return $this->joindate;
-    }
-
     function setJoindate($joindate) {
         $this->joindate = $joindate;
-    }
-
-    function getReference_id() {
-        return $this->reference_id;
     }
 
     function setReference_id($reference_id) {
         $this->reference_id = $reference_id;
     }
 
+    function setDealer_id($dealer_id) {
+        $this->dealer_id = $dealer_id;
+    }
+
+       
     function validate() {
+       
+         if ($this->getDealer_id() == null  ) {
+            throw new Exception("Dealer ID is  Mandatory");
+        }
+
+        
         if ($this->getFirstname() == null || $this->getLastname() == null) {
             throw new Exception("Names are  Mandatory");
         }
