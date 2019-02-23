@@ -13,7 +13,7 @@ class StockController extends Controller {
 
     function __construct() {
         $this->util = new Utils();
-        $this->stockservice = new StockService();
+        $this->stockservice = StockService::getInstance();
     }
 
     public function index(Request $request, $offset = 0, $limit = 10) {

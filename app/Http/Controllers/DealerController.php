@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Helpers\Utils;
 use App\Http\Services\StockistService;
 
-class StockistController extends Controller {
+class DealerController extends Controller {
 
     private $util;
     private $stockistservice;
