@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Helpers\Utils;
- use App\Http\Services\DriverService;
+use App\Http\Services\DriverService;
+use Illuminate\Http\Request;
 
-class DriverController extends Controller {
+class DealerController extends Controller {
 
     private $util;
     private $driverService;
@@ -20,7 +20,7 @@ class DriverController extends Controller {
     public function index(Request $request, $offset = 0, $limit = 10) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-        return $this->driverService->getList($offset, $limit);
+        return $this->driverService->getList($offset, $limit,$autneticaton_response);
     }
 
     public function get(Request $request, $id) {
@@ -28,7 +28,7 @@ class DriverController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        return $this->driverService->get($id);
+        return $this->driverService->get($id,$autneticaton_response);
     }
 
     public function checkrefence(Request $request, $reference_id) {
@@ -36,7 +36,7 @@ class DriverController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        return $this->driverService->checkrefence($reference_id);
+        return $this->driverService->checkrefence($reference_id,$autneticaton_response);
     }
 
     public function save(Request $request) {
@@ -55,7 +55,7 @@ class DriverController extends Controller {
     public function archive(Request $request, $id) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-        $this->driverService->archive($id);
+        $this->driverService->archive($id,$autneticaton_response);
     }
 
 }

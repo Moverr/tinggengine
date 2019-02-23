@@ -36,7 +36,7 @@ class DealerController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        return $this->dealerService->checkrefence($reference_id);
+        return $this->dealerService->checkrefence($reference_id,$autneticaton_response);
     }
 
     public function save(Request $request) {
