@@ -4,23 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Helpers\Utils;
-use App\Http\Services\StockistService;
+ use App\Http\Services\DriverService;
 
 class DriverController extends Controller {
 
     private $util;
-    private $stockistservice;
+    private $driverService;
 
     function __construct() {
         $this->util = new Utils();
-        $this->stockistservice = StockistService::getInstance();
+        $this->driverService = DriverService::getInstance();
         
     }
 
     public function index(Request $request, $offset = 0, $limit = 10) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-        return $this->stockistservice->getList($offset, $limit);
+        return $this->driverService->getList($offset, $limit);
     }
 
     public function get(Request $request, $id) {
@@ -28,7 +28,7 @@ class DriverController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        return $this->stockistservice->get($id);
+        return $this->driverService->get($id);
     }
 
     public function checkrefence(Request $request, $reference_id) {
@@ -36,26 +36,26 @@ class DriverController extends Controller {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
 
-        return $this->stockistservice->checkrefence($reference_id);
+        return $this->driverService->checkrefence($reference_id);
     }
 
     public function save(Request $request) {
 
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-        return $this->stockistservice->save($request, $autneticaton_response);
+        return $this->driverService->save($request, $autneticaton_response);
     }
 
     public function update(Request $request) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-        return $this->stockistservice->update($request,$autneticaton_response);
+        return $this->driverService->update($request,$autneticaton_response);
     }
 
     public function archive(Request $request, $id) {
         $authentic = $request->header('authentication');
         $autneticaton_response = $this->util->validateAuthenction($authentic);
-        $this->stockistservice->archive($id);
+        $this->driverService->archive($id);
     }
 
 }
