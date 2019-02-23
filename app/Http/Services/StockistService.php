@@ -16,6 +16,7 @@ use App\User;
 use App\Profiles;
 use Exception;
 use App\Http\Controllers\RequestEntities\UserRequest;
+
 /**
  * Description of StockistService
  *
@@ -26,11 +27,11 @@ class StockistService {
     //put your code here
     private $util;
     private static $instance;
-
     private $userService;
+
     function __construct() {
         $this->util = new Utils();
-        $this->userService =   UserService()::getInstance();
+        $this->userService = UserService()::getInstance();
     }
 
     public static function getInstance() {
@@ -86,7 +87,7 @@ class StockistService {
         if ($names != null) {
             $namearray = explode(" ", $names);
             $stockistRequest->setFirstname($namearray[0]);
-            if(isset($namearray[1]))
+            if (isset($namearray[1]))
                 $stockistRequest->setLastname($namearray[1]);
         }
 
@@ -118,27 +119,15 @@ class StockistService {
         $stockist->save();
 
         //todo: create user :: 
-        
-        
-        $clientPassword = Utils::HashPassword("client123");
+        $clientPassword = ("client123");
         $userRequest = new UserRequest();
         $userRequest->setPassword($clientPassword);
         $userRequest->setRepassword($clientPassword);
         $userRequest->setUsername($reference_id);
-        
-        
-        
-        
-        
-        $user = new User();
-        $user->username = $reference_id;
-        $user->password = Utils::HashPassword("client123");
-        $user->status = 'ACTIVE';
-        $user->created_by = $createdBy;
-        $user->save();
+        $user = $this->userService->saveUser($userRequest, $autneticaton_response);
 
 
-        $stockist->user_id = $user->id;
+        $stockist->user_id = $userResponse['id'];
         $stockist->update();
 
         //todo: create Profile for User
@@ -150,9 +139,8 @@ class StockistService {
         $profiles->save();
 
         $user->profile_id = $profiles->id;
-        $user->update();
-
-
+        $user->update(); 
+        
         $stockistResponse = $this->populate($stockist);
 
         return $stockistResponse->toString();
@@ -173,7 +161,7 @@ class StockistService {
         if ($names != null) {
             $namearray = explode(" ", $names);
             $stockistRequest->setFirstname($namearray[0]);
-            if(isset($namearray[1]))
+            if (isset($namearray[1]))
                 $stockistRequest->setLastname($namearray[1]);
         }
 
@@ -194,9 +182,9 @@ class StockistService {
             throw new Exception("Record does not exist in the daabase", 403);
         }
 
-      
+
         $profile = $stockist->User->profile;
-         
+
 //        $stockist->reference_id = $this->util->incrementalHash();
         $stockist->join_date = $stockistRequest->getJoindate();
 //        $stockist->user_id = 1;
@@ -210,9 +198,9 @@ class StockistService {
         $stockist->update();
 
 
-       
+
         if ($profile != null) {
-             
+
             $profile->firstname = $stockistRequest->getFirstname();
             $profile->lastname = $stockistRequest->getLastname();
             $profile->companyname = $stockistRequest->getCompanyname();

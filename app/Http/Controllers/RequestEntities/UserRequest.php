@@ -13,6 +13,7 @@ class UserRequest {
 
     function __construct($username = null, $password = null, $repassword = null, $role_id = null) {
 
+        
         $this->username = $username;
         $this->password = $password;
         $this->repassword = $repassword;

@@ -75,6 +75,14 @@ class UserService {
     }
 
     public function save($request, $autneticaton_response = null) {
+ 
+        $user = $this->saveUser($request, $autneticaton_response);
+        $userResponse = $this->populate($user);
+        return $userResponse->toString();
+    }
+
+    
+        public function saveUser($request, $autneticaton_response = null) {
 
         $username = $request['username'];
         $password = $request['password'];
@@ -93,12 +101,16 @@ class UserService {
         $user->username = $username;
         $user->password = Utils::HashPassword($password);
         $user->status = 'ACTIVE';
-        $user->save();
-
-        $userResponse = $this->populate($user);
-        return $userResponse->toString();
+        if($autneticaton_response != null){
+            $createdBy = $autneticaton_response->getId();
+            $user->created_by = $createdBy;
+        }
+        $user->save(); 
+        return $user;
     }
 
+    
+    
     public function update($request, $authentication = null) {
         $username = $request['username'];
         $password = $request['password'];
