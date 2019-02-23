@@ -16,6 +16,7 @@ use App\Http\Controllers\ResponseEntities\UserResponse;
 use App\Http\Controllers\RequestEntities\LoginRequest;
 use App\Profiles;
 use App\Http\Controllers\ResponseEntities\ProfileResponse;
+use App\Http\Controllers\RequestEntities\ProfileRequest;
 
 /**
  * Description of ProfileService
@@ -53,18 +54,18 @@ class ProfileService {
         return $userResponse->toString();
     }
 
-    public function saveProfile(UserRequest $userRequest, $autneticaton_response = null) {
+    public function saveProfile(ProfileRequest $profileRequest, $autneticaton_response = null) {
 
-        $userRequest->validate();
+        $profileRequest->validate();
 
-        $user = User::where('username', $userRequest->getUsername())->first();
+        $user = User::where('username', $profileRequest->getUsername())->first();
         if ($user != null) {
             throw new Exception("User Exists with the same username in the database ");
         }
 
         $user = new User();
-        $user->username = $userRequest->getUsername();
-        $user->password = Utils::HashPassword($userRequest->getPassword());
+        $user->username = $profileRequest->getUsername();
+        $user->password = Utils::HashPassword($profileRequest->getPassword());
         $user->status = 'ACTIVE';
         if ($autneticaton_response != null) {
             $createdBy = $autneticaton_response->getId();

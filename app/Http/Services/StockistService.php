@@ -16,8 +16,9 @@ use App\User;
 use App\Profiles;
 use Exception;
 use App\Http\Controllers\RequestEntities\UserRequest;
-
+use App\Http\Controllers\RequestEntities\ProfileRequest;
 use App\Http\Services\UserService;
+
 /**
  * Description of StockistService
  *
@@ -132,6 +133,12 @@ class StockistService {
         $stockist->user_id = $user->id;
         $stockist->update();
 
+        $profileRequest = new ProfileRequest();
+        $profileRequest->setCompantname($stockistRequest->getCompanyname());
+        $profileRequest->setFirstname($stockistRequest->getFirstname());
+        $profileRequest->setLastname($stockistRequest->getLastname());
+        
+
         //todo: create Profile for User
         $profiles = new Profiles();
         $profiles->firstname = $stockistRequest->getFirstname();
@@ -141,8 +148,8 @@ class StockistService {
         $profiles->save();
 
         $user->profile_id = $profiles->id;
-        $user->update(); 
-        
+        $user->update();
+
         $stockistResponse = $this->populate($stockist);
 
         return $stockistResponse->toString();
