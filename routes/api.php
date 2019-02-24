@@ -70,25 +70,25 @@ Route::get('stockist/{offset}/{limit?}', 'StockistController@index');
 
 
 //Dealer 
-Route::get('dealer/', 'StockistController@index');
-Route::get('dealer/validatereference/{reference_id}', 'StockistController@checkrefence');
-Route::get('dealer/{id}', 'StockistController@get');
-Route::post('dealer/', 'StockistController@save');
-Route::put('dealer/', 'StockistController@update');
-Route::delete('dealer/{id}', 'StockistController@archive');
-Route::get('dealer/{offset}/{limit?}', 'StockistController@index');
+Route::get('dealer/', 'DealerController@index');
+Route::get('dealer/validatereference/{reference_id}', 'DealerController@checkrefence');
+Route::get('dealer/{id}', 'DealerController@get');
+Route::post('dealer/', 'DealerController@save');
+Route::put('dealer/', 'DealerController@update');
+Route::delete('dealer/{id}', 'DealerController@archive');
+Route::get('dealer/{offset}/{limit?}', 'DealerController@index');
 
 
 
 
 //Dealer 
-Route::get('driver/', 'StockistController@index');
-Route::get('driver/validatereference/{reference_id}', 'StockistController@checkrefence');
-Route::get('driver/{id}', 'StockistController@get');
-Route::post('driver/', 'StockistController@save');
-Route::put('driver/', 'StockistController@update');
-Route::delete('driver/{id}', 'StockistController@archive');
-Route::get('driver/{offset}/{limit?}', 'StockistController@index');
+Route::get('driver/', 'DriverController@index');
+Route::get('driver/validatereference/{reference_id}', 'DriverController@checkrefence');
+Route::get('driver/{id}', 'DriverController@get');
+Route::post('driver/', 'DriverController@save');
+Route::put('driver/', 'DriverController@update');
+Route::delete('driver/{id}', 'DriverController@archive');
+Route::get('driver/{offset}/{limit?}', 'DriverController@index');
 
 
 
