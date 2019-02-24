@@ -21,7 +21,7 @@ class Driver extends Model
      * @var array
      */
     protected $hidden = ['user_id'];
-    protected $table = 'stockists';
+    protected $table = 'drivers';
 
     const CREATED_AT = 'date_created';
     const UPDATED_AT = 'date_updated';

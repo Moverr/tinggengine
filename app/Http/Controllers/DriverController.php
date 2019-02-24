@@ -6,7 +6,7 @@ use App\Http\Helpers\Utils;
 use App\Http\Services\DriverService;
 use Illuminate\Http\Request;
 
-class DealerController extends Controller {
+class DriverController extends Controller {
 
     private $util;
     private $driverService;
