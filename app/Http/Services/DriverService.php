@@ -111,7 +111,7 @@ class DriverService {
         $userRequest->setPassword($clientPassword);
         $userRequest->setRepassword($clientPassword);
         $userRequest->setUsername($reference_id);
-        $userRequest->setGroup('DEALER');
+        $userRequest->setGroup('DRIVER');
 
         //populate profile request
         $profileRequest = new ProfileRequest();

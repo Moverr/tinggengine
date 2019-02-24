@@ -69,6 +69,31 @@ Route::get('stockist/{offset}/{limit?}', 'StockistController@index');
 
 
 
+//Dealer 
+Route::get('dealer/', 'StockistController@index');
+Route::get('dealer/validatereference/{reference_id}', 'StockistController@checkrefence');
+Route::get('dealer/{id}', 'StockistController@get');
+Route::post('dealer/', 'StockistController@save');
+Route::put('dealer/', 'StockistController@update');
+Route::delete('dealer/{id}', 'StockistController@archive');
+Route::get('dealer/{offset}/{limit?}', 'StockistController@index');
+
+
+
+
+//Dealer 
+Route::get('driver/', 'StockistController@index');
+Route::get('driver/validatereference/{reference_id}', 'StockistController@checkrefence');
+Route::get('driver/{id}', 'StockistController@get');
+Route::post('driver/', 'StockistController@save');
+Route::put('driver/', 'StockistController@update');
+Route::delete('driver/{id}', 'StockistController@archive');
+Route::get('driver/{offset}/{limit?}', 'StockistController@index');
+
+
+
+
+
 //Purchase Orders 
 Route::get('purchases/', 'PurchaseController@index');
 Route::get('purchases/validatereference/{reference_id}', 'PurchaseController@checkrefence');
