@@ -31,11 +31,12 @@ class DriverRequest {
     private $joindate;
     private $reference_id;
     private $dealer_reference;
+    private $dealer_id;
 
     function __construct() {
         
     }
-    
+
     function getId() {
         return $this->id;
     }
@@ -140,14 +141,21 @@ class DriverRequest {
         $this->dealer_reference = $dealer_reference;
     }
 
-      
+    function getDealer_id() {
+        return $this->dealer_id;
+    }
+
+    function setDealer_id($dealer_id) {
+        $this->dealer_id = $dealer_id;
+    }
+
     function validate() {
-       
-         if ($this->getDealer_reference() == null  ) {
+
+        if ($this->getDealer_reference() == null || $this->getDealer_id() == null) {
             throw new Exception("Dealer Reference is  Mandatory");
         }
 
-        
+
         if ($this->getFirstname() == null || $this->getLastname() == null) {
             throw new Exception("Names are  Mandatory");
         }

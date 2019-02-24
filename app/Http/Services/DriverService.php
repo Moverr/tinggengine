@@ -18,6 +18,7 @@ use App\Http\Helpers\Utils;
 use App\Http\Services\UserService;
 use Exception;
 use ProductCategories;
+use App\Http\Services\DealerService;
 
 /**
  * Description of StockistService
@@ -79,6 +80,16 @@ class DriverService {
 
     public function save($request, $autneticaton_response = null) {
         $createdBy = $autneticaton_response->getId();
+
+        if (!isset($request['dealer_reference'])) {
+            throw new Exception("Delaer Reference is mandatory", 403);
+        }
+
+        $dealer_refernece = $request['dealer_reference'];
+        $dealer = DealerService::getInstance()->checkrefence($dealer_refernece);
+        $dealer_id = $dealer['id'];
+
+
 
 
         $names = $request['names'];
@@ -161,17 +172,17 @@ class DriverService {
         $createdBy = $autneticaton_response->getId();
 
 
-        $stockist = new Driver();
-        $stockist->reference_id = $dealerRequest->getReference_id();
-        $stockist->join_date = $dealerRequest->getJoindate();
-        $stockist->user_id = 1;
-        $stockist->country_code = $dealerRequest->getCountrycode();
-        $stockist->phone_number = $dealerRequest->getPhonenumber();
-        $stockist->created_by = $createdBy;
-        $stockist->status = 'ACTIVE';
-        $stockist->save();
+        $driver = new Driver();
+        $driver->reference_id = $dealerRequest->getReference_id();
+        $driver->join_date = $dealerRequest->getJoindate();
+        $driver->user_id = 1;
+        $driver->country_code = $dealerRequest->getCountrycode();
+        $driver->phone_number = $dealerRequest->getPhonenumber();
+        $driver->created_by = $createdBy;
+        $driver->status = 'ACTIVE';
+        $driver->save();
 
-        return $stockist;
+        return $driver;
     }
 
     public function update($request, $authentication = null) {
