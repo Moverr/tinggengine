@@ -13,11 +13,12 @@ use App\Http\Controllers\RequestEntities\StockistRequest;
 use App\Http\Controllers\RequestEntities\UserRequest; 
 use App\Http\Helpers\Utils;
 use App\Http\Services\UserService;
-use App\Stockists;
+ 
 use Exception;
 use ProductCategories;
 use App\Http\Controllers\RequestEntities\DealerRequest;
 use App\Http\Controllers\ResponseEntities\DealerResponse;
+use App\Dealer;
 
 /**
  * Description of StockistService
@@ -46,35 +47,35 @@ class DealerService {
     }
 
     public function getList($offset, $limit, $autneticaton_response = null) {
-        $stockists = Stockists::offset($offset)->limit($limit)->orderBy('date_created', 'desc')->get();
-        $stockistReference = [];
+        $dealers = Dealer::offset($offset)->limit($limit)->orderBy('date_created', 'desc')->get();
+        $dealerResponses = [];
 
-        foreach ($stockists as $record) {
-            $stockistReference [] = $this->populate($record)->toString();
+        foreach ($dealers as $record) {
+            $dealerResponses [] = $this->populate($record)->toString();
         }
 
-        return $stockistReference;
+        return $dealerResponses;
     }
 
     public function get($id, $autneticaton_response = null) {
-        $stockists = Stockists::where('id', $id)->get();
-        if ($stockists == null || count($stockists) == 0) {
+        $dealers = Dealer::where('id', $id)->get();
+        if ($dealers == null || count($dealers) == 0) {
             throw new Exception("Record does not exist in the daabase", 403);
         }
 
-        $stockistReference = $this->populate($stockists[0]);
-        return $stockistReference->toString();
+        $dealerResponse = $this->populate($dealers[0]);
+        return $dealerResponse->toString();
     }
 
     public function checkrefence($reference_id, $autneticaton_response = null) {
-        $stockists = Stockists::where('reference_id', $reference_id)->get();
+        $dealers = Dealer::where('reference_id', $reference_id)->get();
 
-        if ($stockists == null || count($stockists) == 0) {
+        if ($dealers == null || count($dealers) == 0) {
             throw new Exception("Stockist Reference does not exist in the daabase", 403);
         }
 
-        $stockistReference = $this->populate($stockists[0]);
-        return $stockistReference->toString();
+        $dealerResponse = $this->populate($dealers[0]);
+        return $dealerResponse->toString();
     }
 
     public function save($request, $autneticaton_response = null) {
@@ -126,15 +127,15 @@ class DealerService {
 
 
         //todo: check if there is a stockist with the same phone number
-        $stockists = Stockists::where('phone_number', $phonenumber)->get();
+        $stockists = Dealer::where('phone_number', $phonenumber)->get();
 
         if (count($stockists) > 0) {
-            throw new Exception("Stockists exists in the database with same phone number ", 403);
+            throw new Exception("Dealer exists in the database with same phone number ", 403);
         }
 
 
         //todo:  save stockist 
-        $stockist = $this->saveStockist($dealerRequest, $autneticaton_response);
+        $stockist = $this->saveDealer($dealerRequest, $autneticaton_response);
 
         //todo: create user :: 
         $user = $this->userService->saveUser($userRequest, $autneticaton_response);
@@ -156,22 +157,22 @@ class DealerService {
         return $dealerResponse->toString();
     }
 
-    public function saveStockist(StockistRequest $stockistRequest, $autneticaton_response = null) {
+    public function saveDealer(DealerRequest $dealerRequest, $autneticaton_response = null) {
 
         $createdBy = $autneticaton_response->getId();
 
 
-        $stockist = new Stockists();
-        $stockist->reference_id = $stockistRequest->getReference_id();
-        $stockist->join_date = $stockistRequest->getJoindate();
-        $stockist->user_id = 1;
-        $stockist->country_code = $stockistRequest->getCountrycode();
-        $stockist->phone_number = $stockistRequest->getPhonenumber();
-        $stockist->created_by = $createdBy;
-        $stockist->status = 'ACTIVE';
-        $stockist->save();
+        $dealer = new Dealer();
+        $dealer->reference_id = $dealerRequest->getReference_id();
+        $dealer->join_date = $dealerRequest->getJoindate();
+        $dealer->user_id = 1;
+        $dealer->country_code = $dealerRequest->getCountrycode();
+        $dealer->phone_number = $dealerRequest->getPhonenumber();
+        $dealer->created_by = $createdBy;
+        $dealer->status = 'ACTIVE';
+        $dealer->save();
 
-        return $stockist;
+        return $dealer;
     }
 
     public function update($request, $authentication = null) {
@@ -185,27 +186,27 @@ class DealerService {
         $phonenumber = $request['phonenumber'];
         $countrycode = $request['countrcode'];
 
-        $stockistRequest = new StockistRequest();
+        $dealerRequest = new DealerRequest();
         if ($names != null) {
             $namearray = explode(" ", $names);
-            $stockistRequest->setFirstname($namearray[0]);
+            $dealerRequest->setFirstname($namearray[0]);
             if (isset($namearray[1]))
-                $stockistRequest->setLastname($namearray[1]);
+                $dealerRequest->setLastname($namearray[1]);
         }
 
-        $stockistRequest->setCountrycode($countrycode);
-        $stockistRequest->setPhonenumber($phonenumber);
-        $stockistRequest->setCompanyname($companyname);
+        $dealerRequest->setCountrycode($countrycode);
+        $dealerRequest->setPhonenumber($phonenumber);
+        $dealerRequest->setCompanyname($companyname);
 
 
         if ($request['id'] == null) {
             throw new Exception("Mandatory field ID is missing", 403);
         }
 
-        $stockistRequest->setId($request['id']);
-        $stockistRequest->validate();
+        $dealerRequest->setId($request['id']);
+        $dealerRequest->validate();
 
-        $stockist = Stockists::where('id', $stockistRequest->getId())->first();
+        $stockist = Dealer::where('id', $dealerRequest->getId())->first();
         if ($stockist == null) {
             throw new Exception("Record does not exist in the daabase", 403);
         }
@@ -214,10 +215,10 @@ class DealerService {
         $profile = $stockist->User->profile;
 
 //        $stockist->reference_id = $this->util->incrementalHash();
-        $stockist->join_date = $stockistRequest->getJoindate();
+        $stockist->join_date = $dealerRequest->getJoindate();
 //        $stockist->user_id = 1;
-        $stockist->country_code = $stockistRequest->getCountrycode();
-        $stockist->phone_number = $stockistRequest->getPhonenumber();
+        $stockist->country_code = $dealerRequest->getCountrycode();
+        $stockist->phone_number = $dealerRequest->getPhonenumber();
 
         $stockist->join_date = $joindate;
 //        $stockist->id = $request['id'];
@@ -229,9 +230,9 @@ class DealerService {
 
         if ($profile != null) {
 
-            $profile->firstname = $stockistRequest->getFirstname();
-            $profile->lastname = $stockistRequest->getLastname();
-            $profile->companyname = $stockistRequest->getCompanyname();
+            $profile->firstname = $dealerRequest->getFirstname();
+            $profile->lastname = $dealerRequest->getLastname();
+            $profile->companyname = $dealerRequest->getCompanyname();
             $profile->update();
         }
 
