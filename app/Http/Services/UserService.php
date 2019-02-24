@@ -103,6 +103,7 @@ class UserService {
             $createdBy = $autneticaton_response->getId();
             $user->created_by = $createdBy;
         }
+        $user->group = $userRequest->getGroup();
         $user->save();
         return $user;
     }
