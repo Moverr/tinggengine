@@ -8,16 +8,16 @@
 
 namespace App\Http\Services;
 
+use App\Driver;
+use App\Http\Controllers\RequestEntities\DealerRequest;
+use App\Http\Controllers\RequestEntities\DriverRequest;
 use App\Http\Controllers\RequestEntities\ProfileRequest;
-use App\Http\Controllers\RequestEntities\StockistRequest;
-use App\Http\Controllers\RequestEntities\UserRequest; 
+use App\Http\Controllers\RequestEntities\UserRequest;
+use App\Http\Controllers\ResponseEntities\DriverResponse;
 use App\Http\Helpers\Utils;
 use App\Http\Services\UserService;
-use App\Stockists;
 use Exception;
 use ProductCategories;
-use App\Http\Controllers\RequestEntities\DealerRequest;
-use App\Http\Controllers\ResponseEntities\DealerResponse;
 
 /**
  * Description of StockistService
@@ -46,31 +46,31 @@ class DriverService {
     }
 
     public function getList($offset, $limit, $autneticaton_response = null) {
-        $stockists = Stockists::offset($offset)->limit($limit)->orderBy('date_created', 'desc')->get();
-        $stockistReference = [];
+        $drivers = Driver::offset($offset)->limit($limit)->orderBy('date_created', 'desc')->get();
+        $driverResponse = [];
 
-        foreach ($stockists as $record) {
-            $stockistReference [] = $this->populate($record)->toString();
+        foreach ($drivers as $record) {
+            $driverResponse [] = $this->populate($record)->toString();
         }
 
-        return $stockistReference;
+        return $driverResponse;
     }
 
     public function get($id, $autneticaton_response = null) {
-        $stockists = Stockists::where('id', $id)->get();
-        if ($stockists == null || count($stockists) == 0) {
+        $drivers = Driver::where('id', $id)->get();
+        if ($drivers == null || count($drivers) == 0) {
             throw new Exception("Record does not exist in the daabase", 403);
         }
 
-        $stockistReference = $this->populate($stockists[0]);
-        return $stockistReference->toString();
+        $driverResponse = $this->populate($drivers[0]);
+        return $driverResponse->toString();
     }
 
     public function checkrefence($reference_id, $autneticaton_response = null) {
-        $stockists = Stockists::where('reference_id', $reference_id)->get();
+        $stockists = Driver::where('reference_id', $reference_id)->get();
 
         if ($stockists == null || count($stockists) == 0) {
-            throw new Exception("Stockist Reference does not exist in the daabase", 403);
+            throw new Exception("Driver Reference does not exist in the daabase", 403);
         }
 
         $stockistReference = $this->populate($stockists[0]);
@@ -87,7 +87,7 @@ class DriverService {
         $phonenumber = $request['phonenumber'];
         $countrycode = $request['countrcode'];
 
-        $dealerRequest = new DealerRequest();
+        $dealerRequest = new DriverRequest();
         if ($names != null) {
             $namearray = explode(" ", $names);
             $dealerRequest->setFirstname($namearray[0]);
@@ -126,23 +126,23 @@ class DriverService {
 
 
         //todo: check if there is a stockist with the same phone number
-        $stockists = Stockists::where('phone_number', $phonenumber)->get();
+        $drivers = Driver::where('phone_number', $phonenumber)->get();
 
-        if (count($stockists) > 0) {
-            throw new Exception("Stockists exists in the database with same phone number ", 403);
+        if (count($drivers) > 0) {
+            throw new Exception("Driver exists in the database with same phone number ", 403);
         }
 
 
         //todo:  save stockist 
-        $stockist = $this->saveStockist($dealerRequest, $autneticaton_response);
+        $driver = $this->saveDriver($dealerRequest, $autneticaton_response);
 
         //todo: create user :: 
         $user = $this->userService->saveUser($userRequest, $autneticaton_response);
 
 
         //update profile
-        $stockist->user_id = $user->id;
-        $stockist->update();
+        $driver->user_id = $user->id;
+        $driver->update();
 
 
         //save profile
@@ -151,22 +151,22 @@ class DriverService {
         $user->profile_id = $profiles->id;
         $user->update();
 
-        $dealerResponse = $this->populate($stockist);
+        $dealerResponse = $this->populate($driver);
 
         return $dealerResponse->toString();
     }
 
-    public function saveStockist(StockistRequest $stockistRequest, $autneticaton_response = null) {
+    public function saveDriver(DealerRequest $dealerRequest, $autneticaton_response = null) {
 
         $createdBy = $autneticaton_response->getId();
 
 
-        $stockist = new Stockists();
-        $stockist->reference_id = $stockistRequest->getReference_id();
-        $stockist->join_date = $stockistRequest->getJoindate();
+        $stockist = new Driver();
+        $stockist->reference_id = $dealerRequest->getReference_id();
+        $stockist->join_date = $dealerRequest->getJoindate();
         $stockist->user_id = 1;
-        $stockist->country_code = $stockistRequest->getCountrycode();
-        $stockist->phone_number = $stockistRequest->getPhonenumber();
+        $stockist->country_code = $dealerRequest->getCountrycode();
+        $stockist->phone_number = $dealerRequest->getPhonenumber();
         $stockist->created_by = $createdBy;
         $stockist->status = 'ACTIVE';
         $stockist->save();
@@ -185,60 +185,61 @@ class DriverService {
         $phonenumber = $request['phonenumber'];
         $countrycode = $request['countrcode'];
 
-        $stockistRequest = new StockistRequest();
+        $dealerRequest = new DealerRequest();
         if ($names != null) {
             $namearray = explode(" ", $names);
-            $stockistRequest->setFirstname($namearray[0]);
-            if (isset($namearray[1]))
-                $stockistRequest->setLastname($namearray[1]);
+            $dealerRequest->setFirstname($namearray[0]);
+            if (isset($namearray[1])) {
+                $dealerRequest->setLastname($namearray[1]);
+            }
         }
 
-        $stockistRequest->setCountrycode($countrycode);
-        $stockistRequest->setPhonenumber($phonenumber);
-        $stockistRequest->setCompanyname($companyname);
+        $dealerRequest->setCountrycode($countrycode);
+        $dealerRequest->setPhonenumber($phonenumber);
+        $dealerRequest->setCompanyname($companyname);
 
 
         if ($request['id'] == null) {
             throw new Exception("Mandatory field ID is missing", 403);
         }
 
-        $stockistRequest->setId($request['id']);
-        $stockistRequest->validate();
+        $dealerRequest->setId($request['id']);
+        $dealerRequest->validate();
 
-        $stockist = Stockists::where('id', $stockistRequest->getId())->first();
-        if ($stockist == null) {
+        $dealer = Driver::where('id', $dealerRequest->getId())->first();
+        if ($dealer == null) {
             throw new Exception("Record does not exist in the daabase", 403);
         }
 
 
-        $profile = $stockist->User->profile;
+        $profile = $dealer->User->profile;
 
 //        $stockist->reference_id = $this->util->incrementalHash();
-        $stockist->join_date = $stockistRequest->getJoindate();
+        $dealer->join_date = $dealerRequest->getJoindate();
 //        $stockist->user_id = 1;
-        $stockist->country_code = $stockistRequest->getCountrycode();
-        $stockist->phone_number = $stockistRequest->getPhonenumber();
+        $dealer->country_code = $dealerRequest->getCountrycode();
+        $dealer->phone_number = $dealerRequest->getPhonenumber();
 
-        $stockist->join_date = $joindate;
+        $dealer->join_date = $joindate;
 //        $stockist->id = $request['id'];
-        $stockist->updated_by = $updatedBy;
+        $dealer->updated_by = $updatedBy;
 
-        $stockist->update();
+        $dealer->update();
 
 
 
         if ($profile != null) {
 
-            $profile->firstname = $stockistRequest->getFirstname();
-            $profile->lastname = $stockistRequest->getLastname();
-            $profile->companyname = $stockistRequest->getCompanyname();
+            $profile->firstname = $dealerRequest->getFirstname();
+            $profile->lastname = $dealerRequest->getLastname();
+            $profile->companyname = $dealerRequest->getCompanyname();
             $profile->update();
         }
 
 
 
 
-        $dealerResponse = $this->populate($stockist);
+        $dealerResponse = $this->populate($dealer);
         return $dealerResponse->toString();
     }
 
@@ -253,7 +254,7 @@ class DriverService {
     }
 
     public function populate($dealer) {
-        $response = new DealerResponse();
+        $response = new DriverResponse();
         $response->setId($dealer->id);
         $response->setFirstname($dealer->User->profile['firstname']);
         $response->setLastname($dealer->User->profile['lastname']);

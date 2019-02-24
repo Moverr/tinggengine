@@ -8,16 +8,15 @@
 
 namespace App\Http\Services;
 
+use App\Dealer;
+use App\Http\Controllers\RequestEntities\DealerRequest;
 use App\Http\Controllers\RequestEntities\ProfileRequest;
-use App\Http\Controllers\RequestEntities\StockistRequest;
 use App\Http\Controllers\RequestEntities\UserRequest;
+use App\Http\Controllers\ResponseEntities\DealerResponse;
 use App\Http\Helpers\Utils;
 use App\Http\Services\UserService;
 use Exception;
 use ProductCategories;
-use App\Http\Controllers\RequestEntities\DealerRequest;
-use App\Http\Controllers\ResponseEntities\DealerResponse;
-use App\Dealer;
 
 /**
  * Description of StockistService
@@ -70,7 +69,7 @@ class DealerService {
         $dealers = Dealer::where('reference_id', $reference_id)->get();
 
         if ($dealers == null || count($dealers) == 0) {
-            throw new Exception("Stockist Reference does not exist in the daabase", 403);
+            throw new Exception("Dealer Reference does not exist in the daabase", 403);
         }
 
         $dealerResponse = $this->populate($dealers[0]);
