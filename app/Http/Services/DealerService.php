@@ -10,10 +10,9 @@ namespace App\Http\Services;
 
 use App\Http\Controllers\RequestEntities\ProfileRequest;
 use App\Http\Controllers\RequestEntities\StockistRequest;
-use App\Http\Controllers\RequestEntities\UserRequest; 
+use App\Http\Controllers\RequestEntities\UserRequest;
 use App\Http\Helpers\Utils;
 use App\Http\Services\UserService;
- 
 use Exception;
 use ProductCategories;
 use App\Http\Controllers\RequestEntities\DealerRequest;
