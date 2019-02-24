@@ -82,7 +82,7 @@ class DriverService {
         $createdBy = $autneticaton_response->getId();
 
         if (!isset($request['dealer_reference'])) {
-            throw new Exception("Delaer Reference is mandatory", 403);
+            throw new Exception("Dealer Reference is mandatory", 403);
         }
 
         $dealer_refernece = $request['dealer_reference'];
@@ -115,6 +115,8 @@ class DriverService {
         $dealerRequest->setCompanyname($companyname);
         $dealerRequest->setReference_id($reference_id);
         $dealerRequest->setJoindate($joindate);
+        $dealerRequest->setDealer_id($dealer_id);
+       
 
         //populate user request
         $clientPassword = ("client123");
@@ -167,19 +169,20 @@ class DriverService {
         return $dealerResponse->toString();
     }
 
-    public function saveDriver(DealerRequest $dealerRequest, $autneticaton_response = null) {
+    public function saveDriver(DriverRequest $driverRequest, $autneticaton_response = null) {
 
         $createdBy = $autneticaton_response->getId();
 
 
         $driver = new Driver();
-        $driver->reference_id = $dealerRequest->getReference_id();
-        $driver->join_date = $dealerRequest->getJoindate();
+        $driver->reference_id = $driverRequest->getReference_id();
+        $driver->join_date = $driverRequest->getJoindate();
         $driver->user_id = 1;
-        $driver->country_code = $dealerRequest->getCountrycode();
-        $driver->phone_number = $dealerRequest->getPhonenumber();
+        $driver->country_code = $driverRequest->getCountrycode();
+        $driver->phone_number = $driverRequest->getPhonenumber();
         $driver->created_by = $createdBy;
         $driver->status = 'ACTIVE';
+        $driver->dealer_id = $driverRequest->getDealer_id();
         $driver->save();
 
         return $driver;
