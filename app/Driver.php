@@ -12,7 +12,7 @@ class Driver extends Model
      * @var array
      */
     protected $fillable = [
-        'reference_id', 'join_date','phone_number', 'user_id', 'status'
+        'reference_id', 'join_date','phone_number','dealer_id', 'user_id', 'status'
     ];
 
     /**
@@ -34,4 +34,10 @@ class Driver extends Model
         return $this->belongsTo('App\User', 'user_id', 'id');
     }
 
+    
+     public function Dealer() {
+        return $this->belongsTo('App\User', 'user_id', 'id');
+    }
+
+    
 }
