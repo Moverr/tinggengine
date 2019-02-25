@@ -115,6 +115,37 @@ class DefaultSysPermissions extends Seeder {
 
 
 
+          //stockist
+        DB::table('permissions')->insert([
+            'id' => 19,
+            'name' => 'CREATE STOCKIST',
+            'code' => 'CSTST'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 20,
+            'name' => 'EDIT STOCKIST ',
+            'code' => 'ESTST'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 21,
+            'name' => 'ARCHIVE STOCKIST ',
+            'code' => 'ASTST'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 22,
+            'name' => 'LIST STOCKIST ',
+            'code' => 'LSTST'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 23,
+            'name' => 'GET STOCKIST ',
+            'code' => 'GSTST'
+        ]);
+
+
+        
+        
+        
 
 
 
