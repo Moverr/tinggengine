@@ -84,22 +84,30 @@ class DefaultSysPermissions extends Seeder {
         ]);
         DB::table('permissions')->insert([
             'id' => 16,
+             'grouping' => 'PRODUCT',
+            
             'name' => 'ARCHIVE PRODUCT ',
             'code' => 'AP'
         ]);
         DB::table('permissions')->insert([
             'id' => 17,
+             'grouping' => 'PRODUCT',
+            
             'name' => 'LIST PRODUCT ',
             'code' => 'LP'
         ]);
         DB::table('permissions')->insert([
             'id' => 18,
+             'grouping' => 'PRODUCT',
+            
             'name' => 'GET PRODUCT ',
             'code' => 'GP'
         ]);
 
          DB::table('permissions')->insert([
             'id' => 23,
+            
+              'grouping' => 'STOCKIST',
             'name' => 'GET STOCKIST ',
             'code' => 'GSTST'
         ]);
@@ -109,6 +117,7 @@ class DefaultSysPermissions extends Seeder {
         //stockist
         DB::table('permissions')->insert([
             'id' => 24,
+             'grouping' => 'STOCKIST',
             'name' => 'CREATE PROFILE',
             'code' => 'CPRL'
         ]);
