@@ -175,6 +175,38 @@ class DefaultSysPermissions extends Seeder {
 
         
         
+          //stockist
+        DB::table('permissions')->insert([
+            'id' => 29,
+            'name' => 'CREATE PURCHASE',
+            'code' => 'CPUR'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 30,
+            'name' => 'EDIT PURCHASE ',
+            'code' => 'EPUR'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 31,
+            'name' => 'ARCHIVE PURCHASE ',
+            'code' => 'APUR'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 32,
+            'name' => 'LIST PURCHASE ',
+            'code' => 'LPUR'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 33,
+            'name' => 'GET PURCHASE ',
+            'code' => 'GPUR'
+        ]);
+
+
+        
+        
+        
+        
         
 
 
