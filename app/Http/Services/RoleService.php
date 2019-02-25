@@ -8,13 +8,8 @@
 
 namespace App\Http\Services;
 
-use App\User;
-use App\Http\Controllers\RequestEntities\UserRequest;
-use App\Http\Helpers\Utils;
-use App\Http\Controllers\ResponseEntities\UserResponse;
-use App\Http\Controllers\RequestEntities\LoginRequest;
 use App\Http\Controllers\ResponseEntities\RoleResponse;
-use Exception;
+use App\Http\Helpers\Utils;
 
 /**
  * Description of RoleService

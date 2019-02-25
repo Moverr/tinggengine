@@ -288,7 +288,36 @@ class DefaultSysPermissions extends Seeder {
         ]);
 
 
+        
+        //TODO: DEALER ROLES MANAGEMENT
+        DB::table('roles')->insert([
+            'id' => 2,
+            'name' => 'DEALER',
+            'code' => 'DEALER',
+            'description' => 'DEALER',
+            'status' => 'ACTIVE',
+            'is_system' => 1
+        ]);
 
+        DB::table('rolepermission')->insert([
+            'role_id' => 2,
+            'permission_id' => 1
+        ]);
+
+        
+        DB::table('rolepermission')->insert([
+            'role_id' => 2,
+            'permission_id' => 2
+        ]);
+
+
+        
+        DB::table('rolepermission')->insert([
+            'role_id' => 2,
+            'permission_id' => 3
+        ]);
+
+        
         DB::table('users')->insert([
             'id' => 1,
             'username' => 'admin',
@@ -302,6 +331,25 @@ class DefaultSysPermissions extends Seeder {
             'user_id' => 1,
             'role_id' => 1
         ]);
+        
+        
+        
+
+        DB::table('users')->insert([
+            'id' => 2,
+            'username' => 'mover',
+            'password' => sha1('miles'),
+            'status' => 'ACTIVE',
+            'group' => 'ADMINISTRATOR'
+        ]);
+
+
+        DB::table('userrole')->insert([
+            'user_id' => 2,
+            'role_id' => 1
+        ]);
+        
+        
     }
 
 }
