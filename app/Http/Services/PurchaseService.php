@@ -44,6 +44,7 @@ class PurchaseService {
         $purchaseOrders = PurchaseOrders::offset($offset)->limit($limit)->orderBy('date_created', 'desc')->get();
         $purchaseorderresponses = [];
         foreach ($purchaseOrders as $record) {
+
             $purchaseorderresponses [] = $this->populate($record)->toString();
         }
 
@@ -56,6 +57,8 @@ class PurchaseService {
             throw new Exception("Record does not exist in the daabase", 403);
         }
 
+
+
         $productResponse = $this->populate($purchaseorder[0]);
         return $productResponse->toString();
     }
@@ -64,10 +67,10 @@ class PurchaseService {
 
         //todo: get stockist reference id 
         $stockist_reference = $request['stockist_reference'];
-       $stockist =  StockistService::getInstance()->checkrefence($stockist_reference);
+        $stockist = StockistService::getInstance()->checkrefence($stockist_reference);
         $stockist_id = $stockist['id'];
 
- 
+
 
         $order_date = $request['order_date'];
         $reference_id = $this->util->incrementalHash(5);
@@ -125,7 +128,7 @@ class PurchaseService {
 
         $purchaseorder->total_amount = $totalvalue;
         $purchaseorder->update();
-        
+
         $stockResponse = $this->populate($purchaseorder);
         return $stockResponse->toString();
     }
@@ -197,6 +200,17 @@ class PurchaseService {
         $purchaseorderresponse->setDate_created($this->util->convertToTimestamp($purchaseorder->date_created));
         $purchaseorderresponse->setId($purchaseorder->id);
 
+        //   return var_dump($purchaseorder[0]->items);
+        
+        $itemsResponse = [];
+        foreach ($purchaseorder->items as $item) {
+            if ($item->status == 'ACTIVE') {
+               $itemsResponse[]= PurchaseOrderItemsService::getInstance()->populate($item)->toString();
+            }
+        }
+
+        $purchaseorderresponse->setPurchase_items($itemsResponse);
+        
         return $purchaseorderresponse;
     }
 

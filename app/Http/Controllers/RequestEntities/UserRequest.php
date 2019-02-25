@@ -10,9 +10,11 @@ class UserRequest {
     private $repassword;
     private $role_id;
     private $id;
+    private $group;
 
     function __construct($username = null, $password = null, $repassword = null, $role_id = null) {
 
+        
         $this->username = $username;
         $this->password = $password;
         $this->repassword = $repassword;
@@ -98,7 +100,24 @@ class UserRequest {
 
         return $this;
     }
+    
+    function getRole_id() {
+        return $this->role_id;
+    }
 
+    function getGroup() {
+        return $this->group;
+    }
+
+    function setRole_id($role_id) {
+        $this->role_id = $role_id;
+    }
+
+    function setGroup($group) {
+        $this->group = $group;
+    }
+
+    
     function validate() {
 
 

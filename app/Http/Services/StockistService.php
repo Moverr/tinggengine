@@ -8,13 +8,15 @@
 
 namespace App\Http\Services;
 
-use App\Http\Helpers\Utils;
-use App\Http\Controllers\ResponseEntities\StockistResponse;
+use App\Http\Controllers\RequestEntities\ProfileRequest;
 use App\Http\Controllers\RequestEntities\StockistRequest;
+use App\Http\Controllers\RequestEntities\UserRequest;
+use App\Http\Controllers\ResponseEntities\StockistResponse;
+use App\Http\Helpers\Utils;
+use App\Http\Services\UserService;
 use App\Stockists;
-use App\User;
-use App\Profiles;
 use Exception;
+use ProductCategories;
 
 /**
  * Description of StockistService
@@ -26,9 +28,13 @@ class StockistService {
     //put your code here
     private $util;
     private static $instance;
+    private $userService;
+    private $profileServie;
 
     function __construct() {
         $this->util = new Utils();
+        $this->userService = UserService::getInstance();
+        $this->profileServie = ProfileService::getInstance();
     }
 
     public static function getInstance() {
@@ -84,15 +90,39 @@ class StockistService {
         if ($names != null) {
             $namearray = explode(" ", $names);
             $stockistRequest->setFirstname($namearray[0]);
-            $stockistRequest->setLastname($namearray[1]);
+            if (isset($namearray[1])) {
+                $stockistRequest->setLastname($namearray[1]);
+            }
         }
 
+        $reference_id = $this->util->incrementalHash();
+
+        //populate stockist request
         $stockistRequest->setCountrycode($countrycode);
         $stockistRequest->setPhonenumber($phonenumber);
         $stockistRequest->setCompanyname($companyname);
+        $stockistRequest->setReference_id($reference_id);
+        $stockistRequest->setJoindate($joindate);
+
+        //populate user request
+        $clientPassword = ("client123");
+        $userRequest = new UserRequest();
+        $userRequest->setPassword($clientPassword);
+        $userRequest->setRepassword($clientPassword);
+        $userRequest->setUsername($reference_id);
+        $userRequest->setGroup('STOCKIST');
+
+        //populate profile request
+        $profileRequest = new ProfileRequest();
+        $profileRequest->setCompanyname($stockistRequest->getCompanyname());
+        $profileRequest->setFirstname($stockistRequest->getFirstname());
+        $profileRequest->setLastname($stockistRequest->getLastname());
+
+
 
         //todo: validate 
         $stockistRequest->validate();
+
 
         //todo: check if there is a stockist with the same phone number
         $stockists = Stockists::where('phone_number', $phonenumber)->get();
@@ -101,46 +131,46 @@ class StockistService {
             throw new Exception("Stockists exists in the database with same phone number ", 403);
         }
 
-        $reference_id = $this->util->incrementalHash();
-        //todo:  validate the request
+
+        //todo:  save stockist 
+        $stockist = $this->saveStockist($stockistRequest, $autneticaton_response);
+
+        //todo: create user :: 
+        $user = $this->userService->saveUser($userRequest, $autneticaton_response);
+
+
+        //update profile
+        $stockist->user_id = $user->id;
+        $stockist->update();
+
+
+        //save profile
+        $profiles = $this->profileServie->saveProfile($profileRequest, $autneticaton_response);
+
+        $user->profile_id = $profiles->id;
+        $user->update();
+
+        $stockistResponse = $this->populate($stockist);
+
+        return $stockistResponse->toString();
+    }
+
+    public function saveStockist(StockistRequest $stockistRequest, $autneticaton_response = null) {
+
+        $createdBy = $autneticaton_response->getId();
+
+
         $stockist = new Stockists();
-        $stockist->reference_id = $reference_id;
+        $stockist->reference_id = $stockistRequest->getReference_id();
         $stockist->join_date = $stockistRequest->getJoindate();
         $stockist->user_id = 1;
         $stockist->country_code = $stockistRequest->getCountrycode();
         $stockist->phone_number = $stockistRequest->getPhonenumber();
         $stockist->created_by = $createdBy;
         $stockist->status = 'ACTIVE';
-        $stockist->join_date = $joindate;
         $stockist->save();
 
-        //todo: create user :: 
-        $user = new User();
-        $user->username = $reference_id;
-        $user->password = Utils::HashPassword("client123");
-        $user->status = 'ACTIVE';
-        $user->created_by = $createdBy;
-        $user->save();
-
-
-        $stockist->user_id = $user->id;
-        $stockist->update();
-
-        //todo: create Profile for User
-        $profiles = new Profiles();
-        $profiles->firstname = $stockistRequest->getFirstname();
-        $profiles->lastname = $stockistRequest->getLastname();
-        $profiles->companyname = $stockistRequest->getCompanyname();
-        $profiles->created_by = $createdBy;
-        $profiles->save();
-
-        $user->profile_id = $profiles->id;
-        $user->update();
-
-
-        $stockistResponse = $this->populate($stockist);
-
-        return $stockistResponse->toString();
+        return $stockist;
     }
 
     public function update($request, $authentication = null) {
@@ -158,7 +188,8 @@ class StockistService {
         if ($names != null) {
             $namearray = explode(" ", $names);
             $stockistRequest->setFirstname($namearray[0]);
-            $stockistRequest->setLastname($namearray[1]);
+            if (isset($namearray[1]))
+                $stockistRequest->setLastname($namearray[1]);
         }
 
         $stockistRequest->setCountrycode($countrycode);
@@ -178,9 +209,9 @@ class StockistService {
             throw new Exception("Record does not exist in the daabase", 403);
         }
 
-      
+
         $profile = $stockist->User->profile;
-         
+
 //        $stockist->reference_id = $this->util->incrementalHash();
         $stockist->join_date = $stockistRequest->getJoindate();
 //        $stockist->user_id = 1;
@@ -194,9 +225,9 @@ class StockistService {
         $stockist->update();
 
 
-       
+
         if ($profile != null) {
-             
+
             $profile->firstname = $stockistRequest->getFirstname();
             $profile->lastname = $stockistRequest->getLastname();
             $profile->companyname = $stockistRequest->getCompanyname();

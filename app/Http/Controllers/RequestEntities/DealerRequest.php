@@ -15,7 +15,7 @@ use Exception;
  *
  * @author mover  
  */
-class StockistRequest {
+class DealerRequest {
 
     //put your code here
     private $id;
@@ -132,7 +132,7 @@ class StockistRequest {
     }
 
     function validate() {
-        if ($this->getFirstname() == null && $this->getLastname()) {
+        if ($this->getFirstname() == null || $this->getLastname() == null) {
             throw new Exception("Names are  Mandatory");
         }
 

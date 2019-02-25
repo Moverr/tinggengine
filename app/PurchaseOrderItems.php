@@ -32,6 +32,15 @@ class PurchaseOrderItems extends Model {
         return $this->belongsTo('App\Stockists', 'foreign_key', 'stockist_id');
     }
     
+     public function Author() {
+        return $this->belongsTo('App\User', 'created_by', 'id');
+    }
+    
+     public function Product() {
+        return $this->belongsTo('App\Products', 'product_id', 'id');
+    }
+    
+    
     
 
 }

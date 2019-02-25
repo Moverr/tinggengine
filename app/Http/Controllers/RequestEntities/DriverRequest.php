@@ -15,7 +15,7 @@ use Exception;
  *
  * @author mover  
  */
-class StockistRequest {
+class DriverRequest {
 
     //put your code here
     private $id;
@@ -30,6 +30,8 @@ class StockistRequest {
     private $datecreated;
     private $joindate;
     private $reference_id;
+    private $dealer_reference;
+    private $dealer_id;
 
     function __construct() {
         
@@ -75,6 +77,18 @@ class StockistRequest {
         return $this->datecreated;
     }
 
+    function getJoindate() {
+        return $this->joindate;
+    }
+
+    function getReference_id() {
+        return $this->reference_id;
+    }
+
+    function getDealer_reference() {
+        return $this->dealer_reference;
+    }
+
     function setId($id) {
         $this->id = $id;
     }
@@ -115,24 +129,34 @@ class StockistRequest {
         $this->datecreated = $datecreated;
     }
 
-    function getJoindate() {
-        return $this->joindate;
-    }
-
     function setJoindate($joindate) {
         $this->joindate = $joindate;
-    }
-
-    function getReference_id() {
-        return $this->reference_id;
     }
 
     function setReference_id($reference_id) {
         $this->reference_id = $reference_id;
     }
 
+    function setDealer_reference($dealer_reference) {
+        $this->dealer_reference = $dealer_reference;
+    }
+
+    function getDealer_id() {
+        return $this->dealer_id;
+    }
+
+    function setDealer_id($dealer_id) {
+        $this->dealer_id = $dealer_id;
+    }
+
     function validate() {
-        if ($this->getFirstname() == null && $this->getLastname()) {
+
+        if ($this->getDealer_reference() == null) {
+            throw new Exception("Dealer Reference is  Mandatory");
+        }
+
+
+        if ($this->getFirstname() == null || $this->getLastname() == null) {
             throw new Exception("Names are  Mandatory");
         }
 

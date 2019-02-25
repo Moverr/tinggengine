@@ -6,30 +6,26 @@
  * and open the template in the editor.
  */
 
-namespace App\Http\Controllers\RequestEntities;
-
-use Exception;
+namespace App\Http\Controllers\ResponseEntities;
 
 /**
- * Description of StockistRequest
+ * Description of StockistResponse
  *
  * @author mover  
  */
-class StockistRequest {
+class DealerResponse {
 
-    //put your code here
     private $id;
     private $firstname;
     private $lastname;
     private $companyname;
+    private $reference_id;
     private $countrycode;
     private $phonenumber;
-    private $username;
-    private $password;
+    private $joindate;
     private $status;
     private $datecreated;
-    private $joindate;
-    private $reference_id;
+    private $createdBy;
 
     function __construct() {
         
@@ -51,6 +47,10 @@ class StockistRequest {
         return $this->companyname;
     }
 
+    function getReference_id() {
+        return $this->reference_id;
+    }
+
     function getCountrycode() {
         return $this->countrycode;
     }
@@ -59,12 +59,8 @@ class StockistRequest {
         return $this->phonenumber;
     }
 
-    function getUsername() {
-        return $this->username;
-    }
-
-    function getPassword() {
-        return $this->password;
+    function getJoindate() {
+        return $this->joindate;
     }
 
     function getStatus() {
@@ -73,6 +69,10 @@ class StockistRequest {
 
     function getDatecreated() {
         return $this->datecreated;
+    }
+
+    function getCreatedBy() {
+        return $this->createdBy;
     }
 
     function setId($id) {
@@ -91,6 +91,10 @@ class StockistRequest {
         $this->companyname = $companyname;
     }
 
+    function setReference_id($reference_id) {
+        $this->reference_id = $reference_id;
+    }
+
     function setCountrycode($countrycode) {
         $this->countrycode = $countrycode;
     }
@@ -99,12 +103,8 @@ class StockistRequest {
         $this->phonenumber = $phonenumber;
     }
 
-    function setUsername($username) {
-        $this->username = $username;
-    }
-
-    function setPassword($password) {
-        $this->password = $password;
+    function setJoindate($joindate) {
+        $this->joindate = $joindate;
     }
 
     function setStatus($status) {
@@ -115,38 +115,26 @@ class StockistRequest {
         $this->datecreated = $datecreated;
     }
 
-    function getJoindate() {
-        return $this->joindate;
+    function setCreatedBy($createdBy) {
+        $this->createdBy = $createdBy;
     }
 
-    function setJoindate($joindate) {
-        $this->joindate = $joindate;
+    public function toJson() {
+        return \GuzzleHttp\json_encode($this->toString());
     }
 
-    function getReference_id() {
-        return $this->reference_id;
-    }
-
-    function setReference_id($reference_id) {
-        $this->reference_id = $reference_id;
-    }
-
-    function validate() {
-        if ($this->getFirstname() == null && $this->getLastname()) {
-            throw new Exception("Names are  Mandatory");
-        }
-
-        if ($this->getCompanyname() == null) {
-            throw new Exception("Company/Shop Name  is Mandatory", 403);
-        }
-
-
-        if ($this->getPhonenumber() == null) {
-            throw new Exception("Default Phone Number  is Mandatory", 403);
-        }
-
-
-        return true;
+    public function toString() {
+        return ([
+            'id' => $this->id,
+            'name' => $this->firstname . ' ' . $this->lastname,
+            'countrycode' => $this->countrycode,
+            'phonenuber' => $this->phonenumber,
+            'bussiness' => $this->companyname,
+            'reference_id' => $this->reference_id,
+            'joindate' => $this->joindate,
+            'createdBy' => $this->createdBy,
+            'date_created' => $this->datecreated
+        ]);
     }
 
 }

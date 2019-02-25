@@ -16,6 +16,7 @@ use App\Http\Controllers\ResponseEntities\UserResponse;
 use App\Http\Controllers\RequestEntities\LoginRequest;
 use App\Profiles;
 use App\Http\Controllers\ResponseEntities\ProfileResponse;
+use App\Http\Controllers\RequestEntities\ProfileRequest;
 
 /**
  * Description of ProfileService
@@ -40,11 +41,30 @@ class ProfileService {
         return self::$instance;
     }
 
+    public function save($request, $autneticaton_response = null) {
+
+        throw new Exception("Not Yet Implemented", 403);
+    }
+
+    public function saveProfile(ProfileRequest $profileRequest, $autneticaton_response = null) {
+        $createdBy = $autneticaton_response->getId();
+
+
+        $profiles = new Profiles();
+        $profiles->firstname = $profileRequest->getFirstname();
+        $profiles->lastname = $profileRequest->getLastname();
+        $profiles->companyname = $profileRequest->getCompanyname();
+        $profiles->created_by = $createdBy;
+        $profiles->save();
+
+        return $profiles;
+    }
+
     public function populate($profile) {
         if ($profile == null) {
             return null;
         }
-        $profileResponse = new ProfileResponse();  
+        $profileResponse = new ProfileResponse();
         $profileResponse->setId($profile->id);
         $profileResponse->setFirstname($profile->firstname);
         $profileResponse->setLastname($profile->lastname);

@@ -14,17 +14,18 @@ namespace App\Http\Controllers\ResponseEntities;
  * @author mover  
  */
 class PurchaseOrderItemsResponse {
+
     //put your code here
     private $id;
     private $purchase_order;
-    private $product_id;
+    private $product;
     private $quantity;
     private $unit_selling_price;
     private $total_selling_price;
     private $status;
     private $created_by;
     private $date_created;
-    
+
     function __construct() {
         
     }
@@ -37,8 +38,8 @@ class PurchaseOrderItemsResponse {
         return $this->purchase_order;
     }
 
-    function getProduct_id() {
-        return $this->product_id;
+    function getProduct() {
+        return $this->product;
     }
 
     function getQuantity() {
@@ -73,8 +74,8 @@ class PurchaseOrderItemsResponse {
         $this->purchase_order = $purchase_order;
     }
 
-    function setProduct_id($product_id) {
-        $this->product_id = $product_id;
+    function setProduct($product_id) {
+        $this->product = $product_id;
     }
 
     function setQuantity($quantity) {
@@ -101,5 +102,22 @@ class PurchaseOrderItemsResponse {
         $this->date_created = $date_created;
     }
 
+    public function toJson() {
+        return \GuzzleHttp\json_encode($this->toString());
+    }
+
+    public function toString() {
+        return ([
+            'id' => $this->id,
+            'purchase_order' => $this->purchase_order,
+            'product' => $this->product,
+            'quantity' => $this->quantity,
+            'unit_selling_price' => $this->unit_selling_price,
+            'total_selling_price' => $this->total_selling_price,
+            'status' => $this->status,
+            'created_by' => $this->created_by,
+            'date_created' => $this->date_created,
+        ]);
+    }
 
 }
