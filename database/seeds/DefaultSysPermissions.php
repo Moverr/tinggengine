@@ -12,6 +12,7 @@ class DefaultSysPermissions extends Seeder {
     public function run() {
         DB::table('permissions')->insert([
             'id' => 1,
+             'grouping' => 'SPECIAL',
             'name' => 'ALL_FUNCTIONS',
             'code' => 'ALL_FUNCTIONS'
         ]);
@@ -19,11 +20,13 @@ class DefaultSysPermissions extends Seeder {
 
         DB::table('permissions')->insert([
             'id' => 2,
+            'grouping' => 'SPECIAL',
             'name' => 'FETCH ONLY OWN RECORDS',
             'code' => 'FOOR'
         ]);
         DB::table('permissions')->insert([
             'id' => 3,
+            'grouping' => 'SPECIAL',
             'name' => 'FETCH OWN AND CHILDREN RECORDS',
             'code' => 'FOACR'
         ]);
@@ -31,27 +34,32 @@ class DefaultSysPermissions extends Seeder {
 
         //categories
         DB::table('permissions')->insert([
-            'id' => 3,
+            'id' => 4,
+            'grouping' => 'CATEGORIES',
             'name' => 'CREATE PRODUCT CATEGORIES',
             'code' => 'CPG'
         ]);
         DB::table('permissions')->insert([
-            'id' => 4,
+            'id' => 5,
+             'grouping' => 'CATEGORIES',
             'name' => 'EDIT PRODUCT CATEGORIES',
             'code' => 'EPG'
         ]);
         DB::table('permissions')->insert([
-            'id' => 5,
+            'id' => 6,
+             'grouping' => 'CATEGORIES',
             'name' => 'ARCHIVE PRODUCT CATEGORIES',
             'code' => 'APG'
         ]);
         DB::table('permissions')->insert([
-            'id' => 6,
+            'id' => 7,
+             'grouping' => 'CATEGORIES',
             'name' => 'LIST PRODUCT CATEGORIES',
             'code' => 'LPG'
         ]);
         DB::table('permissions')->insert([
-            'id' => 7,
+            'id' => 8,
+             'grouping' => 'CATEGORIES',
             'name' => 'GET PRODUCT CATEGORIES',
             'code' => 'GPG'
         ]);
@@ -62,11 +70,15 @@ class DefaultSysPermissions extends Seeder {
         //products
         DB::table('permissions')->insert([
             'id' => 14,
+             'grouping' => 'PRODUCT',
+            
             'name' => 'CREATE PRODUCT ',
             'code' => 'CP'
         ]);
         DB::table('permissions')->insert([
             'id' => 15,
+             'grouping' => 'PRODUCT',
+            
             'name' => 'EDIT PRODUCT ',
             'code' => 'EP'
         ]);
@@ -86,30 +98,7 @@ class DefaultSysPermissions extends Seeder {
             'code' => 'GP'
         ]);
 
-
-
-        //stockist
-        DB::table('permissions')->insert([
-            'id' => 19,
-            'name' => 'CREATE STOCKIST',
-            'code' => 'CSTST'
-        ]);
-        DB::table('permissions')->insert([
-            'id' => 20,
-            'name' => 'EDIT STOCKIST ',
-            'code' => 'ESTST'
-        ]);
-        DB::table('permissions')->insert([
-            'id' => 21,
-            'name' => 'ARCHIVE STOCKIST ',
-            'code' => 'ASTST'
-        ]);
-        DB::table('permissions')->insert([
-            'id' => 22,
-            'name' => 'LIST STOCKIST ',
-            'code' => 'LSTST'
-        ]);
-        DB::table('permissions')->insert([
+         DB::table('permissions')->insert([
             'id' => 23,
             'name' => 'GET STOCKIST ',
             'code' => 'GSTST'
@@ -274,42 +263,7 @@ class DefaultSysPermissions extends Seeder {
 
 
 
-
-        //dealer
-        DB::table('permissions')->insert([
-            'id' => 44,
-            'name' => 'CREATE STOCKIST ',
-            'code' => 'CSTOCKIST'
-        ]);
-        DB::table('permissions')->insert([
-            'id' => 45,
-            'name' => 'EDIT STOCKIST ',
-            'code' => 'ESTOCKIST'
-        ]);
-        DB::table('permissions')->insert([
-            'id' => 46,
-            'name' => 'ARCHIVE STOCKIST ',
-            'code' => 'ASTOCKIST'
-        ]);
-        DB::table('permissions')->insert([
-            'id' => 47,
-            'name' => 'LIST STOCKIST ',
-            'code' => 'LSTOCKIST'
-        ]);
-        DB::table('permissions')->insert([
-            'id' => 48,
-            'name' => 'GET STOCKIST ',
-            'code' => 'GSTOCKIST'
-        ]);
-
-
-
-
-
-
-
-
-
+ 
         DB::table('roles')->insert([
             'id' => 1,
             'name' => 'SUPER_ADMIN',
