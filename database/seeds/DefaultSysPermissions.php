@@ -143,6 +143,36 @@ class DefaultSysPermissions extends Seeder {
         ]);
 
 
+
+          //stockist
+        DB::table('permissions')->insert([
+            'id' => 24,
+            'name' => 'CREATE PROFILE',
+            'code' => 'CPRL'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 25,
+            'name' => 'EDIT PROFILE ',
+            'code' => 'EPRL'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 26,
+            'name' => 'ARCHIVE PROFILE ',
+            'code' => 'APRL'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 27,
+            'name' => 'LIST PROFILE ',
+            'code' => 'LPRL'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 28,
+            'name' => 'GET PROFILE ',
+            'code' => 'GPRL'
+        ]);
+
+
+
         
         
         
