@@ -114,30 +114,34 @@ class DefaultSysPermissions extends Seeder {
 
 
 
-        //stockist
+        //profile
         DB::table('permissions')->insert([
             'id' => 24,
-             'grouping' => 'STOCKIST',
+             'grouping' => 'PROFILE',
             'name' => 'CREATE PROFILE',
             'code' => 'CPRL'
         ]);
         DB::table('permissions')->insert([
             'id' => 25,
+             'grouping' => 'PROFILE',
             'name' => 'EDIT PROFILE ',
             'code' => 'EPRL'
         ]);
         DB::table('permissions')->insert([
             'id' => 26,
+             'grouping' => 'PROFILE',
             'name' => 'ARCHIVE PROFILE ',
             'code' => 'APRL'
         ]);
         DB::table('permissions')->insert([
             'id' => 27,
+             'grouping' => 'PROFILE',
             'name' => 'LIST PROFILE ',
             'code' => 'LPRL'
         ]);
         DB::table('permissions')->insert([
             'id' => 28,
+             'grouping' => 'PROFILE',
             'name' => 'GET PROFILE ',
             'code' => 'GPRL'
         ]);
@@ -146,29 +150,34 @@ class DefaultSysPermissions extends Seeder {
 
 
 
-        //stockist
+        //purchase
         DB::table('permissions')->insert([
             'id' => 29,
+             'grouping' => 'PURCHASE',
             'name' => 'CREATE PURCHASE',
             'code' => 'CPUR'
         ]);
         DB::table('permissions')->insert([
             'id' => 30,
+            'grouping' => 'PURCHASE',
             'name' => 'EDIT PURCHASE ',
             'code' => 'EPUR'
         ]);
         DB::table('permissions')->insert([
             'id' => 31,
+            'grouping' => 'PURCHASE',
             'name' => 'ARCHIVE PURCHASE ',
             'code' => 'APUR'
         ]);
         DB::table('permissions')->insert([
             'id' => 32,
+            'grouping' => 'PURCHASE',
             'name' => 'LIST PURCHASE ',
             'code' => 'LPUR'
         ]);
         DB::table('permissions')->insert([
             'id' => 33,
+            'grouping' => 'PURCHASE',
             'name' => 'GET PURCHASE ',
             'code' => 'GPUR'
         ]);
@@ -179,26 +188,36 @@ class DefaultSysPermissions extends Seeder {
         //stockist
         DB::table('permissions')->insert([
             'id' => 34,
+            'grouping' => 'ROLE',
+            
             'name' => 'CREATE ROLE',
             'code' => 'CROLE'
         ]);
         DB::table('permissions')->insert([
             'id' => 35,
+            'grouping' => 'ROLE',
+            
             'name' => 'EDIT ROLE ',
             'code' => 'EROLE'
         ]);
         DB::table('permissions')->insert([
             'id' => 36,
+            'grouping' => 'ROLE',
+            
             'name' => 'ARCHIVE ROLE ',
             'code' => 'AROLE'
         ]);
         DB::table('permissions')->insert([
             'id' => 37,
+            'grouping' => 'ROLE',
+            
             'name' => 'LIST ROLE ',
             'code' => 'LROLE'
         ]);
         DB::table('permissions')->insert([
             'id' => 38,
+            'grouping' => 'ROLE',
+            
             'name' => 'GET ROLE ',
             'code' => 'GROLE'
         ]);
