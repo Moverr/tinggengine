@@ -57,7 +57,7 @@ class DefaultSysPermissions extends Seeder {
         ]);
 
 
-       
+
 
         //products
         DB::table('permissions')->insert([
@@ -210,8 +210,8 @@ class DefaultSysPermissions extends Seeder {
 
 
 
-        
-         //dealer
+
+        //dealer
         DB::table('permissions')->insert([
             'id' => 39,
             'name' => 'CREATE DEALER ',
@@ -239,13 +239,13 @@ class DefaultSysPermissions extends Seeder {
         ]);
 
 
-        
-        
 
 
 
-        
-         //dealer
+
+
+
+        //dealer
         DB::table('permissions')->insert([
             'id' => 44,
             'name' => 'CREATE DRIVER ',
@@ -273,12 +273,41 @@ class DefaultSysPermissions extends Seeder {
         ]);
 
 
-        
-        
 
 
-        
-        
+        //dealer
+        DB::table('permissions')->insert([
+            'id' => 44,
+            'name' => 'CREATE STOCKIST ',
+            'code' => 'CSTOCKIST'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 45,
+            'name' => 'EDIT STOCKIST ',
+            'code' => 'ESTOCKIST'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 46,
+            'name' => 'ARCHIVE STOCKIST ',
+            'code' => 'ASTOCKIST'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 47,
+            'name' => 'LIST STOCKIST ',
+            'code' => 'LSTOCKIST'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 48,
+            'name' => 'GET STOCKIST ',
+            'code' => 'GSTOCKIST'
+        ]);
+
+
+
+
+
+
+
 
 
         DB::table('roles')->insert([
