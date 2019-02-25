@@ -154,8 +154,8 @@ class UserService {
     
     
     public function setUserRole($user_id, $role_name){
-        
-        
+        RoleService::getInstance();
+       
         return  null;
         
     }
