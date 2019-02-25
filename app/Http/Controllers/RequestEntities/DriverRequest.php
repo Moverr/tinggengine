@@ -151,7 +151,7 @@ class DriverRequest {
 
     function validate() {
 
-        if ($this->getDealer_reference() == null || $this->getDealer_id() == null) {
+        if ($this->getDealer_reference() == null) {
             throw new Exception("Dealer Reference is  Mandatory");
         }
 

@@ -115,7 +115,8 @@ class DriverService {
         $dealerRequest->setCompanyname($companyname);
         $dealerRequest->setReference_id($reference_id);
         $dealerRequest->setJoindate($joindate);
-        $dealerRequest->setDealer_id($dealer_id);
+        $dealerRequest->setDealer_id($dealer_id); 
+        $dealerRequest->setDealer_reference($dealer_refernece);
        
 
         //populate user request
@@ -279,6 +280,11 @@ class DriverService {
         $response->setCreatedBy($dealer->Author->username);
         $response->setStatus($dealer->status);
         $response->setJoindate($dealer->join_date);
+        $response->setDealer([
+            "id"=>$dealer->Dealer->id,
+            "reference_id"=>$dealer->Dealer->reference_id
+            
+        ]);
         $response->setDatecreated($this->util->convertToTimestamp($dealer->date_created));
 
         return $response;
