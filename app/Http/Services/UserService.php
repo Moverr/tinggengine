@@ -150,6 +150,15 @@ class UserService {
         $user->status = 'ARCHIVED';
         $user->update();
     }
+    
+    
+    
+    public function setUserRole($user_id, $role_name){
+        
+        
+        return  null;
+        
+    }
 
     public function populate($user) {
         $userResponse = new UserResponse();
