@@ -15,6 +15,7 @@ use App\Http\Controllers\ResponseEntities\UserResponse;
 use App\Http\Controllers\RequestEntities\LoginRequest;
 use Exception;
 
+use App\UserRoles;
 /**
  * Description of UserService
  *
@@ -108,6 +109,8 @@ class UserService {
         return $user;
     }
 
+
+ 
     public function update($request, $authentication = null) {
         $username = $request['username'];
         $password = $request['password'];
@@ -154,9 +157,15 @@ class UserService {
     
     
     public function setUserRole($user_id, $role_name){
-        RoleService::getInstance();
+       $roles =  RoleService::getInstance()->getRoleByName($role_name);
        
-        return  null;
+       $userrole = new UserRoles();
+       $userrole->user_id = $user_id;
+       $userrole->role_id = $roles->id;
+       $userrole->save();
+        
+       
+        return  $userrole;
         
     }
 
