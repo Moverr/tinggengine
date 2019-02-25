@@ -18,12 +18,12 @@ class DefaultSysPermissions extends Seeder {
 
 
         DB::table('permissions')->insert([
-            'id' => 1,
+            'id' => 2,
             'name' => 'FETCH ONLY OWN RECORDS',
             'code' => 'FOOR'
         ]);
         DB::table('permissions')->insert([
-            'id' => 1,
+            'id' => 3,
             'name' => 'FETCH OWN AND CHILDREN RECORDS',
             'code' => 'FOACR'
         ]);
@@ -31,61 +31,92 @@ class DefaultSysPermissions extends Seeder {
 
         //categories
         DB::table('permissions')->insert([
-            'id' => 2,
+            'id' => 3,
             'name' => 'CREATE PRODUCT CATEGORIES',
             'code' => 'CPG'
         ]);
         DB::table('permissions')->insert([
-            'id' => 3,
+            'id' => 4,
             'name' => 'EDIT PRODUCT CATEGORIES',
             'code' => 'EPG'
         ]);
         DB::table('permissions')->insert([
-            'id' => 4,
+            'id' => 5,
             'name' => 'ARCHIVE PRODUCT CATEGORIES',
             'code' => 'APG'
         ]);
         DB::table('permissions')->insert([
-            'id' => 5,
+            'id' => 6,
             'name' => 'LIST PRODUCT CATEGORIES',
             'code' => 'LPG'
         ]);
         DB::table('permissions')->insert([
-            'id' => 1,
+            'id' => 7,
             'name' => 'GET PRODUCT CATEGORIES',
             'code' => 'GPG'
         ]);
 
 
- //products
+        //products
         DB::table('permissions')->insert([
-            'id' => 2,
+            'id' => 9,
             'name' => 'CREATE PRODUCT ',
             'code' => 'CP'
         ]);
         DB::table('permissions')->insert([
-            'id' => 3,
+            'id' => 10,
             'name' => 'EDIT PRODUCT ',
             'code' => 'EP'
         ]);
         DB::table('permissions')->insert([
-            'id' => 4,
+            'id' => 11,
             'name' => 'ARCHIVE PRODUCT ',
             'code' => 'AP'
         ]);
         DB::table('permissions')->insert([
-            'id' => 5,
+            'id' => 12,
             'name' => 'LIST PRODUCT ',
             'code' => 'LP'
         ]);
         DB::table('permissions')->insert([
-            'id' => 1,
+            'id' => 13,
             'name' => 'GET PRODUCT ',
             'code' => 'GP'
         ]);
 
 
-        
+
+        //products
+        DB::table('permissions')->insert([
+            'id' => 14,
+            'name' => 'CREATE PRODUCT ',
+            'code' => 'CP'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 15,
+            'name' => 'EDIT PRODUCT ',
+            'code' => 'EP'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 16,
+            'name' => 'ARCHIVE PRODUCT ',
+            'code' => 'AP'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 17,
+            'name' => 'LIST PRODUCT ',
+            'code' => 'LP'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 18,
+            'name' => 'GET PRODUCT ',
+            'code' => 'GP'
+        ]);
+
+
+
+
+
 
         DB::table('roles')->insert([
             'id' => 1,
