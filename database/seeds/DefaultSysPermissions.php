@@ -205,6 +205,37 @@ class DefaultSysPermissions extends Seeder {
 
         
         
+          //stockist
+        DB::table('permissions')->insert([
+            'id' => 29,
+            'name' => 'CREATE ROLE',
+            'code' => 'CROLE'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 30,
+            'name' => 'EDIT ROLE ',
+            'code' => 'EROLE'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 31,
+            'name' => 'ARCHIVE ROLE ',
+            'code' => 'AROLE'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 32,
+            'name' => 'LIST ROLE ',
+            'code' => 'LROLE'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 33,
+            'name' => 'GET ROLE ',
+            'code' => 'GROLE'
+        ]);
+
+
+        
+        
+        
         
         
         
