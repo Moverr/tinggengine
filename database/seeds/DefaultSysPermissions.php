@@ -211,7 +211,7 @@ class DefaultSysPermissions extends Seeder {
 
 
         
-         //products
+         //dealer
         DB::table('permissions')->insert([
             'id' => 39,
             'name' => 'CREATE DEALER ',
@@ -223,17 +223,17 @@ class DefaultSysPermissions extends Seeder {
             'code' => 'EDEALER'
         ]);
         DB::table('permissions')->insert([
-            'id' => 11,
+            'id' => 41,
             'name' => 'ARCHIVE DEALER ',
             'code' => 'ADEALER'
         ]);
         DB::table('permissions')->insert([
-            'id' => 12,
+            'id' => 42,
             'name' => 'LIST DEALER ',
             'code' => 'LDEALER'
         ]);
         DB::table('permissions')->insert([
-            'id' => 13,
+            'id' => 43,
             'name' => 'GET DEALER ',
             'code' => 'GDEALER'
         ]);
@@ -244,6 +244,41 @@ class DefaultSysPermissions extends Seeder {
 
 
 
+        
+         //dealer
+        DB::table('permissions')->insert([
+            'id' => 44,
+            'name' => 'CREATE DRIVER ',
+            'code' => 'CDRIVER'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 45,
+            'name' => 'EDIT DRIVER ',
+            'code' => 'EDRIVER'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 46,
+            'name' => 'ARCHIVE DRIVER ',
+            'code' => 'ADRIVER'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 47,
+            'name' => 'LIST DRIVER ',
+            'code' => 'LDRIVER'
+        ]);
+        DB::table('permissions')->insert([
+            'id' => 48,
+            'name' => 'GET DRIVER ',
+            'code' => 'GDRIVER'
+        ]);
+
+
+        
+        
+
+
+        
+        
 
 
         DB::table('roles')->insert([
