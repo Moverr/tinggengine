@@ -46,13 +46,16 @@ class Handler extends ExceptionHandler {
      */
     public function render($request, Exception $exception) {
 
+        $errorMessage = $exception->getMessage();
+        $error_code = $exception->getCode();
 
-        if ($exception->getCode()) {
-            $error = ['error' => $exception->getMessage()];
 
+        if (isset($errorMessage) && (isset($error_code))) {
+            $error = ['error' => $errorMessage];
             return new JsonResponse($error, $exception->getCode() > 0 ? $exception->getCode() : 422);
         }
+
         return parent::render($request, $exception);
-        }
+    }
 
 }
