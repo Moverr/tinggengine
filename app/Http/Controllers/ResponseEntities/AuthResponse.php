@@ -18,7 +18,7 @@ class AuthResponse {
     //put your code here
     private $id;
     private $authentication;
-    private $role_id;
+    private $role;
 
     function __construct() {
         
@@ -32,8 +32,8 @@ class AuthResponse {
         return $this->authentication;
     }
 
-    function getRoleId() {
-        return $this->role_id;
+    function getRole() {
+        return $this->role;
     }
 
     function setId($id) {
@@ -44,8 +44,8 @@ class AuthResponse {
         $this->authentication = $authentication;
     }
 
-    function setRoleId($role_id) {
-        $this->role_id = $role_id;
+    function setRole($role) {
+        $this->role = $role;
     }
 
     public function toJson() {
@@ -56,7 +56,7 @@ class AuthResponse {
         return [
             'id' => $this->id,
             'authentication' => $this->authentication,
-            'role_id' => $this->role_id
+            'role' => $this->role
         ];
     }
 
