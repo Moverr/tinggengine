@@ -32,10 +32,12 @@ class User extends Model {
         return $this->belongsTo('App\Profiles');
     }
 
-    public function role() {
+    public function UserRole() {
         return $this->hasManyThrough(
-                    'App\Roles','App\UserRoles','id','id'
+                    'App\Roles','App\UserRoles','user_id','id'
         );
     }
+    
+      
 
 }

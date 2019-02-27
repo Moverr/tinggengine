@@ -29,11 +29,11 @@ class UserRoles extends Model {
 
     
     public function Users() {
-        return $this->belongsTo('App\User', 'foreign_key', 'user_id');
+        return $this->belongsTo('App\User', 'id', 'user_id');
     }
-
+      
     public function Roles() {
-        return $this->belongsTo('App\Roles', 'foreign_key', 'role_id');
+        return $this->hasOne('App\Roles', 'role_id', 'id');
     }
 
 }
