@@ -23,6 +23,11 @@ class UserRoles extends Model {
     protected $hidden = [];
     protected $table = 'userrole';
 
+    
+     const CREATED_AT = null;
+    const UPDATED_AT = null;
+
+    
     public function Users() {
         return $this->belongsTo('App\User', 'foreign_key', 'user_id');
     }

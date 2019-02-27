@@ -106,6 +106,8 @@ class UserService {
         }
         $user->group = $userRequest->getGroup();
         $user->save();
+        
+        $this->setDefaultRole ($user->id, $userRequest->getGroup());
         return $user;
     }
 
@@ -152,6 +154,20 @@ class UserService {
         $user->update();
     }
 
+       public function setDefaultRole($user_id, $role_name) {
+         $roleResponse = RoleService::getInstance()->getRoleByName($role_name);
+
+        //todo: delere all roles where user_id = roles : 
+        
+        $userrole = new UserRoles();
+        $userrole->user_id = $user_id;
+        $userrole->role_id = $roleResponse->getId();
+        $userrole->save();
+
+        return $userrole;
+    }
+
+    
     public function setUserRole($user_id, $role_name) {
         $roles = RoleService::getInstance()->getRoleByName($role_name);
 
