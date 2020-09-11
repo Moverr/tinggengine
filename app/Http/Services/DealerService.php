@@ -133,15 +133,15 @@ class DealerService {
 
 
         //todo:  save stockist 
-        $stockist = $this->saveDealer($dealerRequest, $autneticaton_response);
+        $dealer = $this->saveDealer($dealerRequest, $autneticaton_response);
 
         //todo: create user :: 
         $user = $this->userService->saveUser($userRequest, $autneticaton_response);
 
 
         //update profile
-        $stockist->user_id = $user->id;
-        $stockist->update();
+        $dealer->user_id = $user->id;
+        $dealer->update();
 
 
         //save profile
@@ -150,7 +150,7 @@ class DealerService {
         $user->profile_id = $profiles->id;
         $user->update();
 
-        $dealerResponse = $this->populate($stockist);
+        $dealerResponse = $this->populate($dealer);
 
         return $dealerResponse->toString();
     }

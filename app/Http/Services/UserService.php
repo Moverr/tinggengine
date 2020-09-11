@@ -14,6 +14,7 @@ use App\Http\Helpers\Utils;
 use App\Http\Controllers\ResponseEntities\UserResponse;
 use App\Http\Controllers\RequestEntities\LoginRequest;
 use Exception;
+use App\UserRoles;
 
 /**
  * Description of UserService
@@ -80,7 +81,7 @@ class UserService {
         $password = $request['password'];
         $repassword = $request['repassword'];
         $role_id = $request['role_id'];
-        $userRequest = new UserRequest($username, $password, $repassword, $role_id); 
+        $userRequest = new UserRequest($username, $password, $repassword, $role_id);
         $user = $this->saveUser($userRequest, $autneticaton_response);
         $userResponse = $this->populate($user);
         return $userResponse->toString();
@@ -105,6 +106,8 @@ class UserService {
         }
         $user->group = $userRequest->getGroup();
         $user->save();
+        
+        $this->setDefaultRole ($user->id, $userRequest->getGroup());
         return $user;
     }
 
@@ -149,6 +152,31 @@ class UserService {
         }
         $user->status = 'ARCHIVED';
         $user->update();
+    }
+
+       public function setDefaultRole($user_id, $role_name) {
+         $roleResponse = RoleService::getInstance()->getRoleByName($role_name);
+
+        //todo: delere all roles where user_id = roles : 
+        
+        $userrole = new UserRoles();
+        $userrole->user_id = $user_id;
+        $userrole->role_id = $roleResponse->getId();
+        $userrole->save();
+
+        return $userrole;
+    }
+
+    
+    public function setUserRole($user_id, $role_name) {
+        $roles = RoleService::getInstance()->getRoleByName($role_name);
+
+        $userrole = new UserRoles();
+        $userrole->user_id = $user_id;
+        $userrole->role_id = $roles->id;
+        $userrole->save();
+
+        return $userrole;
     }
 
     public function populate($user) {

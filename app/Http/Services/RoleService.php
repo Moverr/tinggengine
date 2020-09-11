@@ -8,13 +8,9 @@
 
 namespace App\Http\Services;
 
-use App\User;
-use App\Http\Controllers\RequestEntities\UserRequest;
-use App\Http\Helpers\Utils;
-use App\Http\Controllers\ResponseEntities\UserResponse;
-use App\Http\Controllers\RequestEntities\LoginRequest;
 use App\Http\Controllers\ResponseEntities\RoleResponse;
-use Exception;
+use App\Http\Helpers\Utils;
+use App\Roles;
 
 /**
  * Description of RoleService
@@ -37,6 +33,16 @@ class RoleService {
             self::$instance = new RoleService();
         }
         return self::$instance;
+    }
+
+    public function getRoleByName($rolename) {
+
+        $role = Roles::where('name', $rolename)->get();
+        if ($role == null) {
+            throw new Exception("Role Record does not exist in the daabase");
+        }
+
+        return $this->populate($role[0]);
     }
 
     public function populate($role) {

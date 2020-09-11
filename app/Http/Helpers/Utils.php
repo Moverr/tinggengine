@@ -3,6 +3,9 @@
 namespace App\Http\Helpers;
 
 use DateTime;
+use App\User;
+use App\Http\Controllers\ResponseEntities\AuthResponse;
+use App\UserRoles;
 
 class Utils {
 
@@ -52,7 +55,7 @@ class Utils {
 
     function validateUser($username, $password) {
 
-        $existing_user = \App\User::where('username', $username)
+        $existing_user = User::where('username', $username)
                 ->where('password', sha1($password))
                 ->where('status', "ACTIVE")
                 ->first();
@@ -60,9 +63,20 @@ class Utils {
             throw new \Illuminate\Validation\UnauthorizedException("Invalid  user credentials", 403);
         }
 
-        $auth = new \App\Http\Controllers\ResponseEntities\AuthResponse();
+        //todo: get me all the use roles where user_id = this
+        $user_roles =  UserRoles::where('user_id',$existing_user->id)->get();
+        if($user_roles != null){
+            
+            foreach ($user_roles as $record) {
+                
+            }
+        }
+        
+                
+        $auth = new AuthResponse();
         $auth->setAuthentication($this->convertToBasicAuth($username, $password));
         $auth->setId($existing_user->id);
+        $auth->setRole($user_roles->Roles);
 
         return $auth;
     }
